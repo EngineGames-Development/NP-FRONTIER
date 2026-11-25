@@ -19,7 +19,7 @@
 - 2 have MC = 3: 0x01234567 and 0x0167abcd. Both are certified NONE, i.e. MC(y·G') = 4, with 48 first gates each. This gives **Theorem 17**.
 - Cross-check (`run_drat_level3.sh`): CaDiCaL reports UNSAT for "MC(y·G') ≤ 3" on both.
   - The DRAT proof for 0x01234567 is **verified by drat-trim** (643 s; `drat_recheck_0x01234567.log`).
-  - The DRAT check for 0x0167abcd is pending.
+  - The DRAT proof for 0x0167abcd is **verified by drat-trim** (748 s; `drat_recheck_0x0167abcd.log`).
   - Note: drat-trim prints its verdict as `\rs VERIFIED`, so the script's `^s ` filter dropped it. The re-check converts `\r` to newlines.
 
 Logs: `run_reps.log`, `results.json`.

@@ -26,7 +26,7 @@ Results with unconfirmed novelty. Audit status: AUDIT-001 covers Lemmas 1–10 a
 - **Lemma 11:** structure of a minimal counterexample to PNE-001. Also: admissible first-gate directions for y·g come in pairs.
 - **Proposition 10:** MC(y·g*) = 4 for g* = 0xfff3d212. Proved three ways: by Corollary 13, by an exhaustive SAT-free first-gate certificate, and by SAT with a DRAT proof checked by drat-trim.
 - **Corollary 13:** PNE-001 holds at level MC(g) = 3 whenever g has a single cheap direction.
-- **Lemmas 14(b′), 15 and Theorem 16:** PNE-001 for all g with MC(g) ≤ 3 is equivalent to MC(y·G') = 4 for the MC-3 members of an explicit 5-variable family G' = x1ℓ1 + x2ℓ2 + x1x2ℓ3 + λ(u), which has 33 symmetry orbits. EXP-006 finished: 31 orbits have MC ≤ 2 and 2 have MC 3, both certified. **This gives Theorem 17: PNE-001 for all g with MC(g) ≤ 3.**
+- **Lemmas 14(b′), 15 and Theorem 16:** PNE-001 for all g with MC(g) ≤ 3 is equivalent to MC(y·G') = 4 for the MC-3 members of an explicit 5-variable family G' = x1ℓ1 + x2ℓ2 + x1x2ℓ3 + λ(u), which has 33 symmetry orbits. EXP-006 finished: 31 orbits have MC ≤ 2 and 2 have MC 3, both certified by the exhaustive search and by DRAT-verified SAT proofs. **This gives Theorem 17: PNE-001 for all g with MC(g) ≤ 3.**
 
 Known or folklore, included for completeness:
 - Lemma 1 (D ≤ MC; essentially Chistopolskaya–Podolskii).

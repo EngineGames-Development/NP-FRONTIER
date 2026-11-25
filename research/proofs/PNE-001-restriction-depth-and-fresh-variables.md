@@ -156,7 +156,7 @@ The finite check is the first task of cycle 002. It needs the 5-variable $S_2$ s
 
 Dependencies:
 - Exhaustive data from EXP-001 (the 4-variable table, used in Lemma 15) and EXP-006 (the 5-variable $S_2$, orbits, and two certificates). The $S_2$ construction is validated at $n=4$ against the independent BFS.
-- Independent cross-check of the two certificates: SAT with DRAT proofs checked by drat-trim (`EXP-006/run_drat_level3.sh`; status in the cycle report).
+- Independent cross-check of the two certificates: CaDiCaL reports UNSAT for "MC(y·G') ≤ 3" on both. Both DRAT proofs are **verified by drat-trim** (643 s and 748 s; `EXP-006/run_drat_level3.sh`, `drat_recheck_*.log`).
 - Not formalized in Lean.
 
 *Significance and limits.* This is the first complete level beyond the reach of restriction depth: functions with $\mathrm{MC}=3>D=2$ exist from 5 variables on, and the theorem covers them for every number of variables. It is still far from the regime needed for explicit $\mathrm{MC}\ge n$: that needs PNE-001 for a 6-variable seed with MC 6, i.e. level 6.
