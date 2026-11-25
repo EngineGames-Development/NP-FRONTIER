@@ -2,7 +2,7 @@
 
 Cycle 002, 2026-11-25. Builds on `PNE-001-restriction-depth-and-fresh-variables.md` (cycle 001), whose numbering continues here.
 Status: proofs written by the chief researcher; independent audit AUDIT-003 pending (`audits/`).
-**Main result of this document: Theorem 25 — PNE-001 holds at level 4 for every n (computer-assisted). With Theorem 17: MC(y·g) = MC(g)+1 for every non-constant g with MC(g) ≤ 4.** Sections 22–27 below; sections 9′–21 are the earlier structural route, which now serves as an independent check of the case n ≤ 5.
+**Main results of this document: Theorem 25 — PNE-001 holds at level 4 for every n. With Theorem 17: MC(y·g) = MC(g)+1 for every non-constant g with MC(g) ≤ 4.** The proof is a human reduction to 5 variables (Lemmas 23, 28, 30) plus a 5-variable computation done three ways. **Corollary 31 (human proof, every level): PNE-001 holds whenever dim g ≥ 2·MC(g) − 2.** Sections 22–27 below; sections 9′–21 are the earlier structural route, which now serves as an independent check of the case n ≤ 5.
 
 **Question.** For non-constant $g$ with $\mathrm{MC}(g)=4$, is $\mathrm{MC}(y\,g)=5$? Since $\mathrm{MC}(g)\le\mathrm{MC}(y\,g)\le\mathrm{MC}(g)+1$, a *level-4 counterexample* is a $g$ with $\mathrm{MC}(g)=4=\mathrm{MC}(y\,g)$.
 
@@ -256,14 +256,81 @@ The final claim is Lemma 24. $\square$
 
 This explains the $\dim K=7$ row of Theorem 25 (all 840 pairs degenerate) without computation. It also predicts that level 5 has no non-degenerate hyperplane pairs. EXP-016 confirms this by enumeration: 2,350,080 formal 5-gate circuits × 1,023 hyperplanes give 71,280 affine cosets and 64,800 pairs, all degenerate. The case of codimension 2 is genuinely different: at $m=4$ there are 19,644 non-degenerate pairs, all harmless, but not for a reason captured by Lemma 24.
 
+## Lemma 30 (codimension 2) — human proof, every $m$
+
+Let $\Phi$ be a formal $m$-gate circuit, and let $K\subseteq\mathbb F_2^{2m}$ be a linear subspace of codimension 2. Suppose $\Phi|_{C_0}$ is affine for some coset $C_0$ of $K$. Then $\mathrm{MC}(\Phi|_C)\le m-1$ for every coset $C$ of $K$.
+
+*Proof.* Let $H=K^\perp=\{h:\langle h,w\rangle=0\ \forall w\in K\}$, so $\dim H=2$, and let $C_0=\{w:\langle h,w\rangle=c(h)\ \forall h\in H\}$.
+- As in Lemma 28, write $u=w_{2m-1}$, $v=w_{2m}$ and $w''=(w_1,\dots,w_{2m-2})$. Then $\Phi=(u+a)(v+b)+\Gamma$ with $a=\alpha_m\cdot z$, $b=\beta_m\cdot z$ and $\Gamma=\sum_{j<m}\gamma_jz_j$, all functions of $w''$.
+- Write $h=(h'',h_u,h_v)$. Let $\pi:H\to\mathbb F_2^2$ be $h\mapsto(h_u,h_v)$, and let $H_0=\ker\pi$.
+
+The independence fact of Lemma 28 is used in this stronger form:
+
+(IF′) Let $\emptyset\ne S\subseteq\{1,\dots,m-1\}$, $\Psi=\sum_{j\in S}z_j$, and let $E$ be an affine hyperplane of $\mathbb F_2^{2m-2}$ such that $\Psi|_E$ is affine.
+
+Then for $j^*=\max S$, gate $j^*$ is degenerate for $\ker(\text{normal of }E)$: the normal of $E$ is $e_{2j^*-1}$ with $\alpha_{j^*}=0$, or $e_{2j^*}$ with $\beta_{j^*}=0$, or $e_{2j^*-1}+e_{2j^*}$ with $\alpha_{j^*}=\beta_{j^*}$.
+
+*Proof of (IF′).* Let $E=\{\langle h_0,w''\rangle=c_0\}$.
+- $\Psi$ depends only on $w_1,\dots,w_{2j^*}$. If $h_0$ has a nonzero coordinate beyond $2j^*$, then $E$ projects onto all of $\mathbb F_2^{2j^*}$. So $\Psi$ would be affine there, which contradicts the independence fact.
+- Hence $h_0$ lives on $\mathbb F_2^{2j^*}$. Lemma 28 applies to the formal $j^*$-gate circuit with output $\Psi$, whose last gate $z_{j^*}$ has coefficient 1. $\square$
+
+The proof of Lemma 30 splits on $\dim\pi(H)$.
+
+- **$\dim\pi(H)=0$.** Then $u,v$ are free on $C_0$, so $\Phi|_{C_0}$ contains the monomial $uv$. This is impossible.
+
+- **$\dim\pi(H)=2$.** Then $H_0=0$, and $H$ has a basis $h_1=e_u+h_1''$, $h_2=e_v+h_2''$.
+  - On any coset $C=\{\langle h_1,w\rangle=d_1,\ \langle h_2,w\rangle=d_2\}$, the coordinates $w''$ are free. Moreover $u=d_1+f$ and $v=d_2+g$, where $f=\langle h_1'',w''\rangle$ and $g=\langle h_2'',w''\rangle$.
+  - Put $P=f+a$ and $Q=g+b$. Both lie in $\mathrm{span}(\text{affine},z_1,\dots,z_{m-1})$.
+  - Let $C_0$ have constants $(c_1,c_2)$ and $C$ have $(d_1,d_2)$. Then $\Phi|_C-\Phi|_{C_0}=(c_1+d_1)(Q+c_2)+(c_2+d_2)(P+c_1)+(c_1+d_1)(c_2+d_2)$.
+  - So $\Phi|_C\in\mathrm{span}(\text{affine},z_1|_C,\dots,z_{m-1}|_C)$: the last gate is redundant on $C$, and $\mathrm{MC}(\Phi|_C)\le m-1$.
+
+- **$\dim\pi(H)=1$.** Then $H=\mathrm{span}(h_0,h_1)$ with $0\ne h_0\in H_0$ and $\pi(h_1)=(p,q)\ne0$. Let $E_0=\{w'':\langle h_0,w''\rangle=c(h_0)\}$, a hyperplane of $\mathbb F_2^{2m-2}$.
+  - *$(p,q)=(1,0)$.* On $C_0$, $u=c(h_1)+\langle h_1'',w''\rangle$, and $v$ is free. So $C_0\cong E_0\times\mathbb F_2$.
+    - The coefficient of $v$ in $\Phi|_{C_0}$ is $A=c(h_1)+\langle h_1'',w''\rangle+\alpha_m\cdot z$. Affinity forces $A$ to be constant on $E_0$.
+    - If $\alpha_m=0$, then $\langle h_1'',\cdot\rangle$ is constant on $E_0$, so $h_1''\in\mathrm{span}(h_0)$. Hence $e_u\in H$, i.e. $u$ vanishes on $K$, and gate $m$ is degenerate (Lemma 24(a)).
+    - If $\alpha_m\ne0$, then $\Psi=\alpha_m\cdot z$ is affine on $E_0$. By (IF′), $h_0$ is a degeneracy vector of gate $j^*$. Since $h_0\in H$, gate $j^*$ is degenerate for $K$.
+  - *$(p,q)=(0,1)$.* Symmetric, with $\beta_m$ in place of $\alpha_m$.
+  - *$(p,q)=(1,1)$.* On $C_0$, $v=u+c(h_1)+\langle h_1'',w''\rangle$, and $u$ is free. Since $u^2=u$, the coefficient of $u$ is $1+c(h_1)+\langle h_1'',w''\rangle+(\alpha_m+\beta_m)\cdot z$, and it must be constant on $E_0$.
+    - If $\alpha_m=\beta_m$, then $e_u+e_v\in H$, and gate $m$ is degenerate (Lemma 24(c)).
+    - Otherwise apply (IF′) to $\Psi=(\alpha_m+\beta_m)\cdot z$.
+
+  In every sub-case Lemma 24 finishes. $\square$
+
+**Corollary 31 (every level).** PNE-001 holds for every non-constant $g$ with $\dim g\ge 2\,\mathrm{MC}(g)-2$. Equivalently, a level-$m$ counterexample has $\dim g\le 2m-3$.
+
+*Proof.* As in Corollary 29: $\dim g\le\dim K$. If $\dim g\ge 2m-2$, then $\dim K\in\{2m-2,2m-1\}$, and Lemma 30 or Lemma 28 gives $\mathrm{MC}(g)\le m-1$. $\square$
+
+**Structured proof of Theorem 25.** A level-4 counterexample has $\dim g\le5$ (Corollary 31). Choose coordinates in which $g=h(x_1,\dots,x_5)+\epsilon x_6+c$. Restricting to $x_6=0$ gives a 5-variable function $g'$ with $\mathrm{MC}(g')=\mathrm{MC}(g)=4$ and $\mathrm{MC}(y\,g')\le\mathrm{MC}(y\,g)=4$. That is a level-4 counterexample on 5 variables, which Theorem 27 excludes. Hence **Theorem 25 follows from the human-proved Lemmas 23, 28 and 30 together with the 5-variable computation.** The 5-variable computation is done three independent ways: EXP-010, EXP-014 with $\dim K=5$, and EXP-015. The full enumeration (EXP-014 for $\dim K=6,7$) and the class-list route (EXP-015, Lemma 26) are further independent confirmations. Data check (`EXP-014/lemma30_check.py`, all 1,663,872 codimension-2 pairs at $m=4$, all wirings):
+- case $\dim\pi(H)=2$: 760,704 pairs, and the last gate is redundant on $C_1$ in every one;
+- case $\dim\pi(H)=1$: 903,168 pairs, and the gate named by the proof is degenerate in every one (gate 1: 101,376; gate 2: 50,688; gate 3: 25,344; gate 4: 725,760);
+- case 0: never occurs.
+
+There are no exceptions.
+
+For level 5, Corollary 31 reduces counterexamples to $\dim g\le7$, i.e. to $\dim K\le7$ in $\mathbb F_2^{10}$ (codimension $\ge3$).
+
 ## Observations toward a general proof (EXP-014 data; no claims)
 
 - **Codimension 2 ($m=4$, $\dim K=6$).** In all 19,644 non-degenerate pairs the *last* gate is triangularly redundant on $C_1$: $z_4|_{C_1}\in\mathrm{span}(\text{affine},z_1,z_2,z_3)|_{C_1}$ (`redundancy.py`). That is the codimension-2 analogue of Lemma 28. The strong form "the last gate is redundant on $C_1$ for every pair" is false: 34,736 degenerate pairs violate it (`lastgate.py`). Those pairs are harmless only because another gate is degenerate.
 - **Codimension 3 ($\dim K=5$) refutes the natural conjecture** "some gate of the given circuit is triangularly redundant on $C_1$". There are 9,588,720 non-degenerate pairs. 7,436,528 have such a gate (6,852,464 of them the last gate). 2,152,192 have none (`formal4_k5red.c`). For those pairs $\mathrm{MC}(\Phi|_{C_1})\le3$ holds only through *different* circuits (SAT).
-- **Lesson.** A general proof of PNE-001 through Lemma 23 cannot work by shortening the given circuit on $C_1$. It must construct a new circuit, as the SAT witnesses do. A promising sub-target is codimension 2 for every $m$: "dim $g\ge2\mathrm{MC}(g)-2$ implies PNE-001".
+- **Lesson.** Codimensions 1 and 2 are settled by shortening the given circuit (Lemmas 28 and 30). From codimension 3 on, a general proof cannot shorten the given circuit on $C_1$. It must construct a new circuit, as the SAT witnesses do.
 
 ## Limits and what remains
 - Theorem 25 is computer-assisted. Its correctness rests on the reformulation (Lemma 23) and on the enumeration code. The two independent routes (EXP-014 and EXP-015) reduce, but do not remove, the risk of a coding error.
 - No human-readable proof of level 4 is known. The structural lemmas (9′, 18–21) explain the 5-variable case only partly.
 - **Level 5** is open. In Lemma 23 it needs $\dim K\in\{6,\dots,9\}$ inside $\mathbb F_2^{10}$. That means $\binom{10}{4}_2\approx5.4\cdot10^7$ subspaces of dimension 6 alone, about $2.3\cdot10^6$ wirings, and MC tests on up to 9 variables. Degeneracy pruning (Lemma 24) and symmetry must cut this down. Lemma 26 would need the full list of MC-5 classes, which NIST reported as incomplete in 2019 (their repository contains dimension 6 and 10 lists only).
 - PNE-001 in general, and its AND-direct-sum strengthening PNE-002, remain open. Nothing here bears on P vs NP beyond this restricted measure.
+
+
+## Formal verification status (Lean 4.37.0-rc1, core; `research/proofs/lean`)
+`NPFrontier/Circuit.lean` (cycle 002) formalizes XOR-AND circuits with $m$ AND gates (`Circuit n m`) and `MCle f m` ("some $m$-gate circuit computes $f$"). It proves:
+- **gate elimination** (`Circuit.elim_left`, `elim_right`, `elim_xor`, `elim_affine`, and their `MCleOn.of_elim_*` forms): if on a set $S$ one input of gate $i$ is constant, or its two inputs differ by a constant, there is an equivalent circuit on $S$ with one gate fewer. This is the step used in Lemmas 9, 9′ and 24;
+- **affine substitution and affine output shifts** (`exists_comp`, `MCle.comp_affine`, `MCleOn.comp_affine`, `MCle_xor_affine_iff`): facts (F1) and (F2);
+- **(F4) with an explicit affine section** (`MCle_comp_section_iff`).
+
+`lake build --wfail` passes, and `#print axioms` lists only `propext`, `Classical.choice` and `Quot.sound` (`research/proofs/lean/README.md`). **Not formalized:**
+- Lemmas 18–23, 26, 28 and 30;
+- Corollaries 21, 29 and 31;
+- Theorems 25 and 27;
+- the enumerations;
+- the linear algebra of subspaces and cosets.

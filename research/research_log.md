@@ -93,3 +93,10 @@
     - the conjecture "some gate of the given circuit is redundant on C1" is REFUTED in codimension 3 (2,152,192 pairs).
   - The Lean and AUDIT-003 agents hit the API rate limit (resets 18:40 UTC). Both were resumed with SendMessage at 19:50 UTC.
   - The NIST level-5 dimension-10 job was killed by a worker restart. It is now redundant given Lemma 28 and EXP-016.
+- **Lemma 30 (codimension 2, human proof, every m) and Corollary 31: PNE-001 whenever dim(g) ≥ 2MC(g) − 2.**
+  - Level 4 thus reduces by hand to 5 variables, which three independent computations settle.
+  - The case analysis was checked on all 1,663,872 codimension-2 pairs at m = 4: case 2, the last gate is always redundant (760,704); case 1, the predicted gate is degenerate (903,168); case 0 never occurs.
+- **Lean done.**
+  - `Circuit.lean`: gate elimination, affine substitution, MCle and its corollaries.
+  - `lake build --wfail` passes; 26 new `#print axioms` lines, standard axioms only.
+  - Verified by the chief researcher with a rebuild from scratch.

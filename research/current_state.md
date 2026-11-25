@@ -48,14 +48,19 @@ Computational facts:
 ## Established in cycle 002 (see `research/proofs/PNE-001-level4.md`, `research/cycles/cycle-002.md`)
 - **Theorem 25:** PNE-001 at level 4 for every n. Computer-assisted: EXP-014 (formal circuits; all non-degenerate cases have explicit 3-gate circuits) and EXP-015 (NIST class list, 186 hyperplane cases).
 - **Lemma 23:** for each level m, PNE-001 is equivalent to a finite, n-independent statement about formal m-gate circuits and coset pairs in F_2^{2m}. **Lemma 26:** the same in terms of the MC-m class list.
-- **Lemma 28 / Corollary 29 (human proof, every level):** a formal circuit that is affine on a coset of a hyperplane has a degenerate last gate. Hence PNE-001 holds for every g with dim(g) ≥ 2·MC(g) − 1. EXP-016 confirms this by enumeration at m = 5.
+- **Lemmas 28 and 30, Corollary 31 (human proofs, every level).**
+  - Lemma 28: a formal circuit that is affine on a coset of a subspace of codimension 1 has a degenerate last gate.
+  - Lemma 30: for codimension 2, the last gate is redundant or some gate is degenerate.
+  - Corollary 31: **PNE-001 holds for every g with dim(g) ≥ 2·MC(g) − 2.** So level 4 reduces by hand to 5 variables.
+  - Checks: EXP-016 (m = 5, codimension 1) and lemma30_check.py (m = 4, all 1,663,872 codimension-2 pairs).
 - **Lemma 22:** dim(y·g) ≥ dim(g)+1. Consequences: PNE-001 for every quadratic g; level-m counterexamples have dim ≤ 2m−1. Part (a), MC ≥ ⌈dim/2⌉, is known (Çalık–Sönmez Turan–Peralta 2020).
 - Lemmas 9′, 18–21: MC-2 structure and the cheap-plane structure of level-4 counterexamples. **Theorem 27:** all g on ≤ 5 variables, three independent confirmations.
 - Exact MC of all 2^32 five-variable functions. It agrees with NIST's classification on all 48 classes.
-- Audit: AUDIT-003 pending. Lean: circuit gate-elimination formalization pending.
+- Audit: AUDIT-003 is running.
+- Lean: `Circuit.lean` covers gate elimination, affine substitution and free affine output shifts. It builds under `--wfail` with standard axioms only.
 
 ## Priorities for cycle 003
-1. **Codimension 2:** prove PNE-001 for dim(g) ≥ 2·MC(g) − 2, every level. The m = 4 data say the last gate is always redundant on C_1. Note that the stronger form "some gate of the given circuit is redundant" is refuted at codimension 3.
+1. **Codimension 3:** prove PNE-001 for dim(g) = 2·MC(g) − 3, every level. Note that the given circuit cannot always be shortened (refuted at m = 4: 2,152,192 pairs). Start by analysing the 2,142 codimension-3 functions and their SAT witnesses.
 2. **Level 5 of PNE-001 via Lemma 23.**
    - Brute force is about 10^15 coset tests: 2.35M wirings × subspaces of F_2^10 of dimension 6–9.
    - Design pruning: Lemma 24's conditions are linear in K and can be imposed gate by gate, combined with circuit automorphisms and early affinity filtering.

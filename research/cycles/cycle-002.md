@@ -24,11 +24,14 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 3. **Lemma 23 (formal-circuit reformulation)** is the key idea of the cycle. Every $m$-gate circuit for $y\,g$ is a fixed formal circuit on $2m$ free inputs composed with an affine map. Under that map, $y=0$ and $y=1$ become two cosets $C_0\neq C_1$ of one linear subspace $K$. So a level-$m$ counterexample exists **for some $n$** iff some formal circuit is affine on $C_0$ and has MC $m$ on $C_1$. This is a finite problem, independent of $n$.
 4. **Lemma 24 (degenerate gates)**: one linear condition on $K$ per gate makes that gate free on every coset.
 5. **Lemma 26 (class-list reformulation)**: equivalently, some MC-$m$ class representative $R$ is affine on an affine hyperplane while having MC $m$ on the complement. Published class lists can therefore be used directly.
-6. **Lemma 28 (human proof, every $m$)**: if a formal circuit is affine on a coset of a *hyperplane*, its last gate is degenerate. **Corollary 29:** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$, at every level. Level-$m$ counterexamples therefore need $\dim g\le2m-2$.
+6. **Lemma 28 (human proof, every $m$)**: if a formal circuit is affine on a coset of a *hyperplane*, its last gate is degenerate. **Corollary 29:** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$, at every level.
+7. **Lemma 30 (human proof, every $m$)**: the same holds for subspaces of *codimension 2*. If both private inputs of the last gate are determined on $K$, the last gate is explicitly redundant on every other coset; otherwise Lemma 28 applied to a sub-circuit forces some gate to be degenerate. **Corollary 31:** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-2$. Level-$m$ counterexamples need $\dim g\le2m-3$. In particular **level 4 reduces by hand to 5 variables**, where three independent computations settle it.
 
 ## Proof attempts and exact status
 - Lemmas 9′, 18–24, 26 and fact (F4): full proofs in `research/proofs/PNE-001-level4.md`. They await AUDIT-003.
-- **Theorem 25 (level 4, all $n$; computer-assisted):** $\mathrm{MC}(g)=4\Rightarrow\mathrm{MC}(y\,g)=5$. Consequently **PNE-001 holds for every $g$ with $\mathrm{MC}(g)\le4$.** The proof is Lemma 23 plus the EXP-014 enumeration. It is independently confirmed by Lemma 26 plus NIST's complete MC-4 class list (EXP-015).
+- **Theorem 25 (level 4, all $n$):** $\mathrm{MC}(g)=4\Rightarrow\mathrm{MC}(y\,g)=5$. Consequently **PNE-001 holds for every $g$ with $\mathrm{MC}(g)\le4$.**
+  - Structured proof: Corollary 31 (human) reduces to 5 variables, and Theorem 27 handles 5 variables (computed three independent ways).
+  - Independent full-computation proofs: the EXP-014 enumeration, and Lemma 26 with NIST's complete MC-4 class list (EXP-015).
 - **Theorem 27:** PNE-001 holds for all $g$ on $\le5$ variables. This is a special case of Theorems 17 and 25, and has three further independent confirmations (EXP-010, EXP-014 with $\dim K=5$, EXP-015).
 - General PNE-001 (level $\ge5$): open.
 
@@ -59,10 +62,14 @@ None found to PNE-001.
 AUDIT-003 (fresh adversarial reviewer; Lemmas 9′–26, Theorems 25 and 27, all code): **pending**. The verdict will be recorded in `research/proofs/audits/AUDIT-003-PNE-001-level4.md` and summarized here.
 
 ## Formal verification
-Lean (core 4.37.0-rc1): the proof engineer is formalizing XOR-AND circuits with gate elimination and affine substitution. These are the circuit facts behind Lemmas 9, 9′, 23 and 24. **Status: pending.** The enumeration in Theorem 25 and the reformulation in Lemma 23 are not formalized.
+Lean (core 4.37.0-rc1). `research/proofs/lean/NPFrontier/Circuit.lean` (new) formalizes XOR-AND circuits, `MCle`, gate elimination (constant input, or inputs differing by a constant, on a set $S$), affine substitution, and free affine output shifts. It also covers (F4) given an explicit affine section, plus sanity examples.
+- `lake build --wfail` passes. 26 new `#print axioms` lines, all with standard axioms only (propext, Classical.choice, Quot.sound).
+- The Lean agent cross-checked `Circuit.eval` against an independent Python evaluator on 300 random circuits.
+- **Not formalized:** Lemmas 18–23, 26, 28, 30; Theorems 25, 27; the enumerations; the linear algebra of cosets.
+- The faithfulness of the Lean statements has not yet been independently reviewed. It is in scope for AUDIT-003 if capacity allows.
 
 ## Results (what was actually established)
-0. **Corollary 29 (human proof, every level):** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$. It rests on Lemmas 22, 23 and 28.
+0. **Corollary 31 (human proof, every level):** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-2$. It rests on Lemmas 22, 23, 28 and 30. The case analysis was checked against all 1,663,872 codimension-2 pairs at $m=4$ with no exception.
 1. **Theorem 25 (computer-assisted, all $n$):** $\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$ for every non-constant $g$ with $\mathrm{MC}(g)\le4$.
 2. **Lemma 23:** for every fixed level $m$, PNE-001 is equivalent to a finite, $n$-independent statement about formal $m$-gate circuits.
 3. **Lemma 22:** PNE-001 holds for all quadratic $g$. Level-$m$ counterexamples have dimension $\le2m-1$.
@@ -80,7 +87,7 @@ Novelty:
 - The "tight functions are product trees" route (EXP-011) was not pursued further. Its induction does not close, because a single restricted half can lose more than one degree.
 
 ## Next research direction
-1. **Codimension 2 for every $m$.** Prove that PNE-001 holds whenever $\dim g\ge2\,\mathrm{MC}(g)-2$. At $m=4$ all 19,644 non-degenerate codimension-2 pairs have a redundant last gate, which suggests a Lemma-28-type proof.
+1. **Codimension 3 for every $m$** (codimensions 1 and 2 are now proved). The data say the given circuit cannot simply be shortened: 2,152,192 non-degenerate pairs at $m=4$ have no redundant gate. So a proof must build new circuits. A first sub-goal: classify the 2,142 distinct non-degenerate functions of codimension 3 at $m=4$ and their SAT witnesses.
 2. **Level 5 via Lemma 23.**
    - There are $\approx2.35\cdot10^6$ wirings, and subspaces of $\mathbb F_2^{10}$ of dimension 6–9 ($\approx6\cdot10^7$ of them). Brute force is about $10^{15}$ coset tests.
    - Needed: prune non-degenerate $(\Phi,K)$ pairs gate by gate, since Lemma 24's conditions are linear in $K$, and exploit the circuit automorphisms.
