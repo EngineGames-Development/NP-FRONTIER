@@ -19,8 +19,8 @@ Context question: which lower-bound principles for MC can go beyond the degree b
 - Barriers: relativization, natural proofs, algebrization, locality. No-go theorems for propagation, LP and SDP approaches.
 
 ## New ideas
-1. **Restriction depth D** (parity decision tree depth with affine leaves) is the exact ceiling of "one restriction kills one AND gate" lower bounds (Theorem 8). In particular D ≤ n − 1.
-2. **Theorem 4:** D(y·g) = D(g) + 1. So PNE-001 holds whenever MC(g) = D(g).
+1. **Restriction depth D** (parity decision tree depth with affine leaves) caps every restriction-robust lower-bound measure (Theorem 8). AUDIT-001 showed D = D⊕ − 1, so this is the parity-decision-tree bound, and the cap is elementary. General one-gate-per-restriction arguments are capped at n − 1 only by the folklore dimension count.
+2. **Theorem 4:** D(y·g) = D(g) + 1, equivalently D⊕(y∧g) = D⊕(g) + 1 (novelty unconfirmed). So PNE-001 holds whenever MC(g) = D(g).
 3. **First-gate certificates.**
    - Lemma 9: the first gate of an optimal circuit has two distinct *admissible* directions.
    - For y·g these come in pairs (v,0), (v,1) (Lemma 11).
@@ -37,14 +37,14 @@ All in `research/proofs/PNE-001-restriction-depth-and-fresh-variables.md`.
 
 | Claim | Status |
 |---|---|
-| Lemma 1 (D ≤ MC) | Complete proof; essentially known |
+| Lemma 1 (D ≤ MC) | Complete proof; identical to Chistopolskaya–Podolskii (AUDIT-001) |
 | Lemma 2 (cap) | Complete proof |
 | Lemma 3 (degree restriction-robust) | Complete proof; folklore |
-| Theorem 4 | Complete proof |
-| Corollaries 5–7 | Complete proofs |
-| Theorem 8 | Complete proof |
+| Theorem 4 | Complete proof; survives AUDIT-001; novelty unconfirmed (PDT literature) |
+| Corollaries 5–7 | Complete proofs; Corollary 7 needed "non-constant" (fixed) |
+| Theorem 8 | Complete proof but elementary; "barrier" framing overclaimed and corrected (AUDIT-001) |
 | Lemma 9 | Complete proof |
-| Proposition 10 (MC(y·g*) = 4) | Proved twice: by Corollary 13 and by an exhaustive certificate |
+| Proposition 10 (MC(y·g*) = 4) | Proved by Corollary 13 and by an exhaustive certificate; DRAT-verified; reconfirmed by AUDIT-001's independent search |
 | Lemmas 11, 12; Corollary 13 | Complete proofs |
 | Lemma 14, 14(b′), 15; Theorem 16 | Complete proofs (Lemma 15 uses the exact 4-variable table) |
 | Theorem 17 (PNE-001 for MC ≤ 3) | Complete, computer-assisted (EXP-001, EXP-006) |
@@ -59,7 +59,7 @@ Failed attempt: substituting y := α + c at the first y-gate yields only MC(g) �
 - **EXP-003.** SAT reports no 3-AND circuit for y·g*. The DRAT proof (767 MB) was **verified by drat-trim** (617 s).
 - **EXP-004.** Exhaustive SAT-free first-gate certificates. MC(y·g*) = 4, with a positive control. 4 further functions are NONE, agreeing with Corollary 13. The 7 functions with three cheap directions are all NONE.
 - **EXP-005.** 31/38 functions have one cheap direction, so PNE-001 is proved for them by Corollary 13. 7/38 have three. Random search refutes "MC = 3 ⇒ one cheap direction". All 12 multi-direction examples have affine quarters, consistent with Lemma 15.
-- **EXP-006.** The finite check of Theorem 16. The exhaustive S_2 set has |S_2| = 1,811,456 five-variable functions; the construction is validated at n = 4 against the BFS, and |S_1| = 9,984 matches the closed form. Of the 33 orbit representatives, 23 have MC ≤ 2 and need no certificate. Only 2 representatives have MC = 3 (0x01234567, 0x0167abcd), and both are certified: MC(y·G') = 4, with 48 first gates checked each. **This gives Theorem 17: PNE-001 holds for every g with MC(g) ≤ 3, on any number of variables.** SAT+DRAT cross-check of the two certificates: PENDING.
+- **EXP-006.** The finite check of Theorem 16. The exhaustive S_2 set has |S_2| = 1,811,456 five-variable functions; the construction is validated at n = 4 against the BFS, and |S_1| = 9,984 matches the closed form. Of the 33 orbit representatives, 31 have MC ≤ 2 and need no certificate. Only 2 representatives have MC = 3 (0x01234567, 0x0167abcd), and both are certified: MC(y·G') = 4, with 48 first gates checked each. **This gives Theorem 17: PNE-001 holds for every g with MC(g) ≤ 3, on any number of variables.** SAT+DRAT cross-check of the two certificates: PENDING.
 
 ## Counterexamples
 - To the conjecture "MC(g) = 3 ⇒ at most one cheap direction": e.g. g = 0x47fca912, with cheap directions {x1, x2, x1+x2}.
@@ -89,12 +89,16 @@ Proved:
 - `degLE_node_of_restrict`: Lemma 3 for coordinate hyperplanes.
 - `degLE_restrict`: restriction does not increase degree.
 - `gate_normalize`, `mul_eval_one`: the identities used in Theorem 4.
+- `same_direction_product`: the key step of Lemma 12.
 
-Not formalized: Lemmas 1–2, Theorem 4, Lemmas 9–12, and all computer-assisted claims.
+Not formalized: Lemmas 1–2, Theorem 4, Lemmas 9–16, Theorem 17, and all computer-assisted claims.
 
 ## Results (what was actually established)
+- **Main result, Theorem 17 (computer-assisted, full audit AUDIT-002 pending):** for every non-constant g with MC(g) ≤ 3, on any number of variables, MC(y·g) = MC(g) + 1.
 - Rigorous, novelty unconfirmed:
-  - Theorem 4 and Theorem 8.
+  - Theorem 4, which is D⊕(y∧g) = D⊕(g) + 1.
+  - Lemmas 11–12 (structure of minimal counterexamples), Lemma 15 and Theorem 16 (reduction of level 3 to a finite family).
+- Rigorous but elementary or known: Lemma 1 (= Chistopolskaya–Podolskii), Lemma 3, Theorem 8.
   - PNE-001 for all g with MC(g) = D(g), hence for all g with ≤ 4 variables and all g with MC(g) ≤ 2.
   - PNE-001 for every g with MC(g) = 3 and a single cheap direction (Corollary 13).
 - Computer-assisted:
@@ -104,10 +108,15 @@ Not formalized: Lemmas 1–2, Theorem 4, Lemmas 9–12, and all computer-assiste
 - P=NP track: two standard approaches stated precisely and shown refuted by known theorems. No new PEQ mathematics.
 
 ## Failure analysis
-- The main limitation is the cap of Theorem 8: every argument removing one hyperplane per AND gate stops at n − 1, and our certificates are of that type at the top level.
+- The main limitation is the dimension count: every argument removing one hyperplane per AND gate stops at n − 1. Our certificates are of that type at the top level, so they cannot reach the regime MC ≥ n.
+- The original "barrier" framing of Theorem 8 was overclaimed; the independent audit caught it.
 - Explicit MC ≥ n needs multi-kill arguments, counting, or a composition theorem proved by non-restriction means.
 - SAT UNSAT on ≥ 5 variables is slow with the naive encoding; SAT-free structured certificates were faster and more trustworthy.
 - Literature access is limited to search snippets, so novelty claims are uncertain.
 
 ## Next research direction
-Prove PNE-001 for all g with MC(g) = 3 by hand, i.e. multiplexers whose halves have MC ≤ 1, including those with three cheap directions forming a plane. Then test level 4, and obtain a certified 6-variable seed to attack explicit MC ≥ n.
+1. **Level 4 of PNE-001.** A counterexample needs two cheap directions with halves of MC ≤ 2 (Lemma 12). Find the analogue of Lemmas 14–15 using the characterization of MC-2 functions (Find–Smith-Tone–Sönmez Turan, ePrint 2015/1041). Reduce to a finite family again.
+2. **Human proof of the two level-3 certificates** (G' = 0x01234567, 0x0167abcd), to remove the computer from Theorem 17.
+3. **Novelty check of Theorem 4** against the parity-decision-tree literature (arXiv 2412.06552 and 1312.2143), when accessible.
+4. **Seed for explicit MC ≥ n:** a certified 6-variable function with MC 6, then a test of MC(y·g₆) = 7. This needs PNE-001 at level 6, far beyond level 3.
+5. **PEQ track:** a candidate not covered by known proof-system lower bounds. Start with Res(⊕) literature.
