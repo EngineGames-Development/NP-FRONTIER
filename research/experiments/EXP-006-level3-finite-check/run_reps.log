@@ -22,3 +22,14 @@
 21/33 g=0x00335566 -> not MC 3   
 22/33 g=0x03569acf -> not MC 3   
 23/33 g=0x3333cccc -> not MC 3   
+24/33 g=0x01234567 -> NONE [1, 2, 3, 33, 34, 35] 48 568
+25/33 g=0x11224477 -> not MC 3   
+26/33 g=0x12478bde -> not MC 3   
+27/33 g=0x11225566 -> not MC 3   
+28/33 g=0x11335577 -> not MC 3   
+29/33 g=0x1166aadd -> not MC 3   
+30/33 g=0x12569ade -> not MC 3   
+31/33 g=0x33335555 -> not MC 3   
+32/33 g=0x3355aacc -> not MC 3   
+33/33 g=0x0167abcd -> NONE [1, 2, 3, 33, 34, 35] 48 574
+SUMMARY: Counter({'not MC 3': 31, 'NONE': 2})
