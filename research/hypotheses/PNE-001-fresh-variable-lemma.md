@@ -1,6 +1,6 @@
 # PNE-001: Fresh-variable lemma for multiplicative complexity
 
-**Status:** PROOF ATTEMPT. Proved for every g with MC(g) = D(g), which includes every g on ≤ 4 variables. Open in general; the first open cases are on 5 variables. Audit pending.
+**Status:** PROOF ATTEMPT. Proved for every g with MC(g) = D(g), which includes every g on ≤ 4 variables and every g with MC(g) ≤ 2. Also proved for every g with MC(g) = 3 and a single cheap direction (Corollary 13). Verified for g* (three independent methods) and for all 38 sampled 5-variable functions with MC 3 > D 2 (EXP-004/005; see the cycle report for the 7 three-direction cases). Open in general. Audit pending.
 
 ## Formulation
 MC(f) is the least number of AND gates in a circuit over {AND, XOR, 1}. Claim: for every non-constant g: F₂ⁿ → F₂ and a fresh variable y, **MC(y·g) = MC(g) + 1**.
@@ -37,3 +37,10 @@ Lean: only the algebraic identities used in Theorem 4 (`gate_normalize`, `mul_ev
 2. Classify the 5-variable functions with MC > D (EXP-002 candidates). Test PNE-001 on each.
 3. Look for a lower-bound principle that survives the multiplexer gap: a measure that charges for both branches of a split, valid for circuits but not for decision trees.
 4. Obtain an explicit g₆ with MC 6 (from ePrint 2018/002, or by search plus an UNSAT certificate). Then test whether MC(g₆·y) = 7.
+
+## Update (cycle 001, after restart)
+- Lemma 9 (first-gate criterion) and Lemmas 11–12: a counterexample at level m needs two distinct directions of g whose halves both have MC ≤ m − 2. The admissible directions for y·g come in pairs {(v,0),(v,1)}.
+- Corollary 13: at level 3, a single cheap direction suffices for PNE-001. EXP-005: 31 of 38 sampled MC-3 functions have one cheap direction; 7 have three, forming a plane.
+- Refuted: "MC = 3 implies one cheap direction" (e.g. 0x47fca912).
+- Lemma 14: plane-type functions have the form g = h(x') + Λ with MC(h) ≤ 1. This is the starting point for a hand proof of the plane case.
+- Proposition 10: MC(y·g*) = 4, by Corollary 13, by the exhaustive first-gate certificate, and by SAT with a DRAT proof checked by drat-trim.

@@ -4,3 +4,4 @@ __pycache__/
 /research/experiments/**/bin/
 *.drat
 *.cnf
+*.npy

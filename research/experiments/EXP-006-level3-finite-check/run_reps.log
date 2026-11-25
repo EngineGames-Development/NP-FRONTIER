@@ -1,0 +1,24 @@
+|S_2| (5 variables, MC <= 2) = 1811456 (6s)
+1/33 g=0x0000ffff -> not MC 3   
+2/33 g=0x00001111 -> not MC 3   
+3/33 g=0x00007777 -> not MC 3   
+4/33 g=0x0011eeff -> not MC 3   
+5/33 g=0x00000000 -> not MC 3   
+6/33 g=0x11111111 -> not MC 3   
+7/33 g=0x00003333 -> not MC 3   
+8/33 g=0x0033ccff -> not MC 3   
+9/33 g=0x00112233 -> not MC 3   
+10/33 g=0x00116677 -> not MC 3   
+11/33 g=0x1111eeee -> not MC 3   
+12/33 g=0x0033ddee -> not MC 3   
+13/33 g=0x11112222 -> not MC 3   
+14/33 g=0x11117777 -> not MC 3   
+15/33 g=0x0123cdef -> not MC 3   
+16/33 g=0x1122ddee -> not MC 3   
+17/33 g=0x11113333 -> not MC 3   
+18/33 g=0x11116666 -> not MC 3   
+19/33 g=0x1133ccee -> not MC 3   
+20/33 g=0x33333333 -> not MC 3   
+21/33 g=0x00335566 -> not MC 3   
+22/33 g=0x03569acf -> not MC 3   
+23/33 g=0x3333cccc -> not MC 3   

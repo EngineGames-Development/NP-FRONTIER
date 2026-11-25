@@ -20,6 +20,7 @@ File `NPFrontier/BoolFun.lean`. Boolean functions on `n` variables are Shannon t
 | `BF.degLE_restrict` | Restricting a variable does not increase degree. | propext, Classical.choice, Quot.sound |
 | `gate_normalize` | `(y+α)(y+β) = (y+α)(1+α+β)` over 𝔽₂ (gate normalization in Theorem 4 of PNE-001). | none |
 | `mul_eval_one` | `u·h(u,x) = u·h(1,x)` (the identity used in Case C of Theorem 4). | none |
+| `same_direction_product` | Affine forms with the same linear part multiply to an affine function (`l+c` or `0`). This is the key step of Lemma 12. | none |
 
 ## Gaps between the formal and informal statements
 

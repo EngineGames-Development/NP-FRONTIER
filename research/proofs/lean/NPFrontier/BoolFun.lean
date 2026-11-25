@@ -235,4 +235,10 @@ theorem mul_eval_one {α : Type} (h : Bool → α → Bool) (u : Bool) (x : α) 
     (u && h u x) = (u && h true x) := by
   cases u <;> rfl
 
+/-- Key step of Lemma 12 (PNE-001): two affine forms with the same linear part `l` (values `l + c₁`, `l + c₂`)
+multiply to an affine function: the form itself if `c₁ = c₂`, and `0` otherwise. -/
+theorem same_direction_product (l c₁ c₂ : Bool) :
+    ((l ^^ c₁) && (l ^^ c₂)) = (if c₁ = c₂ then (l ^^ c₁) else false) := by
+  cases l <;> cases c₁ <;> cases c₂ <;> rfl
+
 end NPFrontier

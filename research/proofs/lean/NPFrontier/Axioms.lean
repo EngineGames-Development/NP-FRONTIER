@@ -11,3 +11,4 @@ open NPFrontier NPFrontier.BF
 #print axioms gate_normalize
 #print axioms mul_eval_one
 #print axioms peval_anf
+#print axioms same_direction_product

@@ -27,3 +27,12 @@
   - the two Boolean identities used in Theorem 4.
 - **PEQ track.** PEQ-001 (bounded-width propagation) and PEQ-002 (compact LP/SDP) were stated precisely and found DISPROVED by known theorems. Extracted the proof-system simulation principle as a screening test. No new PEQ mathematics this cycle.
 - **Review.** Adversarial audit of the proof document requested from a fresh agent; verdict recorded in `research/proofs/audits/AUDIT-001-PNE-001.md`.
+- **After the worker restart (08:35 UTC).**
+  - Verified all 38 sampled MC > D claims with the exhaustive check.
+  - The two-direction test for y·g* found admissible directions {x2, x2+y} only. The exhaustive first-gate extension check then proved MC(y·g*) ≥ 4 without SAT, with a positive control.
+  - Proved Lemma 9 (first-gate criterion), Lemma 11 (admissible directions pair up), Lemma 12 (distinct x-parts, via the y = 1 argument) and Corollary 13. Lemma 12 gave a short proof of MC(y·g*) = 4.
+  - EXP-005: 31/38 MC-3 functions have one cheap direction; 7 have three (a plane). The conjecture "one cheap direction" is refuted.
+  - drat-trim verified the DRAT proof for y·g* (617 s).
+  - Lemma 14 gives the structure of the plane case.
+  - The first adversarial audit attempt died on the 5-hour rate limit; it was relaunched with the registered `adversarial-reviewer` agent type.
+  - Fixed stale CLAUDE.md paths. `scripts/setup_env.sh` now also builds drat-trim.

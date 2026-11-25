@@ -26,6 +26,11 @@ Context question: which lower-bound principles for MC can go beyond the degree b
    - For y·g these come in pairs (v,0), (v,1) (Lemma 11).
    - A counterexample must use two distinct x-directions, each splitting g into two halves of MC ≤ m − 2 (Lemma 12).
 4. **Multiplexer gap.** MC > D arises when g is cheap on both halves of a split: the tree pays for one branch, the circuit for both. On 5 variables this is common.
+5. **Reduction of level 3 to a finite family (Theorem 16).**
+   - A counterexample g with MC(g) = 3 has two cheap directions (Lemma 12).
+   - Its quarters then differ by affine functions (Lemma 14(b′)), and they must themselves be affine (Lemma 15, via a rank-4 obstruction and the exact 4-variable table).
+   - So g reduces to G' = x1ℓ1 + x2ℓ2 + x1x2ℓ3 + λ(u) on 5 variables. A leftover fresh linear variable can only increase MC(y·g).
+   - The family has 32,768 members and **33 orbits** under affine symmetries that preserve MC(y·g).
 
 ## Proof attempts and exact status
 All in `research/proofs/PNE-001-restriction-depth-and-fresh-variables.md`.
@@ -41,6 +46,7 @@ All in `research/proofs/PNE-001-restriction-depth-and-fresh-variables.md`.
 | Lemma 9 | Complete proof |
 | Proposition 10 (MC(y·g*) = 4) | Proved twice: by Corollary 13 and by an exhaustive certificate |
 | Lemmas 11, 12; Corollary 13 | Complete proofs |
+| Lemma 14, 14(b′), 15; Theorem 16 | Complete proofs (Lemma 15 uses the exact 4-variable table) |
 
 Independent audit: see "Proof audit" below.
 
@@ -49,9 +55,10 @@ Failed attempt: substituting y := α + c at the first y-gate yields only MC(g) �
 ## Experiments
 - **EXP-001.** Exact MC of all 65,536 four-variable functions, by span BFS with no SAT solver: 32 / 1,120 / 31,616 / 32,768 for MC 0..3. MC = 3 exactly when the degree is 4.
 - **EXP-002.** MC = D on all 4-variable functions, so PNE-001 holds for every g on ≤ 4 variables. 450 sampled 5-variable functions show MC > D occurs: 38 of 41 degree-3 functions with D = 2 have MC = 3, all 38 independently confirmed.
-- **EXP-003.** SAT reports no 3-AND circuit for y·g*. DRAT check: PENDING.
+- **EXP-003.** SAT reports no 3-AND circuit for y·g*. The DRAT proof (767 MB) was **verified by drat-trim** (617 s).
 - **EXP-004.** Exhaustive SAT-free first-gate certificates. MC(y·g*) = 4, with a positive control. 4 further functions are NONE, agreeing with Corollary 13. The 7 functions with three cheap directions: PENDING.
-- **EXP-005.** 31/38 functions have one cheap direction, so PNE-001 is proved for them by Corollary 13. 7/38 have three. Random search refutes "MC = 3 ⇒ one cheap direction".
+- **EXP-005.** 31/38 functions have one cheap direction, so PNE-001 is proved for them by Corollary 13. 7/38 have three. Random search refutes "MC = 3 ⇒ one cheap direction". All 12 multi-direction examples have affine quarters, consistent with Lemma 15.
+- **EXP-006.** The finite check of Theorem 16. The exhaustive S_2 set has |S_2| = 1,811,456 five-variable functions; the construction is validated at n = 4 against the BFS, and |S_1| = 9,984 matches the closed form. Of the 33 orbit representatives, 23 have MC ≤ 2 and need no certificate. Certificates for the MC-3 representatives: PENDING.
 
 ## Counterexamples
 - To the conjecture "MC(g) = 3 ⇒ at most one cheap direction": e.g. g = 0x47fca912, with cheap directions {x1, x2, x1+x2}.
@@ -80,7 +87,7 @@ Not formalized: Lemmas 1–2, Theorem 4, Lemmas 9–12, and all computer-assiste
   - PNE-001 for every g with MC(g) = 3 and a single cheap direction (Corollary 13).
 - Computer-assisted:
   - PNE-001 for 31 + 4 certified 5-variable functions in the open regime.
-  - MC(y·g*) = 4, by two independent SAT-free methods.
+  - MC(y·g*) = 4, by two independent SAT-free methods plus a DRAT-verified SAT proof.
 - Refuted: "MC = 3 ⇒ one cheap direction".
 - P=NP track: two standard approaches stated precisely and shown refuted by known theorems. No new PEQ mathematics.
 

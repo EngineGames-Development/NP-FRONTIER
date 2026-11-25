@@ -24,7 +24,8 @@ New or unconfirmed-novel results, with independent audit pending:
 - **Theorem 4:** D(y·g) = D(g)+1, where D is parity decision tree depth with affine leaves.
 - **Theorem 8:** a cap for restriction-robust measures.
 - **Lemma 11:** structure of a minimal counterexample to PNE-001. Also: admissible first-gate directions for y·g come in pairs.
-- **Proposition 10:** MC(y·g*) = 4 for g* = 0xfff3d212. Certified without SAT; SAT/DRAT is a second check.
+- **Proposition 10:** MC(y·g*) = 4 for g* = 0xfff3d212. Proved three ways: by Corollary 13, by an exhaustive SAT-free first-gate certificate, and by SAT with a DRAT proof checked by drat-trim.
+- **Corollary 13:** PNE-001 holds at level MC(g) = 3 whenever g has a single cheap direction. **Lemma 14:** the structure of the remaining plane-type case.
 
 Known or folklore, included for completeness:
 - Lemma 1 (D ≤ MC; essentially Chistopolskaya–Podolskii).
@@ -36,7 +37,7 @@ Computational facts:
 - Lean: core-Lean ANF/degree library (no sorry; standard axioms only). Theorem 4 itself is **not** formalized.
 
 ## Priorities for cycle 002
-1. **Prove PNE-001 for multiplexers.** Every counterexample with MC(g) = 3 is a multiplexer (Lemma 11). Prove MC(y·mux(s;P,Q)) = MC(mux)+1 by hand for halves with MC ≤ 1. The computational certificates show how: the admissible directions are exactly {s, s+y}.
+1. **Finish PNE-001 at level 3 by hand.** Only plane-type functions remain (three cheap directions; Lemma 14 gives g = h(x') + x1ℓ1 + x2ℓ2 + x1x2ℓ3). The first gate is (x1 + s1y + e)(x2 + s2y + e') after a change of basis (Lemma 12). The quartic part of y·g is the product y·x1·x2·m3 of four linear forms, which forces a degree-tight chain. Exploit this. Then attempt level 4.
 2. **Find a measure that charges both branches** of a split, valid for circuits and exceeding D. Note that any measure that removes one hyperplane per gate is capped at n−1 (Theorem 8). See open question 2.
 3. **Seed for explicit MC ≥ n.** Obtain a certified 6-variable g₆ with MC 6 (ePrint 2018/002), then test MC(y·g₆) = 7 with the first-gate certificate method.
 4. **Formalize Lemma 1 and Theorem 4 in Lean** (XOR-AND circuits, affine restrictions).

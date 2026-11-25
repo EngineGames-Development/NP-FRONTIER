@@ -81,7 +81,7 @@ Data: (MC, D) counts are (0,0): 32, (1,1): 1120, (2,2): 31616, (3,3): 32768; MC 
 - $\mathrm{MC}(g^*)\le3$: an explicit circuit, independently re-evaluated.
 - $\mathrm{MC}(g^*)\ge3$: exhaustive search over all spans $W_1$ (155 classes) and all second products shows no 2-AND circuit (`verify_s2_5.py`, no SAT solver).
 - $\mathrm{MC}(y g^*)\ge4$: $\deg(yg^*)=4$ gives $\mathrm{MC}\ge3$, so Lemma 9 applies with $m=3$. The exhaustive test of $\mathrm{MC}\le2$ on all 126 hyperplane restrictions gives exactly two admissible directions, $x_2$ and $x_2+y$ (`pair_test.py`). So the first gate is $(x_2+e)(x_2+y+e')$ for one of 4 choices of $(e,e')$. For each choice, an exhaustive search over all 2,345 distinct second-gate spans and all third products finds no circuit computing $y g^*$ (`first_gate_extension.py`, `first_gate_general.py`; no SAT solver). A positive control, $x_1x_2x_3\cdot y$, correctly finds an extension.
-- Independently, a SAT solver (CaDiCaL 1.5.3) reports no 3-AND circuit, and its DRAT proof was submitted to drat-trim (status in the cycle report).
+- Independently, a SAT solver (CaDiCaL 1.5.3) reports no 3-AND circuit. Its 767 MB DRAT proof was **verified by drat-trim** (`s VERIFIED`, 617 s; `run_drat_yg_star.sh`, log `drat_trim_yg_star.log`).
 - The upper bound $\mathrm{MC}(y g^*)\le4$ is trivial. $\square$
 
 So PNE-001 holds beyond the reach of Theorem 4. Structure: $g^*=(1+x_2)P+x_2Q$ with $P,Q$ rank-2 quadratics, and the admissible directions for $y g^*$ are the selector $s=x_2$ and $s+y$. In every case examined, admissible directions come in pairs $\{v,v+y\}$, which suggests a general multiplexer argument (open).
@@ -110,6 +110,36 @@ So both $(v,0)$ and $(v,1)$ are admissible iff, for both $c$, $\mathrm{MC}(t\cdo
 - Of the 38 certified 5-variable functions with $\mathrm{MC}=3>D=2$, 31 have exactly one such direction, so PNE-001 is proved for them by Corollary 13.
 - 7 have three such directions; in each case these directions together with $0$ form a 2-dimensional subspace.
 - A random search finds many such functions with $\mathrm{MC}\ge3$. So "MC $=3$ ⇒ at most one cheap direction" is **false**, and Corollary 13 alone does not settle PNE-001 at level 3. Those cases are settled by the exhaustive first-gate certificates of EXP-004.
+
+**Lemma 14 (structure of plane-type functions; for the remaining level-3 case).** (a) Every $h$ with $\mathrm{MC}(h)\le1$ is $\alpha\beta+\gamma$ with $\alpha,\beta,\gamma$ affine. If $h$ lives on coordinates $(x_2,x')$, then $h|_{x_2=0}+h|_{x_2=1}$ is affine in $x'$. (b) Suppose $x_1$, $x_2$ and $x_1+x_2$ are all cheap directions of $g$ (both halves of each split have $\mathrm{MC}\le1$). Then the four quarters $g_{ab}=g|_{x_1=a,x_2=b}$ differ pairwise by affine functions of $x'$. So $g=h(x')+\Lambda$ with $h=g_{00}$, $\mathrm{MC}(h)\le1$, and $\Lambda=\lambda_{00}+x_1\ell_1+x_2\ell_2+x_1x_2\ell_3$ for affine $\ell_i$ in $x'$.
+*Proof.*
+(a) A single AND gate gives $z=\alpha\beta$, and the output is affine in $(x,z)$. Write $\alpha=a_0+a_1x_2$ and $\beta=b_0+b_1x_2$ with $a_0,b_0$ affine in $x'$ and $a_1,b_1$ constants. Then $h|_{x_2=1}+h|_{x_2=0}=a_0b_1+a_1b_0+a_1b_1+(\gamma|_{x_2=1}+\gamma|_{x_2=0})$, which is affine.
+(b) Apply (a) to the halves of each of the three splits. The split on $x_1$ gives $g_{00}+g_{01}$ and $g_{10}+g_{11}$ affine. The split on $x_2$ gives $g_{00}+g_{10}$ and $g_{01}+g_{11}$ affine. The split on $x_1+x_2$ gives $g_{00}+g_{11}$ and $g_{01}+g_{10}$ affine. Interpolate over $(x_1,x_2)$. $\square$
+This is the starting point for a hand proof of PNE-001 at level 3 in the plane case (open; the next cycle's first target).
+
+**Lemma 14(b′) (two cheap directions suffice).** If $x_1$ and $x_2$ are both cheap directions of $g$, the quarters already differ pairwise by affine functions: the splits on $x_1$ and $x_2$ give four of the six differences, and the other two are sums of these. So $g=g_{00}+x_1\ell_1+x_2\ell_2+x_1x_2\ell_3$ with $\ell_i$ affine in $x'$. The third direction in Lemma 14(b) is not needed.
+
+**Lemma 15.** If $x_1,x_2$ are cheap directions of $g$ and the quarter $g_{00}$ is not affine, then $\mathrm{MC}(g)\le2$.
+*Proof.* Write $g_{00}=\alpha\beta+\gamma$ (Lemma 14(a)). Since $g_{00}$ is not affine, $\alpha$ and $\beta$ have linearly independent linear parts; let $U=\mathrm{span}(\alpha_{\rm lin},\beta_{\rm lin})$.
+- The quadratic part of any function of $\mathrm{MC}\le1$, i.e. of the form $ab+c$, is a single product of two linear forms, so its symplectic form has rank $\le2$.
+- The half $g|_{x_1=0}=g_{00}+x_2\ell_2$ has $\mathrm{MC}\le1$, and its quadratic part is $\alpha_{\rm lin}\beta_{\rm lin}+x_2(\ell_2)_{\rm lin}$. If $(\ell_2)_{\rm lin}\notin U$, coordinates $u_1=\alpha_{\rm lin}$, $u_2=\beta_{\rm lin}$, $u_3=(\ell_2)_{\rm lin}$ turn this into $u_1u_2+x_2u_3$, of rank 4, a contradiction. So $(\ell_2)_{\rm lin}\in U$.
+- In the same way, $g|_{x_2=0}=g_{00}+x_1\ell_1$ gives $(\ell_1)_{\rm lin}\in U$.
+- And $g|_{x_1=1}=(g_{00}+\ell_1)+x_2(\ell_2+\ell_3)$ gives $(\ell_2+\ell_3)_{\rm lin}\in U$, hence $(\ell_3)_{\rm lin}\in U$.
+
+Therefore $g=G(x_1,x_2,\alpha,\beta)+\gamma$, where $G$ has degree $\le3$ in the four linearly independent affine forms $x_1,x_2,\alpha,\beta$, and $\gamma$ is affine. By an affine change of coordinates and (F1), $\mathrm{MC}(g)=\mathrm{MC}(G)$. Every 4-variable function of degree $\le3$ has $\mathrm{MC}\le2$ (EXP-001, exhaustive). $\square$
+Sanity check: in all 12 known MC-3 functions with several cheap directions, the quarters are affine (`EXP-005/check_lemma15.py`).
+
+**Theorem 16 (level 3 reduces to a finite family).** Suppose some $g$ has $\mathrm{MC}(g)=3=\mathrm{MC}(y\,g)$. Then there is a function
+$$G'=x_1\ell_1+x_2\ell_2+x_1x_2\ell_3+c+\lambda(u)$$
+on the five variables $(x_1,x_2,u_1,u_2,u_3)$, with $\ell_1,\ell_2,\ell_3,\lambda$ affine in $u=(u_1,u_2,u_3)$ and $c\in\mathbb{F}_2$, such that $\mathrm{MC}(G')=3=\mathrm{MC}(y\,G')$. Hence **PNE-001 holds for every $g$ with $\mathrm{MC}(g)\le3$ iff $\mathrm{MC}(y\,G')=4$ for every $G'$ of this form with $\mathrm{MC}(G')=3$.** There are at most $16^3\cdot16=65{,}536$ such $G'$ before symmetry reduction.
+*Proof.*
+- By Lemma 12 (with PNE-001 below level 3), $g$ has two distinct cheap directions. Choose $x$-coordinates in which they are $x_1,x_2$; this keeps $y$ fresh and does not change $\mathrm{MC}(y\,g)$.
+- By Lemma 15, $g_{00}$ is affine. By Lemma 14(b′), $g=g_{00}+x_1\ell_1+x_2\ell_2+x_1x_2\ell_3$.
+- Choose coordinates of $x'$ so that the linear parts of $\ell_1,\ell_2,\ell_3$ lie in $\mathrm{span}(u_1,u_2,u_3)$. Write $g_{00}=c+\lambda(u)+\mu$ with $\mu$ linear in the remaining coordinates; if $\mu\ne0$, take $\mu=w_1$ as a coordinate.
+- Terms $a_1x_1$ and $a_2x_2$ are absorbed into the constants of $\ell_1,\ell_2$. So $g=G'+w$ with $w\in\{0,w_1\}$, and $w_1$ appears nowhere else.
+- Adding a fresh linear variable does not change MC: restrict $w_1=0$ for one direction, XOR it for the other. So $\mathrm{MC}(G')=3$.
+- Restricting $w_1=0$ in a circuit for $y\,g$ gives one for $y\,G'$, so $3=\mathrm{MC}(G')\le\mathrm{MC}(y\,G')\le\mathrm{MC}(y\,g)=3$. $\square$
+The finite check is the first task of cycle 002. It needs the 5-variable $S_2$ set (vectorized), first-gate certificates on 6 variables (a C implementation, or Python after symmetry reduction under $\mathrm{AGL}(3)$ on $u$ and $\mathrm{GL}(2)$ on $(x_1,x_2)$), and a check that each symmetry preserves the family and both MC values.
 
 ## 6. Theorem 8 (barrier for one-restriction-per-gate arguments)
 
