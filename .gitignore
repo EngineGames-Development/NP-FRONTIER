@@ -9,3 +9,13 @@ __pycache__/
 *.u32
 *.mc5
 *.bin
+# compiled experiment binaries (rebuild from the .c sources; see each experiment's README/header)
+research/experiments/*/s3
+research/experiments/*/orbits
+research/experiments/*/orbits2
+research/experiments/*/scan
+research/experiments/*/build_mc5
+research/experiments/*/cert4
+research/experiments/*/cert4b
+research/experiments/*/cert4c
+research/experiments/*/pt5
