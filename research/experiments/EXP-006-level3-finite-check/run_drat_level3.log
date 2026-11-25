@@ -5,3 +5,4 @@ proof written
 == G' = 0x0167abcd
 solver result: UNSAT
 proof written
+c verification time: 749.232 seconds

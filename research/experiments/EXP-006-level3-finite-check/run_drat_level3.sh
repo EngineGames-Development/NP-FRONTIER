@@ -7,5 +7,6 @@ DRAT="${DRAT:-$HOME/.local/bin/drat-trim}"
 for g in 0x01234567 0x0167abcd; do
   echo "== G' = $g"
   timeout 3000 python3 -u drat_certify.py "$g" 3 "level3_$g"
-  timeout 7000 "$DRAT" "level3_$g.cnf" "level3_$g.drat" -t 7000 | grep -E "^s |verification time"
+  # drat-trim prints its verdict as "\rs VERIFIED": convert carriage returns before filtering.
+  timeout 7000 "$DRAT" "level3_$g.cnf" "level3_$g.drat" -t 7000 | tr '\r' '\n' | grep -a -E "VERIFIED|TIMEOUT|DERIVATION|ERROR|verification time"
 done
