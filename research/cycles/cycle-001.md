@@ -66,7 +66,18 @@ Failed attempt: substituting y := α + c at the first y-gate yields only MC(g) �
 - To PNE-001: none found.
 
 ## Proof audit
-PENDING (adversarial reviewer, fresh agent, given only the proof document and code).
+**AUDIT-001** (`research/proofs/audits/AUDIT-001-PNE-001.md`): a fresh adversarial reviewer, given only the document and code, with its own independent C and Python code.
+- **Survive:** Lemmas 1–3, Theorem 4, Corollaries 5–6, Lemma 9, Proposition 10.
+- **Independently recomputed:** the 4-variable MC and D tables, identical per function. MC(y·g*) = 4, by a full search that does not use Lemma 9.
+- **Issues, all fixed in the document:**
+  - (I-1, medium) D = D⊕ − 1. So Lemma 1 equals Chistopolskaya–Podolskii, not "marginally stronger", and Theorem 4 is a parity-decision-tree statement with unconfirmed novelty.
+  - (I-2, medium) Theorem 8's "barrier" framing was overclaimed. A pair measure from Lemma 9 beats D on g*. The cap holds only for (P1) measures, and is elementary.
+  - (I-3, low) Corollary 7 fails for constant g.
+  - (I-4, low) The multiplexer identity fails when both halves are constant.
+  - Minor points: a readable circuit for g* was supplied and verified; the four first gates are one class mod affine; a stray λ00; monotonicity of D under restriction was needed for (F3).
+- **Lemmas 11–17:** bounded check only. Lemma 15 and Theorem 16 read correctly. The reviewer's own code finds the same 33 orbits, exactly 2 of them outside S_2, and no 3-gate circuit for y·G' on six members of those orbits.
+
+**AUDIT-002** (full audit of Lemmas 11–17): see `research/proofs/audits/`.
 
 ## Formal verification (Lean 4.37.0-rc1, core; `lake build --wfail`; axioms: standard only)
 Proved:

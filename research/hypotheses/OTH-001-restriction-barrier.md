@@ -1,6 +1,11 @@
 # OTH-001: One-restriction-per-gate arguments cannot prove MC ≥ n
 
-**Status:** PROOF (complete proof written; audit pending in `research/proofs/audits/`).
+**Status:** REVIEWED (AUDIT-001). The formal statement survives but is **elementary**. The original framing was **overclaimed** and has been corrected below.
+
+**Correction after AUDIT-001.**
+1. The restriction depth D equals D⊕ − 1, where D⊕ is ordinary parity decision tree depth. So the cap reads: restriction-robust (P1) measures are at most D⊕ − 1 ≤ n − 1.
+2. The cap applies only to measures with property (P1). It does **not** apply to every one-AND-gate-per-restriction induction. Witness: the pair measure from Lemma 9 gives 3 > D = 2 on g*. For general one-gate-per-restriction inductions, only the folklore dimension count (≤ n − 1) applies.
+3. The real content is the folklore dimension count, plus a precise description of which arguments stop at the PDT bound. Related prior work: Golovnev–Hirsch–Knop–Kulikov, "On the limits of gate elimination".
 
 ## Statement
 Call μ restriction-robust if it is affine-invariant, μ(affine) = 0, and for every f and every hyperplane direction v, some restriction f|_{⟨v,x⟩=c} has μ ≥ μ(f) − 1. Then μ ≤ D ≤ n − 1, where D is the restriction depth. Also D ≤ MC.

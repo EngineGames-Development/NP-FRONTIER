@@ -12,6 +12,7 @@ Since MC(g) ≤ MC(y·g) ≤ MC(g)+1 always, the claim says only that multiplyin
 - PNE-001 is the one-variable case of PNE-002 (AND-direct sum), which would imply explicit linear circuit lower bounds with every constant.
 
 ## Results (research/proofs/PNE-001-restriction-depth-and-fresh-variables.md)
+Note after AUDIT-001: D = D⊕ − 1 for non-constant f, where D⊕ is parity decision tree depth. So Theorem 4 says D⊕(y∧g) = D⊕(g) + 1; its novelty is unconfirmed, and it may be folklore in the PDT literature. Lemma 1 is identical to Chistopolskaya–Podolskii's D⊕ ≤ MC + 1.
 - Theorem 4: D(y·g) = D(g) + 1, where D is the restriction depth (parity decision tree depth with affine leaves).
 - Lemma 1: D ≤ MC. Corollary 5: MC(y·g) ≥ D(g) + 1, so PNE-001 holds whenever MC(g) = D(g).
 - Corollary 6 (computer-assisted, exact): MC = D for all 65,536 functions on 4 variables, so PNE-001 holds for all g on ≤ 4 variables.
