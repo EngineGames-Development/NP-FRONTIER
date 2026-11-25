@@ -1,3 +1,43 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+The research charter below (from "NP-FRONTIER" through "FINAL OBJECTIVE") governs all work here. This preamble adds only operational facts and checks that make the charter's requirements enforceable in Claude Code.
+
+## Lean verification checks (Section 8)
+
+- Build with `lake build --wfail`. Plain `lake build` reports success even when a proof uses `sorry`, because `sorry` is only a warning. Check a single file with `lake env lean <path>.lean`.
+- `--wfail` does not catch `axiom` declarations: a file that declares `axiom bogus : False` and proves `1 = 2` from it compiles with no warning at all. For every theorem reported as verified, run `#print axioms <name>` and record the output. Only `propext`, `Classical.choice` and `Quot.sound` are standard. `sorryAx` means the proof is incomplete. `native_decide` adds an auxiliary axiom (named like `<theorem>._native.native_decide.ax_1_1` in Lean 4.37) that trusts compiled code instead of the kernel. List every non-standard axiom in the axioms record.
+- Keep `autoImplicit = false` in the Lake configuration. With Lean's default, a misspelled identifier in a theorem statement silently becomes a universally quantified variable, so the theorem compiles but states something other than what was intended.
+
+## Subagents and citations (Principles 3 and 5, Sections 3 and 12)
+
+- Run every adversarial review in a fresh agent (for example `general-purpose`) that receives only the written claim and proof document. Never use `subagent_type: "fork"` for a review: a fork inherits the whole conversation, including the author's reasoning, so it is not independent.
+- A subagent's report is returned only to the session that launched it and is lost with the container. Write each review verdict to `reports/proof_audits/` before acting on it.
+- The charter's "Opus 5.5, highest reasoning effort" maps to the Agent tool parameters `model: "opus"` and `effort: "max"`. Use them for proof development and audits, not for file maintenance.
+- In `research/literature_review.md`, mark a reference verified only if its details were retrieved during a session, and state what was checked (for example, title and arXiv ID from search results). Mark references recalled from memory as unverified. Do not attribute a theorem statement to a paper whose text was not read.
+
+## Environment (verified 2026-11-25 in the cloud container; re-check if something fails)
+
+- Containers are ephemeral and start from a fresh clone. Only committed and pushed work survives, so commit research-state files at each checkpoint, not only at session end.
+- Installed: Python 3.13 (numpy and pandas; no scipy, sympy, networkx, PySAT or z3), gcc/g++ 13, clang 18, Rust 1.97. No SAT or SMT solver binaries. 4 cores, 15 GB RAM. PyPI and apt are reachable. "UltraCode / Dynamic Workflows" (Section 0) are not available; parallel research uses the Agent tool.
+- Blocked by the network policy: arxiv.org (also for WebFetch), export.arxiv.org, eccc.weizmann.ac.il, cache.mathlib.org and release.lean-lang.org. WebSearch works and returns arXiv results, but paper texts cannot be fetched.
+- Lean is not preinstalled, and `elan toolchain install` fails here (it contacts release.lean-lang.org, plus GitHub's API and release pages, which return 403). Downloading the release asset directly works. Set `V` to the version in the project's `lean-toolchain`:
+
+  ```bash
+  curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+  export PATH="$HOME/.elan/bin:$PATH"
+  apt-get update -q && apt-get install -y -q zstd
+  V=4.37.0-rc1
+  D="$HOME/.elan/toolchains/leanprover--lean4---v$V"; mkdir -p "$D"
+  curl -sSfL "https://github.com/leanprover/lean4/releases/download/v$V/lean-$V-linux.tar.zst" | tar --zstd -xf - -C "$D" --strip-components=1
+  elan default "leanprover/lean4:v$V"
+  ```
+
+- Mathlib's git repository is reachable, but `lake exe cache get` cannot download prebuilt Mathlib because cache.mathlib.org is blocked, so Mathlib compiles from source. Lake compiles only the modules a project imports, so import specific Mathlib modules rather than `import Mathlib` until that host is allowed.
+
+---
+
 # NP-FRONTIER
 ## Autonomous Mathematical Research Program: P versus NP
 
