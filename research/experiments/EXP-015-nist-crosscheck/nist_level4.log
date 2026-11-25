@@ -1,0 +1,5 @@
+mc4_dim5.txt: reps 26, affine-hyperplane hits 47  [0s]
+mc4_dim6.txt: reps 888, affine-hyperplane hits 86  [48s]
+mc4_dim7.txt: reps 321, affine-hyperplane hits 46  [104s]
+mc4_dim8.txt: reps 42, affine-hyperplane hits 7  [110s]
+level 4: representatives 1277, hyperplanes with affine restriction 186, counterexamples 0

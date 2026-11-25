@@ -19,3 +19,9 @@ research/experiments/*/cert4
 research/experiments/*/cert4b
 research/experiments/*/cert4c
 research/experiments/*/pt5
+research/experiments/*/formal4
+research/experiments/*/formal4_full
+research/experiments/*/formal4_k5nd
+research/experiments/*/formalm
+research/experiments/*/test_affine
+research/experiments/EXP-014-formal-circuits/out_k*.txt
