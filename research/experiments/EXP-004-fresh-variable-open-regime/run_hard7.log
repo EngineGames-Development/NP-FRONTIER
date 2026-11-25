@@ -4,3 +4,4 @@
 0x8130e859 | g=0x8130e859: admissible directions [7, 9, 14, 39, 41, 46] (9s) | NONE: no first gate extends; MC(y*g) >= 4 (849s)
 0xddfc6a78 | g=0xddfc6a78: admissible directions [2, 21, 23, 34, 53, 55] (12s) | NONE: no first gate extends; MC(y*g) >= 4 (851s)
 0xec974362 | g=0xec974362: admissible directions [5, 9, 12, 37, 41, 44] (13s) | NONE: no first gate extends; MC(y*g) >= 4 (852s)
+0xecf49415 | g=0xecf49415: admissible directions [3, 21, 22, 35, 53, 54] (7s) | NONE: no first gate extends; MC(y*g) >= 4 (502s)
