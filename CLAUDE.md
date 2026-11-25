@@ -22,17 +22,7 @@ The research charter below (from "NP-FRONTIER" through "FINAL OBJECTIVE") govern
 - Containers are ephemeral and start from a fresh clone. Only committed and pushed work survives, so commit research-state files at each checkpoint, not only at session end.
 - Installed: Python 3.13 (numpy and pandas; no scipy, sympy, networkx, PySAT or z3), gcc/g++ 13, clang 18, Rust 1.97. No SAT or SMT solver binaries. 4 cores, 15 GB RAM. PyPI and apt are reachable. "UltraCode / Dynamic Workflows" (Section 0) are not available; parallel research uses the Agent tool.
 - Blocked by the network policy: arxiv.org (also for WebFetch), export.arxiv.org, eccc.weizmann.ac.il, cache.mathlib.org and release.lean-lang.org. WebSearch works and returns arXiv results, but paper texts cannot be fetched.
-- Lean is not preinstalled, and `elan toolchain install` fails here (it contacts release.lean-lang.org, plus GitHub's API and release pages, which return 403). Downloading the release asset directly works. Set `V` to the version in the project's `lean-toolchain`:
-
-  ```bash
-  curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
-  export PATH="$HOME/.elan/bin:$PATH"
-  apt-get update -q && apt-get install -y -q zstd
-  V=4.37.0-rc1
-  D="$HOME/.elan/toolchains/leanprover--lean4---v$V"; mkdir -p "$D"
-  curl -sSfL "https://github.com/leanprover/lean4/releases/download/v$V/lean-$V-linux.tar.zst" | tar --zstd -xf - -C "$D" --strip-components=1
-  elan default "leanprover/lean4:v$V"
-  ```
+- Lean is not preinstalled, and `elan toolchain install` fails here (it contacts release.lean-lang.org, plus GitHub's API and release pages, which return 403). `scripts/setup_env.sh` works around this by downloading the release asset pinned in `research/proofs/lean/lean-toolchain` directly; it is idempotent and also installs the Python experiment dependencies. Then `export PATH="$HOME/.elan/bin:$PATH"` and build with `cd research/proofs/lean && lake build --wfail`.
 
 - Mathlib's git repository is reachable, but `lake exe cache get` cannot download prebuilt Mathlib because cache.mathlib.org is blocked, so Mathlib compiles from source. Lake compiles only the modules a project imports, so import specific Mathlib modules rather than `import Mathlib` until that host is allowed.
 
@@ -671,6 +661,17 @@ Ensure the statement itself is correct and relevant.
 
 Create a persistent research database using Markdown files and Git.
 
+**Adopted layout (cycle 001; supersedes the tree below where they differ):**
+`research/current_state.md` (single source of truth for where the program stands),
+`research/research_log.md` (append-only, dated),
+`research/open_questions.md`,
+`research/hypotheses/<ID>-<slug>.md` (one file per hypothesis, see Section 10),
+`research/literature/` (one record per source, with retrieval status),
+`research/experiments/<EXP-ID>-<slug>/` (code, parameters, results, report),
+`research/proofs/` (human-readable proofs; `lean/` is the Lake project; `audits/` holds independent reviews; `rejected/` holds failed proofs),
+`research/cycles/` (Section 14 cycle reports).
+Agent role definitions live in `.claude/agents/`. Environment setup is `scripts/setup_env.sh`.
+
 Maintain the following structure:
 
 NP-FRONTIER/
@@ -779,6 +780,8 @@ INCONCLUSIVE
 Do not mark a hypothesis as proved without a complete mathematical proof.
 
 Do not mark a proof as formally verified without an actual successful verification.
+
+**Identifier scheme.** `PEQ-###` for approaches toward P = NP, `PNE-###` for approaches toward P ≠ NP (including restricted-model lower bounds), `OTH-###` for other relevant hypotheses (barriers, structural or meta-mathematical questions). Numbers are sequential per prefix, zero-padded to three digits, never reused, and stay attached to a hypothesis after it is disproved or abandoned. Each hypothesis lives in `research/hypotheses/<ID>-<slug>.md`; every other file refers to it by ID. Experiments use `EXP-###`.
 
 ---
 
@@ -946,6 +949,8 @@ Reports must contain actual mathematical substance.
 ---
 
 # 15. INITIAL EXECUTION
+
+**Idempotence rule.** This section describes a one-time initialization. Before acting on it, inspect the existing state. If `research/current_state.md` exists, initialization has already happened: do not recreate the repository structure, do not overwrite research files, and do not redo completed steps. Run `scripts/setup_env.sh`, which checks each environment component and installs only what is missing, then continue from Section 13 with the priorities recorded in `research/current_state.md`.
 
 Begin immediately.
 

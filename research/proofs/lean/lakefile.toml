@@ -1,0 +1,11 @@
+name = "NPFrontier"
+version = "0.1.0"
+defaultTargets = ["NPFrontier"]
+
+# Core Lean only: Mathlib's build cache host is blocked in the cloud container (see CLAUDE.md preamble).
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[lean_lib]]
+name = "NPFrontier"
