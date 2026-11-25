@@ -36,3 +36,9 @@
   - Lemma 14 gives the structure of the plane case.
   - The first adversarial audit attempt died on the 5-hour rate limit; it was relaunched with the registered `adversarial-reviewer` agent type.
   - Fixed stale CLAUDE.md paths. `scripts/setup_env.sh` now also builds drat-trim.
+- **Level 3 completed.**
+  - Lemma 14(b′): two cheap directions suffice for the quarter decomposition.
+  - Lemma 15: non-affine quarters force MC ≤ 2, via a rank-4 obstruction and the exact 4-variable table.
+  - Theorem 16: reduction to the 5-variable family G'. EXP-006: 33 orbits, of which 31 have MC ≤ 2 and 2 have MC 3, both certified.
+  - **Theorem 17: PNE-001 for all g with MC(g) ≤ 3.** SAT+DRAT cross-checks of the two certificates launched.
+  - The PDT direct-sum paper (arXiv 2412.06552) is a possible overlap for Theorem 4; it is unread because arXiv and dagstuhl are blocked.

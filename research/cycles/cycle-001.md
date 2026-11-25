@@ -47,6 +47,7 @@ All in `research/proofs/PNE-001-restriction-depth-and-fresh-variables.md`.
 | Proposition 10 (MC(y·g*) = 4) | Proved twice: by Corollary 13 and by an exhaustive certificate |
 | Lemmas 11, 12; Corollary 13 | Complete proofs |
 | Lemma 14, 14(b′), 15; Theorem 16 | Complete proofs (Lemma 15 uses the exact 4-variable table) |
+| Theorem 17 (PNE-001 for MC ≤ 3) | Complete, computer-assisted (EXP-001, EXP-006) |
 
 Independent audit: see "Proof audit" below.
 
@@ -58,7 +59,7 @@ Failed attempt: substituting y := α + c at the first y-gate yields only MC(g) �
 - **EXP-003.** SAT reports no 3-AND circuit for y·g*. The DRAT proof (767 MB) was **verified by drat-trim** (617 s).
 - **EXP-004.** Exhaustive SAT-free first-gate certificates. MC(y·g*) = 4, with a positive control. 4 further functions are NONE, agreeing with Corollary 13. The 7 functions with three cheap directions: PENDING.
 - **EXP-005.** 31/38 functions have one cheap direction, so PNE-001 is proved for them by Corollary 13. 7/38 have three. Random search refutes "MC = 3 ⇒ one cheap direction". All 12 multi-direction examples have affine quarters, consistent with Lemma 15.
-- **EXP-006.** The finite check of Theorem 16. The exhaustive S_2 set has |S_2| = 1,811,456 five-variable functions; the construction is validated at n = 4 against the BFS, and |S_1| = 9,984 matches the closed form. Of the 33 orbit representatives, 23 have MC ≤ 2 and need no certificate. Certificates for the MC-3 representatives: PENDING.
+- **EXP-006.** The finite check of Theorem 16. The exhaustive S_2 set has |S_2| = 1,811,456 five-variable functions; the construction is validated at n = 4 against the BFS, and |S_1| = 9,984 matches the closed form. Of the 33 orbit representatives, 23 have MC ≤ 2 and need no certificate. Only 2 representatives have MC = 3 (0x01234567, 0x0167abcd), and both are certified: MC(y·G') = 4, with 48 first gates checked each. **This gives Theorem 17: PNE-001 holds for every g with MC(g) ≤ 3, on any number of variables.** SAT+DRAT cross-check of the two certificates: PENDING.
 
 ## Counterexamples
 - To the conjecture "MC(g) = 3 ⇒ at most one cheap direction": e.g. g = 0x47fca912, with cheap directions {x1, x2, x1+x2}.

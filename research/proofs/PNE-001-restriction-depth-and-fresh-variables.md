@@ -1,7 +1,7 @@
 # Restriction depth, multiplicative complexity, and fresh variables
 
 Hypotheses: PNE-001 (fresh-variable lemma), OTH-001 (restriction barrier). Cycle 001, 2026-11-25.
-Status of this document: complete proofs written by the chief researcher; independent audit pending (see `audits/`).
+Status of this document: complete proofs written by the chief researcher; Theorem 17 is computer-assisted; independent audit pending (see `audits/`).
 Lean status: not formalized (see "Formalization" at the end).
 
 ## 1. Definitions
@@ -140,6 +140,26 @@ on the five variables $(x_1,x_2,u_1,u_2,u_3)$, with $\ell_1,\ell_2,\ell_3,\lambd
 - Adding a fresh linear variable does not change MC: restrict $w_1=0$ for one direction, XOR it for the other. So $\mathrm{MC}(G')=3$.
 - Restricting $w_1=0$ in a circuit for $y\,g$ gives one for $y\,G'$, so $3=\mathrm{MC}(G')\le\mathrm{MC}(y\,G')\le\mathrm{MC}(y\,g)=3$. $\square$
 The finite check is the first task of cycle 002. It needs the 5-variable $S_2$ set (vectorized), first-gate certificates on 6 variables (a C implementation, or Python after symmetry reduction under $\mathrm{AGL}(3)$ on $u$ and $\mathrm{GL}(2)$ on $(x_1,x_2)$), and a check that each symmetry preserves the family and both MC values.
+
+**Theorem 17 (computer-assisted). For every non-constant Boolean function $g$, on any number of variables, with $\mathrm{MC}(g)\le3$: $\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$.**
+*Proof.*
+- *$\mathrm{MC}(g)\le2$.* Then $\mathrm{MC}(g)=D(g)$ (Remark 1 after Lemma 11), and Corollary 5 applies.
+- *$\mathrm{MC}(g)=3$.* By Theorem 16, a counterexample would give a member $G'=x_1\ell_1+x_2\ell_2+x_1x_2\ell_3+\lambda(u)$ of the 5-variable family with $\mathrm{MC}(G')=3=\mathrm{MC}(y\,G')$.
+- *The family (EXP-006).* It has 32,768 members modulo complement, in 33 orbits under affine bijections of the input space that act separately on $(x_1,x_2)$ and $u$, plus complementation. All of these preserve $\mathrm{MC}(G')$ and $\mathrm{MC}(y\,G')$.
+- *31 orbits.* Their representatives lie in the exhaustively computed set $S_2$ (all 1,811,456 five-variable functions of MC $\le2$), so they are not MC 3.
+- *The remaining 2 orbits.* Their representatives have MC 3:
+  - $0x01234567=x_1(u_1+u_2)+x_2(u_1+u_3)+x_1x_2(1+u_1+u_2+u_3)+u_1+1$
+  - $0x0167abcd=x_1(1+u_1+u_2+u_3)+x_2(u_1+u_2)+x_1x_2(1+u_1)+u_1+1$
+
+  For each, both have admissible directions exactly $\{x_1,x_2,x_1+x_2\}$ and their $y$-shifts. The first-gate certificate (Lemma 9, with first gates restricted by Lemma 12 to 48 candidates) finds that no first gate extends to a 3-AND circuit for $y\,G'$. So $\mathrm{MC}(y\,G')=4$.
+- Hence no counterexample exists. $\square$
+
+Dependencies:
+- Exhaustive data from EXP-001 (the 4-variable table, used in Lemma 15) and EXP-006 (the 5-variable $S_2$, orbits, and two certificates). The $S_2$ construction is validated at $n=4$ against the independent BFS.
+- Independent cross-check of the two certificates: SAT with DRAT proofs checked by drat-trim (`EXP-006/run_drat_level3.sh`; status in the cycle report).
+- Not formalized in Lean.
+
+*Significance and limits.* This is the first complete level beyond the reach of restriction depth: functions with $\mathrm{MC}=3>D=2$ exist from 5 variables on, and the theorem covers them for every number of variables. It is still far from the regime needed for explicit $\mathrm{MC}\ge n$: that needs PNE-001 for a 6-variable seed with MC 6, i.e. level 6.
 
 ## 6. Theorem 8 (barrier for one-restriction-per-gate arguments)
 
