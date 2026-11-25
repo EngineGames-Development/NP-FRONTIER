@@ -80,6 +80,28 @@ def encode(F, n, k):
         e.xor_list(lits, rhs=(F >> p) & 1)
     return e, A, B, O
 
+def mc_le_fixed_first(F, n, k, first, budget=None, solver_cls=Cadical153, proof=False):
+    """Decide whether some k-AND circuit computes F with first gate inputs fixed to the wire masks
+    first = (Amask, Bmask) over wires (bit 0 = constant 1, bit j = x_j).  Returns ("SAT", circuit) with the
+    circuit re-verified by `evaluate`, ("UNSAT", proof_lines_or_None), or ("UNKNOWN", None) if the conflict
+    budget runs out.  Fixing the first gate is justified by Lemma 9' (it may be taken modulo affine terms)."""
+    e, A, B, O = encode(F, n, k)
+    am, bm = first
+    for j, v in enumerate(A[0]): e.cl.append([v] if (am >> j) & 1 else [-v])
+    for j, v in enumerate(B[0]): e.cl.append([v] if (bm >> j) & 1 else [-v])
+    with solver_cls(bootstrap_with=e.cl, with_proof=proof) as s:
+        if budget is not None:
+            s.conf_budget(budget); r = s.solve_limited()
+        else:
+            r = s.solve()
+        if r is None: return ("UNKNOWN", None)
+        if not r: return ("UNSAT", s.get_proof() if proof else None)
+        m = set(l for l in s.get_model() if l > 0)
+    mask = lambda C: sum(1 << j for j, v in enumerate(C) if v in m)
+    circ = ([(mask(A[i]), mask(B[i])) for i in range(k)], mask(O))
+    assert evaluate(circ, n) == F, "solver circuit failed independent check"
+    return ("SAT", circ)
+
 def mc(F, n, kmax=12):
     for k in count(0):
         if k > kmax: raise ValueError("kmax exceeded")

@@ -5,3 +5,7 @@ __pycache__/
 *.drat
 *.cnf
 *.npy
+*.bitmap
+*.u32
+*.mc5
+*.bin
