@@ -12,7 +12,7 @@ P versus NP is unresolved, and nothing in this program changes that. Cycle 001 p
 
 | ID | Direction | Status | One line |
 |---|---|---|---|
-| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 3 (Theorem 17, computer-assisted)** and whenever MC(g) = D(g). Open from level 4. |
+| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT (level ≤ 3 REVIEWED) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 3** (Theorem 17: computer-assisted, DRAT-verified, survives AUDIT-002) and whenever MC(g) = D(g). Open from level 4. |
 | PNE-002 | P≠NP (restricted measure) | FORMULATED | AND-direct sum for MC. It would imply explicit c·n circuit lower bounds for every c, so it is believed hard. |
 | OTH-001 | barrier | REVIEWED: elementary, framing corrected | Restriction-robust (P1) measures are ≤ D = D⊕−1 ≤ n−1. General one-kill-per-restriction arguments are capped at n−1 only by the folklore dimension count. |
 | PEQ-001 | P=NP | DISPROVED (known theorems) | Bounded-width propagation / k-consistency fails (Ben-Sasson–Wigderson). |
@@ -20,7 +20,7 @@ P versus NP is unresolved, and nothing in this program changes that. Cycle 001 p
 
 ## Established in cycle 001 (see `research/proofs/PNE-001-restriction-depth-and-fresh-variables.md`)
 
-Results with unconfirmed novelty. Audit status: AUDIT-001 covers Lemmas 1–10 and Theorem 8. Lemmas 11–17 got a bounded check, and the core of Theorem 17 was independently recomputed. A full audit of Lemmas 11–17 is AUDIT-002.
+Results with unconfirmed novelty. Audit status: AUDIT-001 covers Lemmas 1–10 and Theorem 8; claims survive and the framing was corrected. AUDIT-002 covers Lemmas 11–17; everything survives.
 - **Theorem 4:** D(y·g) = D(g)+1. Here D is the restriction depth, which equals D⊕ − 1 (AUDIT-001), so this is D⊕(y∧g) = D⊕(g)+1. It may be folklore.
 - **Theorem 8:** a cap for restriction-robust measures.
 - **Lemma 11:** structure of a minimal counterexample to PNE-001. Also: admissible first-gate directions for y·g come in pairs.

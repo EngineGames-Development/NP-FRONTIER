@@ -1,6 +1,6 @@
 # PNE-001: Fresh-variable lemma for multiplicative complexity
 
-**Status:** PROOF ATTEMPT. **Proved (computer-assisted, Theorem 17) for every g with MC(g) ≤ 3, on any number of variables.** Also proved for every g with MC(g) = D(g), which includes every g on ≤ 4 variables. Also proved for every g with MC(g) = 3 and a single cheap direction (Corollary 13). Verified for g* (three independent methods) and for all 38 sampled 5-variable functions with MC 3 > D 2 (EXP-004/005; see the cycle report for the 7 three-direction cases). Open in general. Audit pending.
+**Status:** PROOF ATTEMPT for the general statement. **The level-≤3 case is REVIEWED.** Theorem 17 proves it, computer-assisted, for every g with MC(g) ≤ 3 on any number of variables, and it survives AUDIT-002. Also proved for every g with MC(g) = D(g), which includes every g on ≤ 4 variables. Also proved for every g with MC(g) = 3 and a single cheap direction (Corollary 13). Verified for g* (three independent methods) and for all 38 sampled 5-variable functions with MC 3 > D 2 (EXP-004/005; see the cycle report for the 7 three-direction cases). Open in general. Audit pending.
 
 ## Formulation
 MC(f) is the least number of AND gates in a circuit over {AND, XOR, 1}. Claim: for every non-constant g: F₂ⁿ → F₂ and a fresh variable y, **MC(y·g) = MC(g) + 1**.

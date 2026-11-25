@@ -42,3 +42,7 @@
   - Theorem 16: reduction to the 5-variable family G'. EXP-006: 33 orbits, of which 31 have MC ≤ 2 and 2 have MC 3, both certified.
   - **Theorem 17: PNE-001 for all g with MC(g) ≤ 3.** SAT+DRAT cross-checks of the two certificates launched.
   - The PDT direct-sum paper (arXiv 2412.06552) is a possible overlap for Theorem 4; it is unread because arXiv and dagstuhl are blocked.
+- **Audits.**
+  - AUDIT-001 (Lemmas 1–10, Theorem 8): claims survive. D = D⊕ − 1, so Lemma 1 is known and Theorem 4 is a PDT statement. Theorem 8's barrier framing was overclaimed and corrected. Corollary 7 and the multiplexer remark were fixed for constants.
+  - AUDIT-002 (Lemmas 11–17): Theorem 17 SURVIVES, independently re-verified with no shared code. Cosmetic fixes applied, and a stronger Lemma 9 was noted.
+  - Both level-3 certificates are DRAT-verified (643 s, 748 s). The first DRAT log lost drat-trim's \r-prefixed verdict lines to a grep filter; re-checks captured them, and the script is fixed.

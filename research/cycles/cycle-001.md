@@ -77,7 +77,15 @@ Failed attempt: substituting y := α + c at the first y-gate yields only MC(g) �
   - Minor points: a readable circuit for g* was supplied and verified; the four first gates are one class mod affine; a stray λ00; monotonicity of D under restriction was needed for (F3).
 - **Lemmas 11–17:** bounded check only. Lemma 15 and Theorem 16 read correctly. The reviewer's own code finds the same 33 orbits, exactly 2 of them outside S_2, and no 3-gate circuit for y·G' on six members of those orbits.
 
-**AUDIT-002** (full audit of Lemmas 11–17): see `research/proofs/audits/`.
+**AUDIT-002** (`research/proofs/audits/AUDIT-002-PNE-001-level3.md`): a fresh adversarial reviewer, which ran none of the authors' scripts.
+- **Verdict: Theorem 17 SURVIVES**, as do Lemmas 11, 12, 14, 14(b′) and 15, Corollary 13 and Theorem 16. Nothing broken, no gaps.
+- Independent verification:
+  - S_2 on 5 variables, element for element.
+  - The orbit structure, via its own group of order 32,256.
+  - Both certificates, by a complete 3-AND search that uses no lemmas, with positive and negative controls, and by its own SAT encoding (UNSAT).
+  - Lemma 15 exhaustively at n = 5 (122,880 cases), and at n = 6 up to symmetry.
+  - MC ≤ 2 ⇒ MC = D on all 1,801,472 five-variable MC-2 functions.
+- Cosmetic issues are fixed: wording, a vacuous sentence, dimension padding, and a missing proof of MC ≤ 2 ⇒ MC = D. It also observed a stronger Lemma 9: the direction of a+b is admissible too, which gives a second proof of Lemma 12.
 
 ## Formal verification (Lean 4.37.0-rc1, core; `lake build --wfail`; axioms: standard only)
 Proved:
@@ -94,7 +102,7 @@ Proved:
 Not formalized: Lemmas 1–2, Theorem 4, Lemmas 9–16, Theorem 17, and all computer-assisted claims.
 
 ## Results (what was actually established)
-- **Main result, Theorem 17 (computer-assisted, full audit AUDIT-002 pending):** for every non-constant g with MC(g) ≤ 3, on any number of variables, MC(y·g) = MC(g) + 1.
+- **Main result, Theorem 17 (computer-assisted; survives the full independent audit AUDIT-002; both certificates DRAT-verified):** for every non-constant g with MC(g) ≤ 3, on any number of variables, MC(y·g) = MC(g) + 1.
 - Rigorous, novelty unconfirmed:
   - Theorem 4, which is D⊕(y∧g) = D⊕(g) + 1.
   - Lemmas 11–12 (structure of minimal counterexamples), Lemma 15 and Theorem 16 (reduction of level 3 to a finite family).

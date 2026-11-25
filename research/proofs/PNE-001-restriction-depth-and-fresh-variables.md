@@ -1,7 +1,7 @@
 # Restriction depth, multiplicative complexity, and fresh variables
 
 Hypotheses: PNE-001 (fresh-variable lemma), OTH-001 (restriction barrier). Cycle 001, 2026-11-25.
-Status of this document: complete proofs written by the chief researcher; Theorem 17 is computer-assisted. Independent audit `audits/AUDIT-001-PNE-001.md`: Lemmas 1–3, Theorem 4, Corollaries 5–6, Lemma 9 and Proposition 10 survive; Corollary 7 and the Theorem 8 framing were corrected here. Lemmas 11–15 and Theorems 16–17 got only a bounded check (consistent; the core of Theorem 17 was independently recomputed); a full audit is AUDIT-002.
+Status of this document: complete proofs written by the chief researcher; Theorem 17 is computer-assisted. Independent audit `audits/AUDIT-001-PNE-001.md`: Lemmas 1–3, Theorem 4, Corollaries 5–6, Lemma 9 and Proposition 10 survive; Corollary 7 and the Theorem 8 framing were corrected here. **AUDIT-002 (`audits/AUDIT-002-PNE-001-level3.md`): Lemmas 11, 12, 14, 14(b′), 15, Corollary 13, Theorem 16 and Theorem 17 all SURVIVE.** There were no gaps, only cosmetic issues, which are fixed. The certificates were re-verified by a complete 3-AND search that uses no lemmas, and by an independent SAT encoding.
 Lean status: not formalized (see "Formalization" at the end).
 
 ## 1. Definitions
@@ -75,6 +75,8 @@ Data: (MC, D) counts are (0,0): 32, (1,1): 1120, (2,2): 31616, (3,3): 32768; MC 
 **Lemma 9 (first-gate criterion).** Let $\mathrm{MC}(F)\ge m\ge1$, and suppose $F$ has a circuit with exactly $m$ AND gates. Then there are affine forms $a=\langle v,x\rangle+e$, $b=\langle w,x\rangle+e'$ with $v\ne w$, both nonzero, such that $a\cdot b$ is the first gate of such a circuit, and all four restrictions $F|_{a=c}$, $F|_{b=c}$ ($c\in\mathbb{F}_2$) have $\mathrm{MC}\le m-1$. Call a direction $u$ *admissible* if both $F|_{\langle u,x\rangle=0}$ and $F|_{\langle u,x\rangle=1}$ have $\mathrm{MC}\le m-1$. Then $v,w$ are distinct admissible directions.
 *Proof.* The circuit is optimal since $\mathrm{MC}(F)\ge m$. Its first gate has inputs affine in $x$. If either input is constant, or if $w=v$ (then $b\in\{a,a+1\}$ and $ab\in\{a,0\}$), the gate computes an affine function and can be removed, contradicting optimality. Restricting $a$ or $b$ to a constant makes the gate affine. By (F2) this gives an $(m-1)$-gate circuit for each of the four restrictions. $\square$
 
+*Remark (stronger form of Lemma 9; AUDIT-002, I-4).* Restricting $a+b$ to a constant $c$ also makes the first gate affine, since $ab=a(a+c)\in\{0,a\}$. So all three directions $v$, $w$ and $v+w$ are admissible. For $F=y\,g$, if the $x$-parts of $v$ and $w$ were equal, $v+w$ would be the direction $y$, which is never admissible (Lemma 11). This gives a second proof of Lemma 12.
+
 **Proposition 10 (computer-assisted; first verified case of PNE-001 with MC > D).** Let $g^*$ be the 5-variable function with truth table `0xfff3d212` (ANF in `research/hypotheses/PNE-001-fresh-variable-lemma.md`). Then $D(g^*)=2$, $\mathrm{MC}(g^*)=3$ and $\mathrm{MC}(y\,g^*)=4$.
 *Proof.*
 - $D(g^*)=2$: computed (EXP-002). The witness is the query $x_2$, whose restrictions both have $D=1$; $D\ge2$ because $\deg g^*=3$ (Lemma 3).
@@ -121,7 +123,7 @@ This is the starting point for a hand proof of PNE-001 at level 3 in the plane c
 
 **Lemma 15.** If $x_1,x_2$ are cheap directions of $g$ and the quarter $g_{00}$ is not affine, then $\mathrm{MC}(g)\le2$.
 *Proof.* Write $g_{00}=\alpha\beta+\gamma$ (Lemma 14(a)). Since $g_{00}$ is not affine, $\alpha$ and $\beta$ have linearly independent linear parts; let $U=\mathrm{span}(\alpha_{\rm lin},\beta_{\rm lin})$.
-- The quadratic part of any function of $\mathrm{MC}\le1$, i.e. of the form $ab+c$, is a single product of two linear forms, so its symplectic form has rank $\le2$.
+- A function of $\mathrm{MC}\le1$ has the form $ab+c$, so its quadratic part is $a_{\rm lin}b_{\rm lin}$ (or $0$), and its symplectic form has rank $\le2$.
 - The half $g|_{x_1=0}=g_{00}+x_2\ell_2$ has $\mathrm{MC}\le1$, and its quadratic part is $\alpha_{\rm lin}\beta_{\rm lin}+x_2(\ell_2)_{\rm lin}$. If $(\ell_2)_{\rm lin}\notin U$, coordinates $u_1=\alpha_{\rm lin}$, $u_2=\beta_{\rm lin}$, $u_3=(\ell_2)_{\rm lin}$ turn this into $u_1u_2+x_2u_3$, of rank 4, a contradiction. So $(\ell_2)_{\rm lin}\in U$.
 - In the same way, $g|_{x_2=0}=g_{00}+x_1\ell_1$ gives $(\ell_1)_{\rm lin}\in U$.
 - And $g|_{x_1=1}=(g_{00}+\ell_1)+x_2(\ell_2+\ell_3)$ gives $(\ell_2+\ell_3)_{\rm lin}\in U$, hence $(\ell_3)_{\rm lin}\in U$.
@@ -135,15 +137,15 @@ on the five variables $(x_1,x_2,u_1,u_2,u_3)$, with $\ell_1,\ell_2,\ell_3,\lambd
 *Proof.*
 - By Lemma 12 (with PNE-001 below level 3), $g$ has two distinct cheap directions. Choose $x$-coordinates in which they are $x_1,x_2$; this keeps $y$ fresh and does not change $\mathrm{MC}(y\,g)$.
 - By Lemma 15, $g_{00}$ is affine. By Lemma 14(b′), $g=g_{00}+x_1\ell_1+x_2\ell_2+x_1x_2\ell_3$.
-- Choose coordinates of $x'$ so that the linear parts of $\ell_1,\ell_2,\ell_3$ lie in $\mathrm{span}(u_1,u_2,u_3)$. Write $g_{00}=c+\lambda(u)+\mu$ with $\mu$ linear in the remaining coordinates; if $\mu\ne0$, take $\mu=w_1$ as a coordinate.
-- Terms $a_1x_1$ and $a_2x_2$ are absorbed into the constants of $\ell_1,\ell_2$. So $g=G'+w$ with $w\in\{0,w_1\}$, and $w_1$ appears nowhere else.
+- Choose coordinates of $x'$ so that the linear parts of $\ell_1,\ell_2,\ell_3$ lie in $\mathrm{span}(u_1,u_2,u_3)$. If $x'$ has fewer than 3 coordinates, first add dummy variables, which changes neither MC value by (F3). Write $g_{00}=c+\lambda(u)+\mu$ with $\mu$ linear in the remaining coordinates; if $\mu\ne0$, take $\mu=w_1$ as a coordinate.
+- Since $g_{00}$ depends only on $x'$, $g=G'+w$ with $w\in\{0,w_1\}$, and $w_1$ appears nowhere else.
 - Adding a fresh linear variable does not change MC: restrict $w_1=0$ for one direction, XOR it for the other. So $\mathrm{MC}(G')=3$.
 - Restricting $w_1=0$ in a circuit for $y\,g$ gives one for $y\,G'$, so $3=\mathrm{MC}(G')\le\mathrm{MC}(y\,G')\le\mathrm{MC}(y\,g)=3$. $\square$
 The finite check is the first task of cycle 002. It needs the 5-variable $S_2$ set (vectorized), first-gate certificates on 6 variables (a C implementation, or Python after symmetry reduction under $\mathrm{AGL}(3)$ on $u$ and $\mathrm{GL}(2)$ on $(x_1,x_2)$), and a check that each symmetry preserves the family and both MC values.
 
 **Theorem 17 (computer-assisted). For every non-constant Boolean function $g$, on any number of variables, with $\mathrm{MC}(g)\le3$: $\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$.**
 *Proof.*
-- *$\mathrm{MC}(g)\le2$.* Then $\mathrm{MC}(g)=D(g)$ (Remark 1 after Lemma 11), and Corollary 5 applies.
+- *$\mathrm{MC}(g)\le2$.* Then $\mathrm{MC}(g)=D(g)$, and Corollary 5 applies. Proof: $D\le\mathrm{MC}$, and $D=0$ iff $g$ is affine iff $\mathrm{MC}=0$. If $D(g)=1$, some split has both halves affine, so $g=\tilde g_0+s(\tilde g_0+\tilde g_1)$ and $\mathrm{MC}(g)\le1$. Hence $\mathrm{MC}=1$ implies $D=1$, and $\mathrm{MC}=2$ implies $D=2$. AUDIT-002 also checked this on all 1,801,472 five-variable functions of MC 2.
 - *$\mathrm{MC}(g)=3$.* By Theorem 16, a counterexample would give a member $G'=x_1\ell_1+x_2\ell_2+x_1x_2\ell_3+\lambda(u)$ of the 5-variable family with $\mathrm{MC}(G')=3=\mathrm{MC}(y\,G')$.
 - *The family (EXP-006).* It has 32,768 members modulo complement, in 33 orbits under affine bijections of the input space that act separately on $(x_1,x_2)$ and $u$, plus complementation. All of these preserve $\mathrm{MC}(G')$ and $\mathrm{MC}(y\,G')$.
 - *31 orbits.* Their representatives lie in the exhaustively computed set $S_2$ (all 1,811,456 five-variable functions of MC $\le2$), so they are not MC 3.
@@ -151,7 +153,7 @@ The finite check is the first task of cycle 002. It needs the 5-variable $S_2$ s
   - $0x01234567=x_1(u_1+u_2)+x_2(u_1+u_3)+x_1x_2(1+u_1+u_2+u_3)+u_1+1$
   - $0x0167abcd=x_1(1+u_1+u_2+u_3)+x_2(u_1+u_2)+x_1x_2(1+u_1)+u_1+1$
 
-  For each, both have admissible directions exactly $\{x_1,x_2,x_1+x_2\}$ and their $y$-shifts. The first-gate certificate (Lemma 9, with first gates restricted by Lemma 12 to 48 candidates) finds that no first gate extends to a 3-AND circuit for $y\,G'$. So $\mathrm{MC}(y\,G')=4$.
+  For each, both have admissible directions exactly $\{x_1,x_2,x_1+x_2\}$ and their $y$-shifts. The first-gate certificate (Lemma 9, with first gates restricted by Lemma 12 to 48 candidates, which are only 4 distinct cases up to affine terms) finds that no first gate extends to a 3-AND circuit for $y\,G'$. So $\mathrm{MC}(y\,G')=4$.
 - Hence no counterexample exists. $\square$
 
 Dependencies:
