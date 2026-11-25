@@ -25,3 +25,6 @@ research/experiments/*/formal4_k5nd
 research/experiments/*/formalm
 research/experiments/*/test_affine
 research/experiments/EXP-014-formal-circuits/out_k*.txt
+research/experiments/*/formal4_k5red
+research/experiments/*/hyper
+research/experiments/EXP-016-level5-readonce/out_m*.txt

@@ -24,6 +24,7 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 3. **Lemma 23 (formal-circuit reformulation)** is the key idea of the cycle. Every $m$-gate circuit for $y\,g$ is a fixed formal circuit on $2m$ free inputs composed with an affine map. Under that map, $y=0$ and $y=1$ become two cosets $C_0\neq C_1$ of one linear subspace $K$. So a level-$m$ counterexample exists **for some $n$** iff some formal circuit is affine on $C_0$ and has MC $m$ on $C_1$. This is a finite problem, independent of $n$.
 4. **Lemma 24 (degenerate gates)**: one linear condition on $K$ per gate makes that gate free on every coset.
 5. **Lemma 26 (class-list reformulation)**: equivalently, some MC-$m$ class representative $R$ is affine on an affine hyperplane while having MC $m$ on the complement. Published class lists can therefore be used directly.
+6. **Lemma 28 (human proof, every $m$)**: if a formal circuit is affine on a coset of a *hyperplane*, its last gate is degenerate. **Corollary 29:** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$, at every level. Level-$m$ counterexamples therefore need $\dim g\le2m-2$.
 
 ## Proof attempts and exact status
 - Lemmas 9′, 18–24, 26 and fact (F4): full proofs in `research/proofs/PNE-001-level4.md`. They await AUDIT-003.
@@ -40,6 +41,7 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 | EXP-010 | Exact procedure cert4b on the 297 representatives | all NONE, i.e. $\mathrm{MC}(y\,g)\ge5$. 74/74 positive controls FOUND |
 | EXP-013 | SAT with the first gate fixed | about 700 s per plane, infeasible; 2 planes UNSAT |
 | EXP-014 | Formal 4-gate circuits, $\dim K\in\{5,6,7\}$ | 840 / 509,220 / 66,989,104 coset pairs. Every pair is degenerate or one of 0 / 72 / 2,142 distinct functions, each with an explicit 3-gate circuit. No counterexample. |
+| EXP-016 | Read-once case ($\dim K=2m-1$) at $m=4,5$ | $m=4$: 840 pairs, all degenerate. $m=5$: 64,800 pairs, all degenerate. Agrees with Lemma 28. |
 | EXP-015 | NIST data | 48/48 class agreement. Levels 3 and 4 confirmed on 5 variables. Class-list route: levels 3 and 4, no counterexample for any $n$ (27 and 186 hyperplane cases). |
 
 Limitations:
@@ -47,7 +49,9 @@ Limitations:
 - The 5-variable MC-3 count disagrees with a constant on a NIST slide ($s_5$), though our table agrees with NIST's class data. The cause is unresolved.
 
 ## Counterexamples
-None found to PNE-001. Refuted along the way:
+None found to PNE-001.
+
+**Refuted conjecture.** "If $\Phi|_{C_0}$ is affine, some gate of the *given* circuit is triangularly redundant on $C_1$" fails. At $m=4$, $\dim K=5$, 2,152,192 non-degenerate pairs have no such gate, although each has MC $\le3$ through another circuit. In codimension 2 the last gate was always redundant (19,644 of 19,644). Refuted along the way:
 - Our own expectation that the degree-3 representatives would be hard for cert4b (they took 35 s each).
 - The approach "SAT with the first gate fixed" as a verification method: too slow.
 
@@ -58,6 +62,7 @@ AUDIT-003 (fresh adversarial reviewer; Lemmas 9′–26, Theorems 25 and 27, all
 Lean (core 4.37.0-rc1): the proof engineer is formalizing XOR-AND circuits with gate elimination and affine substitution. These are the circuit facts behind Lemmas 9, 9′, 23 and 24. **Status: pending.** The enumeration in Theorem 25 and the reformulation in Lemma 23 are not formalized.
 
 ## Results (what was actually established)
+0. **Corollary 29 (human proof, every level):** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$. It rests on Lemmas 22, 23 and 28.
 1. **Theorem 25 (computer-assisted, all $n$):** $\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$ for every non-constant $g$ with $\mathrm{MC}(g)\le4$.
 2. **Lemma 23:** for every fixed level $m$, PNE-001 is equivalent to a finite, $n$-independent statement about formal $m$-gate circuits.
 3. **Lemma 22:** PNE-001 holds for all quadratic $g$. Level-$m$ counterexamples have dimension $\le2m-1$.
@@ -75,9 +80,10 @@ Novelty:
 - The "tight functions are product trees" route (EXP-011) was not pursued further. Its induction does not close, because a single restricted half can lose more than one degree.
 
 ## Next research direction
-1. **Level 5 via Lemma 23.**
+1. **Codimension 2 for every $m$.** Prove that PNE-001 holds whenever $\dim g\ge2\,\mathrm{MC}(g)-2$. At $m=4$ all 19,644 non-degenerate codimension-2 pairs have a redundant last gate, which suggests a Lemma-28-type proof.
+2. **Level 5 via Lemma 23.**
    - There are $\approx2.35\cdot10^6$ wirings, and subspaces of $\mathbb F_2^{10}$ of dimension 6–9 ($\approx6\cdot10^7$ of them). Brute force is about $10^{15}$ coset tests.
    - Needed: prune non-degenerate $(\Phi,K)$ pairs gate by gate, since Lemma 24's conditions are linear in $K$, and exploit the circuit automorphisms.
    - A partial result is available now: Lemma 26 on NIST's dimension-10 MC-5 list (`EXP-015/nist_level5_dim10.log`).
-2. **A human-readable proof of level 4.** Explain why non-degenerate coset pairs are so rare (0, 72 and 2,142 distinct functions), and try to prove "non-degenerate and affine on $C_0$ implies MC $\le m-1$ on $C_1$" by induction on $m$.
-3. Resolve the $s_5$ discrepancy once the paper text is accessible.
+3. **A human-readable proof of level 4.** Explain why non-degenerate coset pairs are so rare (0, 72 and 2,142 distinct functions), and try to prove "non-degenerate and affine on $C_0$ implies MC $\le m-1$ on $C_1$" by induction on $m$.
+4. Resolve the $s_5$ discrepancy once the paper text is accessible.

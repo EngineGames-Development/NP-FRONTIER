@@ -1,0 +1,6 @@
+m=5 D=10 wirings=2350080
+m=5 affine cosets=71280 pairs=64800 degenerate=64800 non-degenerate=0
+
+real	11m25.863s
+user	19m13.671s
+sys	0m0.565s

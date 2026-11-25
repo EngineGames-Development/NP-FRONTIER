@@ -84,3 +84,12 @@
 - **Delegated.**
   - AUDIT-003: fresh adversarial review of PNE-001-level4.md and the code.
   - Lean: circuit gate-elimination and affine-substitution lemmas (proof engineer).
+- **Later, cycle 002.**
+  - **Lemma 28 (human proof, all m):** if a formal circuit is affine on a coset of a hyperplane, its last gate is degenerate. **Corollary 29:** PNE-001 holds whenever dim(g) ≥ 2MC(g) − 1.
+  - EXP-016 confirms Lemma 28 at m = 5: 64,800 hyperplane pairs, all degenerate.
+  - The independent numpy check of EXP-014 at dim 6 matches exactly (908,800 / 1,663,872 / 72,576), and its 168 functions all have 3-gate circuits.
+  - Exploration:
+    - in codimension 2 the last gate is always redundant (19,644/19,644);
+    - the conjecture "some gate of the given circuit is redundant on C1" is REFUTED in codimension 3 (2,152,192 pairs).
+  - The Lean and AUDIT-003 agents hit the API rate limit (resets 18:40 UTC). Both were resumed with SendMessage at 19:50 UTC.
+  - The NIST level-5 dimension-10 job was killed by a worker restart. It is now redundant given Lemma 28 and EXP-016.

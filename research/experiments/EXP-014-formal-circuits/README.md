@@ -30,7 +30,8 @@ Gate-input swaps reduce the 32,768 wirings to 8,640. Lemma 24: if a gate input (
 
 - For K = 5 the exact table additionally gives the MC distribution 1: 23,017,648; 2: 27,492,928; 3: 16,478,528; 4: 0.
 - Full wirings (`formal4_full`): K = 7 gives 3,072 / 2,688; K = 6 gives 908,800 / 1,663,872, of which 72,576 are non-degenerate, giving 160 distinct functions, all with a 3-gate circuit (`mc3_check_full.json`).
-- `indep_check.py` reproduces K = 7 exactly (3,072 / 2,688 / 0); for K = 6 see `indep_check.log`.
+- `indep_check.py` reproduces both K = 7 (3,072 / 2,688 / 0) and K = 6 (908,800 / 1,663,872 / 72,576) exactly. Its own 168 distinct non-degenerate K = 6 functions all have 3-gate circuits (`indep_mc3_check_k6.json`).
+- Exploration (`redundancy.py`, `lastgate.py`, `formal4_k5red.c`): in all 19,644 non-degenerate K = 6 pairs the last gate is triangularly redundant on C1. At K = 5, 2,152,192 of the 9,588,720 non-degenerate pairs have no triangularly redundant gate in the given circuit, so the naive conjecture is refuted (see PNE-001-level4.md, Observations).
 - Levels 1-3 (`formalm`): no counterexample. This re-derives Theorem 17 independently.
 
 **Conclusion.** No level-4 counterexample exists for any n. This is computer-assisted, and its correctness rests on Lemma 23 and this code.

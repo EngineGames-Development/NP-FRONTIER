@@ -48,19 +48,21 @@ Computational facts:
 ## Established in cycle 002 (see `research/proofs/PNE-001-level4.md`, `research/cycles/cycle-002.md`)
 - **Theorem 25:** PNE-001 at level 4 for every n. Computer-assisted: EXP-014 (formal circuits; all non-degenerate cases have explicit 3-gate circuits) and EXP-015 (NIST class list, 186 hyperplane cases).
 - **Lemma 23:** for each level m, PNE-001 is equivalent to a finite, n-independent statement about formal m-gate circuits and coset pairs in F_2^{2m}. **Lemma 26:** the same in terms of the MC-m class list.
+- **Lemma 28 / Corollary 29 (human proof, every level):** a formal circuit that is affine on a coset of a hyperplane has a degenerate last gate. Hence PNE-001 holds for every g with dim(g) ≥ 2·MC(g) − 1. EXP-016 confirms this by enumeration at m = 5.
 - **Lemma 22:** dim(y·g) ≥ dim(g)+1. Consequences: PNE-001 for every quadratic g; level-m counterexamples have dim ≤ 2m−1. Part (a), MC ≥ ⌈dim/2⌉, is known (Çalık–Sönmez Turan–Peralta 2020).
 - Lemmas 9′, 18–21: MC-2 structure and the cheap-plane structure of level-4 counterexamples. **Theorem 27:** all g on ≤ 5 variables, three independent confirmations.
 - Exact MC of all 2^32 five-variable functions. It agrees with NIST's classification on all 48 classes.
 - Audit: AUDIT-003 pending. Lean: circuit gate-elimination formalization pending.
 
 ## Priorities for cycle 003
-1. **Level 5 of PNE-001 via Lemma 23.**
+1. **Codimension 2:** prove PNE-001 for dim(g) ≥ 2·MC(g) − 2, every level. The m = 4 data say the last gate is always redundant on C_1. Note that the stronger form "some gate of the given circuit is redundant" is refuted at codimension 3.
+2. **Level 5 of PNE-001 via Lemma 23.**
    - Brute force is about 10^15 coset tests: 2.35M wirings × subspaces of F_2^10 of dimension 6–9.
    - Design pruning: Lemma 24's conditions are linear in K and can be imposed gate by gate, combined with circuit automorphisms and early affinity filtering.
    - Partial data: the NIST dimension-10 MC-5 list (EXP-015).
-2. **A human-readable proof of level 4.** Explain the rarity of non-degenerate coset pairs. Try an induction on m for the statement "Φ affine on C_0 with K non-degenerate ⇒ MC(Φ|C_1) ≤ m−1".
-3. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Resolve the s5 discrepancy with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
-4. Carried over from cycle 001: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), and the PEQ track.
+3. **A human-readable proof of level 4.** Explain the rarity of non-degenerate coset pairs. Try an induction on m for the statement "Φ affine on C_0 with K non-degenerate ⇒ MC(Φ|C_1) ≤ m−1".
+4. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Resolve the s5 discrepancy with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
+5. Carried over from cycle 001: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), and the PEQ track.
 
 ## Environment notes
 Lean 4.37.0-rc1 (core only). PySAT/CaDiCaL with DRAT logging. drat-trim is built by `scripts/setup_env.sh`.

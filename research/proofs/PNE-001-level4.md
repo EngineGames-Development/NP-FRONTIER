@@ -195,7 +195,7 @@ For $\dim K=5$:
   - $\dim K=6$: 908,800 / 1,663,872; the 72,576 non-degenerate pairs give 160 distinct functions modulo affine, and all 160 have 3-gate circuits.
 - Independent re-implementation (`indep_check.py`: numpy, subspaces as kernels of dual subspaces, affinity by interpolation, degeneracy tested in the dual, full wirings):
   - $\dim K=7$: 3,072 / 2,688 / 0 non-degenerate, identical to `formal4_full`.
-  - $\dim K=6$: see the log.
+  - $\dim K=6$: 908,800 / 1,663,872 / 72,576 non-degenerate, identical to `formal4_full`. Its 168 distinct non-degenerate functions, in its own coordinates, all have 3-gate circuits (`indep_mc3_check_k6.json`).
 - The same method for $m\le3$ (`formalm.c`) finds no counterexample at levels 1–3. This re-derives Theorem 17, which cycle 001 proved by DRAT-checked SAT, by an unrelated method.
 - A second, independent route via NIST's published class list is Lemma 26 below.
 
@@ -224,6 +224,43 @@ This route shares no code with EXP-014 except the SAT encoding `mc.py`, which is
 3. NIST's 6-variable classification (EXP-015 `nist_level_check.py`). Each 5-variable $g$ of MC $m\in\{3,4\}$ is affine-equivalent to a listed representative $g_0$ plus a linear form, and $\mathrm{MC}(y(g_0\circ T+\ell))=\mathrm{MC}(y(g_0+\ell\circ T^{-1}))$. So it suffices to test $y(g_0+\ell)$ for the 32 linear $\ell$. The 544 (level 3) and 832 (level 4) such functions all have affine-invariant fingerprints that differ from every listed class of MC $\le m$, so MC$(y(g_0+\ell))=m+1$.
 
 Our exact 5-variable MC table agrees with NIST's MC for every one of the 48 affine classes of 5-variable functions, and it passed 200,000 random affine-invariance tests (`EXP-015/check_mc5_vs_nist.py`). Open discrepancy: the constant $s_5=1{,}576{,}479{,}744$ in the counting formula for MC-3 functions on NIST's 2019 slide does not match our count of dimension-5 MC-3 functions, 775,728,128. The MC-2 formula on the same slide matches our count exactly (1,801,472 for $n=5$, 31,616 for $n=4$), and our MC-3 total is supported by the class-by-class agreement. The paper text, which would settle the slide's normalization, could not be retrieved (Cloudflare challenge).
+
+## Lemma 28 (the read-once case: hyperplanes force a degenerate last gate) — human proof, every $m$
+
+Let $\Phi$ be a formal $m$-gate circuit, and let $H=\{w:\langle h,w\rangle=c\}$ be an affine hyperplane of $\mathbb F_2^{2m}$ ($h\ne0$) such that $\Phi|_H$ is affine. Then gate $m$ is degenerate for $K=\ker h$ in the sense of Lemma 24: $h=e_{2m-1}$ and $\alpha_m=0$, or $h=e_{2m}$ and $\beta_m=0$, or $h=e_{2m-1}+e_{2m}$ and $\alpha_m=\beta_m$. Consequently $\mathrm{MC}(\Phi|_{H'})\le m-1$ for the parallel hyperplane $H'$ as well.
+
+*Independence fact.* For nonempty $S\subseteq\{1,\dots,m-1\}$, the sum $\sum_{j\in S}z_j$ is not affine as a function on $\mathbb F_2^{2m}$.
+- Let $j^*=\max S$. Then $z_{j^*}=(w_{2j^*-1}+a)(w_{2j^*}+b)$, where $a,b$ depend only on $w_1,\dots,w_{2j^*-2}$.
+- So the monomial $w_{2j^*-1}w_{2j^*}$ has coefficient 1 in $z_{j^*}$.
+- No other $z_j$ with $j\in S$ involves $w_{2j^*-1}$ or $w_{2j^*}$.
+- Hence the sum has degree $\ge2$.
+
+*Proof.* Write $u=w_{2m-1}$ and $v=w_{2m}$, and let $w''=(w_1,\dots,w_{2m-2})$. Then $\Phi=(u+a)(v+b)+\Gamma$, where $a=\alpha_m\cdot z$, $b=\beta_m\cdot z$ and $\Gamma=\sum_{j<m}\gamma_jz_j$ are functions of $w''$ alone.
+- *$h$ involves neither $u$ nor $v$.* On $H$ both $u$ and $v$ remain free. $\Phi|_H$ contains the monomial $uv$ with coefficient 1, so it is not affine. Contradiction.
+- *$h$ involves $u$ but not $v$.* On $H$ we have $u=c+\langle h',w''\rangle$, and $v$ is free. The coefficient of $v$ in $\Phi|_H$ is $A:=c+\langle h',w''\rangle+\alpha_m\cdot z$. Affinity of $\Phi|_H$ forces $A$ to be constant.
+  - By the independence fact, $\alpha_m=0$.
+  - Then $\langle h',w''\rangle$ is constant, so $h'=0$ and $h=e_{2m-1}$.
+- *$h$ involves $v$ but not $u$.* Symmetric: $\beta_m=0$ and $h=e_{2m}$.
+- *$h$ involves both.* On $H$ we have $v=u+c+\langle h'',w''\rangle$, and $u$ is free. Using $u^2=u$, $(u+a)(u+b')=u(1+a+b')+ab'$ with $b'=c+\langle h'',w''\rangle+b$. Affinity forces $a+b'=(\alpha_m+\beta_m)\cdot z+\langle h'',w''\rangle+c$ to be constant.
+  - By the independence fact, $\alpha_m=\beta_m$.
+  - Then $h''=0$, so $h=e_{2m-1}+e_{2m}$.
+
+The final claim is Lemma 24. $\square$
+
+**Corollary 29 (every level).** PNE-001 holds for every non-constant $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$. Equivalently, a level-$m$ counterexample has $\dim g\le 2m-2$.
+
+*Proof.* Let $g$ be a level-$m$ counterexample, and take $\Phi,K,C_0,C_1$ from Lemma 23.
+- $g$ equals $\Phi|_{C_1}$ composed with an affine surjection, plus an affine function. Hence $\dim g\le\dim K\le 2m-1$.
+- If $\dim g=2m-1$, then $K$ is a hyperplane. Lemma 28 then gives $\mathrm{MC}(g)=\mathrm{MC}(\Phi|_{C_1})\le m-1$, a contradiction.
+- The case $\dim g=2m$ is Lemma 22(c). $\square$
+
+This explains the $\dim K=7$ row of Theorem 25 (all 840 pairs degenerate) without computation. It also predicts that level 5 has no non-degenerate hyperplane pairs. EXP-016 confirms this by enumeration: 2,350,080 formal 5-gate circuits × 1,023 hyperplanes give 71,280 affine cosets and 64,800 pairs, all degenerate. The case of codimension 2 is genuinely different: at $m=4$ there are 19,644 non-degenerate pairs, all harmless, but not for a reason captured by Lemma 24.
+
+## Observations toward a general proof (EXP-014 data; no claims)
+
+- **Codimension 2 ($m=4$, $\dim K=6$).** In all 19,644 non-degenerate pairs the *last* gate is triangularly redundant on $C_1$: $z_4|_{C_1}\in\mathrm{span}(\text{affine},z_1,z_2,z_3)|_{C_1}$ (`redundancy.py`). That is the codimension-2 analogue of Lemma 28. The strong form "the last gate is redundant on $C_1$ for every pair" is false: 34,736 degenerate pairs violate it (`lastgate.py`). Those pairs are harmless only because another gate is degenerate.
+- **Codimension 3 ($\dim K=5$) refutes the natural conjecture** "some gate of the given circuit is triangularly redundant on $C_1$". There are 9,588,720 non-degenerate pairs. 7,436,528 have such a gate (6,852,464 of them the last gate). 2,152,192 have none (`formal4_k5red.c`). For those pairs $\mathrm{MC}(\Phi|_{C_1})\le3$ holds only through *different* circuits (SAT).
+- **Lesson.** A general proof of PNE-001 through Lemma 23 cannot work by shortening the given circuit on $C_1$. It must construct a new circuit, as the SAT witnesses do. A promising sub-target is codimension 2 for every $m$: "dim $g\ge2\mathrm{MC}(g)-2$ implies PNE-001".
 
 ## Limits and what remains
 - Theorem 25 is computer-assisted. Its correctness rests on the reformulation (Lemma 23) and on the enumeration code. The two independent routes (EXP-014 and EXP-015) reduce, but do not remove, the risk of a coding error.
