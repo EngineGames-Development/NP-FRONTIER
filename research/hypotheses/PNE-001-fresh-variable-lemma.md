@@ -1,6 +1,6 @@
 # PNE-001: Fresh-variable lemma for multiplicative complexity
 
-**Status:** PROOF ATTEMPT for the general statement. **The level-≤3 case is REVIEWED.** Theorem 17 proves it, computer-assisted, for every g with MC(g) ≤ 3 on any number of variables, and it survives AUDIT-002. Also proved for every g with MC(g) = D(g), which includes every g on ≤ 4 variables. Also proved for every g with MC(g) = 3 and a single cheap direction (Corollary 13). Verified for g* (three independent methods) and for all 38 sampled 5-variable functions with MC 3 > D 2 (EXP-004/005; see the cycle report for the 7 three-direction cases). Open in general. Audit pending.
+**Status:** PROOF ATTEMPT for the general statement. **Proved, computer-assisted, for every g with MC(g) ≤ 4 on any number of variables.** Level ≤ 3 is Theorem 17 (REVIEWED, AUDIT-002). Level 4 is Theorem 25 (cycle 002), established by two independent routes, EXP-014 and EXP-015; AUDIT-003 is pending. Also proved for all g on ≤ 5 variables (Theorem 27), for all g with MC(g) = D(g), and for all quadratic g (Lemma 22). Open from level 5. Novelty is unconfirmed: a 2016 NIST email states the special case h = v·f (see `research/literature/mc-peralta-2016-nist-email-fresh-variable.md`).
 
 ## Formulation
 MC(f) is the least number of AND gates in a circuit over {AND, XOR, 1}. Claim: for every non-constant g: F₂ⁿ → F₂ and a fresh variable y, **MC(y·g) = MC(g) + 1**.
@@ -45,3 +45,15 @@ Lean: only the algebraic identities used in Theorem 4 (`gate_normalize`, `mul_ev
 - Refuted: "MC = 3 implies one cheap direction" (e.g. 0x47fca912).
 - Lemma 14: plane-type functions have the form g = h(x') + Λ with MC(h) ≤ 1. This is the starting point for a hand proof of the plane case.
 - Proposition 10: MC(y·g*) = 4, by Corollary 13, by the exhaustive first-gate certificate, and by SAT with a DRAT proof checked by drat-trim.
+
+## Cycle 002 update (2026-11-25)
+- `research/proofs/PNE-001-level4.md` contains:
+  - Lemmas 9′, 18–24 and 26;
+  - Theorem 25 (level 4, all n);
+  - Theorem 27 (n ≤ 5).
+- Experiments: EXP-007, 008, 010, 014 and 015 (013 infeasible, 009 superseded).
+- Key idea: Lemma 23 makes level m a finite problem independent of n. Formal m-gate circuits on 2m formal inputs are tested against coset pairs of subspaces.
+- Next:
+  - level 5, via Lemma 23 with pruning, since it is infeasible by brute force at about 10^15 coset checks;
+  - a human-readable proof of level 4;
+  - the general lemma.

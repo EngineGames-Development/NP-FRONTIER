@@ -178,11 +178,11 @@ Either way $z_i$ is an affine combination of $1$, the restricted $w$'s and $z_j$
 |---|---|---|---|---|---|---|
 | 7 | 1,020 | 840 | 840 | 0 | 0 | — |
 | 6 | 297,128 | 509,220 | 489,576 | 19,644 | 72 | 72 / 72 (SAT, re-evaluated) |
-| 5 | 17,467,504 | 66,989,104 | 57,400,384 | 9,588,720 | 2,142 | see below |
+| 5 | 17,467,504 | 66,989,104 | 57,400,384 | 9,588,720 | 2,142 | 2,142 / 2,142 (SAT, re-evaluated) |
 
 For $\dim K=5$:
 - The exact table (EXP-007/010) gives MC $\le3$ for all 66,989,104 pairs. The MC distribution is 1: 23,017,648; 2: 27,492,928; 3: 16,478,528; 4: 0.
-- Table-free check: the non-degenerate ones reduce to 2,142 functions modulo affine functions, and each is tested by SAT for a 3-gate circuit (EXP-014/`mc3_check_k5.log`).
+- Table-free check: the non-degenerate ones reduce to 2,142 functions modulo affine functions, and **every one has an explicit 3-gate circuit** (SAT, re-evaluated; EXP-014/`mc3_check_k5.log`). The proof of Theorem 25 therefore does not depend on the 5-variable table.
 - MC is unchanged by adding an affine function, so deduplicating modulo affine functions is sound. $\square$ (conditional on the computations; see the verification record)
 
 **Verification record.**
@@ -212,7 +212,7 @@ A level-$m$ counterexample exists if and only if the following holds. Some $R$ w
 
 **Independent verification of Theorems 17 and 25 (EXP-015).** Çalık, Sönmez Turan and Peralta (2020) list all affine classes with MC 3 (24 classes) and MC 4 (1277 classes; dimensions 5–8). The lists are at `github.com/usnistgov/circuits/data/mc_dim` and were cloned this cycle; the counts match the paper. For each representative and each of its $2(2^d-1)$ affine hyperplanes, `nist_hyperplane_check.py` tests affinity of $R|_H$. For every hit it finds an $(m-1)$-gate circuit for $R|_{H^c}$ by SAT, re-evaluated.
 - Level 3: 24 classes, 27 hyperplanes with affine restriction, all halves have MC $\le2$. No counterexample, for any $n$.
-- Level 4: 1277 classes; see `EXP-015/nist_level4.log`.
+- **Level 4: all 1277 classes, 186 hyperplanes with affine restriction, and every complementary half has a 3-gate circuit. No counterexample, for any $n$** (`EXP-015/nist_level4.log`).
 
 This route shares no code with EXP-014 except the SAT encoding `mc.py`, which is DRAT-validated in cycle 001. It depends on the correctness and completeness of the published class list.
 

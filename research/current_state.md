@@ -1,9 +1,17 @@
 # Current state of NP-FRONTIER
 
-Last updated: 2026-11-25, end of cycle 001. **Single source of truth**: start every session here (CLAUDE.md §13).
+Last updated: 2026-11-25, cycle 002 (AUDIT-003 and the Lean task pending at time of writing). **Single source of truth**: start every session here (CLAUDE.md §13).
 
 ## Honest summary
-P versus NP is unresolved, and nothing in this program changes that. Cycle 001 produced:
+P versus NP is unresolved, and nothing in this program changes that.
+
+Cycle 002 extended the fresh-variable lemma (PNE-001) from MC(g) ≤ 3 to **MC(g) ≤ 4, for every number of variables**. The result is computer-assisted. Two independent routes support it:
+- formal-circuit enumeration (Lemma 23, EXP-014);
+- NIST's published MC-4 class list (Lemma 26, EXP-015).
+
+It is still a statement about a restricted measure at constant complexity levels.
+
+Cycle 001 produced:
 - a small set of rigorous results about one restricted measure, multiplicative complexity (MC: AND gates when XOR is free), in a linear-size regime far from P ≠ NP;
 - formal verification of supporting lemmas in Lean;
 - a sourced map of the barriers and no-go theorems.
@@ -12,7 +20,7 @@ P versus NP is unresolved, and nothing in this program changes that. Cycle 001 p
 
 | ID | Direction | Status | One line |
 |---|---|---|---|
-| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT (level ≤ 3 REVIEWED) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 3** (Theorem 17: computer-assisted, DRAT-verified, survives AUDIT-002) and whenever MC(g) = D(g). Open from level 4. |
+| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT (level ≤ 3 REVIEWED; level 4 proved, AUDIT-003 pending) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 4, all n.** Level ≤ 3 is Theorem 17. Level 4 is Theorem 25 (cycle 002, computer-assisted, two independent routes). Also proved for all quadratic g, all g on ≤ 5 variables, and whenever MC(g) = D(g). Open from level 5. Novelty unconfirmed (2016 NIST email). |
 | PNE-002 | P≠NP (restricted measure) | FORMULATED | AND-direct sum for MC. It would imply explicit c·n circuit lower bounds for every c, so it is believed hard. |
 | OTH-001 | barrier | REVIEWED: elementary, framing corrected | Restriction-robust (P1) measures are ≤ D = D⊕−1 ≤ n−1. General one-kill-per-restriction arguments are capped at n−1 only by the folklore dimension count. |
 | PEQ-001 | P=NP | DISPROVED (known theorems) | Bounded-width propagation / k-consistency fails (Ben-Sasson–Wigderson). |
@@ -37,12 +45,24 @@ Computational facts:
 - On 5 variables, MC > D occurs: 38 of 41 sampled degree-3 functions with D = 2 have MC 3. All 38 were independently confirmed.
 - Lean: core-Lean ANF/degree library (no sorry; standard axioms only). Theorem 4 itself is **not** formalized.
 
-## Priorities for cycle 002
-1. **Level 4 of PNE-001.** A counterexample needs two cheap directions with halves of MC ≤ 2 (Lemma 12). Find the analogue of Lemmas 14–15 for MC-2 halves, using the structure theory of MC-2 functions (Find–Smith-Tone–Sönmez Turan characterize them). Also look for a human proof of the two level-3 certificates.
-2. **Find a measure that charges both branches** of a split, valid for circuits and exceeding D. Note that any measure that removes one hyperplane per gate is capped at n−1 (Theorem 8). See open question 2.
-3. **Seed for explicit MC ≥ n.** Obtain a certified 6-variable g₆ with MC 6 (ePrint 2018/002), then test MC(y·g₆) = 7 with the first-gate certificate method.
-4. **Formalize Lemma 1 and Theorem 4 in Lean** (XOR-AND circuits, affine restrictions).
-5. **PEQ track:** find a candidate outside known proof-system lower bounds. First, check the literature on Res(⊕).
+## Established in cycle 002 (see `research/proofs/PNE-001-level4.md`, `research/cycles/cycle-002.md`)
+- **Theorem 25:** PNE-001 at level 4 for every n. Computer-assisted: EXP-014 (formal circuits; all non-degenerate cases have explicit 3-gate circuits) and EXP-015 (NIST class list, 186 hyperplane cases).
+- **Lemma 23:** for each level m, PNE-001 is equivalent to a finite, n-independent statement about formal m-gate circuits and coset pairs in F_2^{2m}. **Lemma 26:** the same in terms of the MC-m class list.
+- **Lemma 22:** dim(y·g) ≥ dim(g)+1. Consequences: PNE-001 for every quadratic g; level-m counterexamples have dim ≤ 2m−1. Part (a), MC ≥ ⌈dim/2⌉, is known (Çalık–Sönmez Turan–Peralta 2020).
+- Lemmas 9′, 18–21: MC-2 structure and the cheap-plane structure of level-4 counterexamples. **Theorem 27:** all g on ≤ 5 variables, three independent confirmations.
+- Exact MC of all 2^32 five-variable functions. It agrees with NIST's classification on all 48 classes.
+- Audit: AUDIT-003 pending. Lean: circuit gate-elimination formalization pending.
+
+## Priorities for cycle 003
+1. **Level 5 of PNE-001 via Lemma 23.**
+   - Brute force is about 10^15 coset tests: 2.35M wirings × subspaces of F_2^10 of dimension 6–9.
+   - Design pruning: Lemma 24's conditions are linear in K and can be imposed gate by gate, combined with circuit automorphisms and early affinity filtering.
+   - Partial data: the NIST dimension-10 MC-5 list (EXP-015).
+2. **A human-readable proof of level 4.** Explain the rarity of non-degenerate coset pairs. Try an induction on m for the statement "Φ affine on C_0 with K non-degenerate ⇒ MC(Φ|C_1) ≤ m−1".
+3. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Resolve the s5 discrepancy with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
+4. Carried over from cycle 001: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), and the PEQ track.
 
 ## Environment notes
-Lean 4.37.0-rc1 (core only). PySAT/CaDiCaL with DRAT logging. drat-trim is built by `scripts/setup_env.sh`. arXiv, ECCC and cache.mathlib.org are blocked; WebSearch works.
+Lean 4.37.0-rc1 (core only). PySAT/CaDiCaL with DRAT logging. drat-trim is built by `scripts/setup_env.sh`.
+
+Since cycle 002 the session runs on the personal cloud environment "NP-FRONTIER". It allows arxiv.org, export.arxiv.org, eprint.iacr.org, csrc.nist.gov, nist.pqcrypto.org, eccc.weizmann.ac.il and cache.mathlib.org, and runs `scripts/setup_env.sh` as its setup script (unproven until a fresh session starts). ePrint serves a Cloudflare challenge to scripts. NIST data: `git clone https://github.com/usnistgov/circuits` (public; read-only).

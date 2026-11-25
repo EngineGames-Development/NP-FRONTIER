@@ -230,7 +230,8 @@ Beating n − 1 needs an argument that removes more than one AND gate per restri
 | `mc-brandao-2019-symmetric-twin-variables.md` | Twin-variable reduction; trivial upper half of (a) |
 | `mc-morse-2026-polynomial-multiplication.md` | Unrefereed 2026: unrestricted MC(Mul_4) = 9 with a Lean 4 formalization |
 | `mc-soeken-2020-sat.md` | SAT-based exact MC; tool for the checks above |
-| `mc-calik-2020-mc-three-four.md` | MC-3/4 classification; MC ≥ ⌈dim/2⌉ |
+| `mc-calik-2020-mc-three-four.md` | MC-3/4 classification; MC ≥ ⌈dim/2⌉ (retrieved cycle 002; class lists used in EXP-015) |
+| `mc-peralta-2016-nist-email-fresh-variable.md` | 2016 NIST email: MC(uv·f) = 1 + MC(v·f), proof attachment not released (novelty of PNE-001 unconfirmed) |
 | `mc-boyar-2013-nonlinearity-measures.md` | MC is incomparable with five other nonlinearity measures |
 | `mc-find-2014-computing-nonlinearity.md` | Computing MC from a truth table is hard under cryptographic assumptions |
 

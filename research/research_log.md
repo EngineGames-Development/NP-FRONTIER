@@ -46,3 +46,41 @@
   - AUDIT-001 (Lemmas 1–10, Theorem 8): claims survive. D = D⊕ − 1, so Lemma 1 is known and Theorem 4 is a PDT statement. Theorem 8's barrier framing was overclaimed and corrected. Corollary 7 and the multiplexer remark were fixed for constants.
   - AUDIT-002 (Lemmas 11–17): Theorem 17 SURVIVES, independently re-verified with no shared code. Cosmetic fixes applied, and a stronger Lemma 9 was noted.
   - Both level-3 certificates are DRAT-verified (643 s, 748 s). The first DRAT log lost drat-trim's \r-prefixed verdict lines to a grep filter; re-checks captured them, and the script is fixed.
+
+## 2026-11-25 — Cycle 002 (fresh-variable lemma at level 4)
+
+- **Start.** Read cycle-001, current state, log, open questions, the PNE-001 proof file and AUDIT-001/002. Goal (user): extend or refute Theorem 17 at MC(g) = 4.
+- **Structure (PNE-001-level4.md).**
+  - Lemma 9′: strong first-gate criterion.
+  - Lemma 18: MC ≤ 2 ⟺ type Q (deg ≤ 2, rank ≤ 4) or type C (ℓ(ab+α)+λ).
+  - Lemma 19: derivatives of MC-2 functions are quadratic.
+  - Lemma 20: a level-4 counterexample has a cheap plane with quadratic cross terms.
+  - Corollary 21: on 5 variables, level 4 reduces to the family F_5 (2^29 functions).
+- **EXP-007.** Exact S_3 for 5 variables, without SAT: |S_3| = 779,571,200. Full MC distribution of all 2^32 functions. Lemma 18 checked exactly.
+- **EXP-008.** 337,784,832 MC-4 members of F_5 fall into 297 orbits.
+- **EXP-009.** Heuristic SAT, budget 10^6 conflicts: 25 representatives, all UNKNOWN. Stopped.
+- **EXP-010.** Exact decision procedure cert4b. All 297 representatives give NONE, i.e. MC(y·g) ≥ 5. 74 positive controls give FOUND. With Theorem 17, PNE-001 holds for every g on ≤ 5 variables.
+- **EXP-013.** Fixed-first-gate SAT cross-check takes about 700 s per plane. Infeasible; recorded.
+- **New reduction: Lemma 23, formal circuits.** Level m for **every n** is a finite problem on formal m-gate circuits and cosets of subspaces of F_2^{2m}. Lemma 24 (degenerate gates). Lemma 22 (dimension): dim(y g) ≥ dim(g) + 1, so PNE-001 holds for every quadratic g.
+- **EXP-014.** Enumeration for m = 4: 8,640 wirings and all subspaces of dimension 5–7.
+  - dim 7: 840 coset pairs, all degenerate.
+  - dim 6: 509,220 pairs, 19,644 non-degenerate, 72 distinct modulo affine, all with 3-gate circuits.
+  - dim 5: 66,989,104 pairs, 9,588,720 non-degenerate, 2,142 distinct, all with 3-gate circuits.
+  - ⇒ **Theorem 25: PNE-001 at level 4 for all n** (computer-assisted). Combined with Theorem 17: MC(y·g) = MC(g)+1 whenever MC(g) ≤ 4.
+  - Cross-checks:
+    - a full-wiring run;
+    - 1.4M affinity unit tests;
+    - an independent numpy re-implementation (dim 7 identical; dim 6 running);
+    - formalm for levels 1–3 re-derives Theorem 17.
+- **Environment.** A personal environment "NP-FRONTIER" was created (user-approved) and this session moved onto it. It allows arXiv, ePrint, csrc.nist.gov, nist.pqcrypto.org, ECCC and cache.mathlib.org, and it has a setup script. The script is unproven until a fresh session starts on it. ePrint still serves a Cloudflare challenge.
+- **Literature.**
+  - MC ≥ ⌈dim/2⌉ is Çalık–Sönmez Turan–Peralta 2020 (abstract retrieved).
+  - NIST slides give closed forms for the MC-1 and MC-2 counts; both match ours. The MC-3 constant s5 does not match; unresolved.
+  - A 2016 NIST FOIA email (Peralta): MC(uv·f) = 1 + MC(v·f), "corollary of the claim in the attached" (attachment not released). So PNE-001 may be known in unpublished form; **novelty unconfirmed**.
+- **EXP-015 (NIST data, github.com/usnistgov/circuits).**
+  - Our 5-variable table matches all 48 NIST classes.
+  - The 6-variable classification confirms levels 3 and 4 for all 5-variable g (1,376 functions, 0 fingerprint collisions).
+  - **Lemma 26 (class-list route): level 3 (24 classes) and level 4 (1,277 classes, 186 affine hyperplane restrictions) give no counterexample for any n.** This is an independent second proof route for Theorem 25.
+- **Delegated.**
+  - AUDIT-003: fresh adversarial review of PNE-001-level4.md and the code.
+  - Lean: circuit gate-elimination and affine-substitution lemmas (proof engineer).
