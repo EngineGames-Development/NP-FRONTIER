@@ -87,7 +87,7 @@ Novelty:
 - The "tight functions are product trees" route (EXP-011) was not pursued further. Its induction does not close, because a single restricted half can lose more than one degree.
 
 ## Next research direction
-1. **Codimension 3 for every $m$** (codimensions 1 and 2 are now proved). The data say the given circuit cannot simply be shortened: 2,152,192 non-degenerate pairs at $m=4$ have no redundant gate. So a proof must build new circuits. A first sub-goal: classify the 2,142 distinct non-degenerate functions of codimension 3 at $m=4$ and their SAT witnesses.
+1. **Codimension 3 for every $m$** (codimensions 1 and 2 are now proved). The data say the given circuit cannot simply be shortened: 2,152,192 non-degenerate pairs at $m=4$ have no redundant gate. So a proof must build new circuits. The hard core is now located exactly (`formal4_k5case.c`). Every pair with no redundant gate has $\dim\pi(H)=2$ with $C_0$ and $C_1$ in different $H_0$-classes; that is 2,152,192 of the 4,902,328 pairs in that sub-case. All other sub-cases always have a redundant gate. Sub-goal: prove the hard sub-case, which is Lemma 26's statement for $(P+c_1)(Q+c_2)+\Gamma$ on $2m-2$ formal variables.
 2. **Level 5 via Lemma 23.**
    - There are $\approx2.35\cdot10^6$ wirings, and subspaces of $\mathbb F_2^{10}$ of dimension 6–9 ($\approx6\cdot10^7$ of them). Brute force is about $10^{15}$ coset tests.
    - Needed: prune non-degenerate $(\Phi,K)$ pairs gate by gate, since Lemma 24's conditions are linear in $K$, and exploit the circuit automorphisms.

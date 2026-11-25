@@ -1,6 +1,9 @@
 # PNE-001: Fresh-variable lemma for multiplicative complexity
 
-**Status:** PROOF ATTEMPT for the general statement. **Proved, computer-assisted, for every g with MC(g) ≤ 4 on any number of variables.** Level ≤ 3 is Theorem 17 (REVIEWED, AUDIT-002). Level 4 is Theorem 25 (cycle 002), established by two independent routes, EXP-014 and EXP-015; AUDIT-003 is pending. Also proved for all g on ≤ 5 variables (Theorem 27), for all g with MC(g) = D(g), and for all quadratic g (Lemma 22). Open from level 5. Novelty is unconfirmed: a 2016 NIST email states the special case h = v·f (see `research/literature/mc-peralta-2016-nist-email-fresh-variable.md`).
+**Status:** PROOF ATTEMPT for the general statement. **Proved, computer-assisted, for every g with MC(g) ≤ 4 on any number of variables.** Level ≤ 3 is Theorem 17 (REVIEWED, AUDIT-002). Level 4 is Theorem 25 (cycle 002), established by two independent routes, EXP-014 and EXP-015; AUDIT-003 is pending. Also proved:
+- for all g on ≤ 5 variables (Theorem 27);
+- for all g with MC(g) = D(g);
+- **at every level, for all g with dim(g) ≥ 2·MC(g) − 2 (Corollary 31, human proof via Lemmas 23, 28, 30)**, which includes all quadratic g. Open from level 5. Novelty is unconfirmed: a 2016 NIST email states the special case h = v·f (see `research/literature/mc-peralta-2016-nist-email-fresh-variable.md`).
 
 ## Formulation
 MC(f) is the least number of AND gates in a circuit over {AND, XOR, 1}. Claim: for every non-constant g: F₂ⁿ → F₂ and a fresh variable y, **MC(y·g) = MC(g) + 1**.
@@ -53,7 +56,8 @@ Lean: only the algebraic identities used in Theorem 4 (`gate_normalize`, `mul_ev
   - Theorem 27 (n ≤ 5).
 - Experiments: EXP-007, 008, 010, 014 and 015 (013 infeasible, 009 superseded).
 - Key idea: Lemma 23 makes level m a finite problem independent of n. Formal m-gate circuits on 2m formal inputs are tested against coset pairs of subspaces.
+- Human proofs at every level for codimensions 1 and 2 (Lemmas 28, 30). Level 4 = Corollary 31 (by hand) + Theorem 27 (5 variables, computed three ways).
 - Next:
-  - level 5, via Lemma 23 with pruning, since it is infeasible by brute force at about 10^15 coset checks;
-  - a human-readable proof of level 4;
+  - codimension 3 at every level (the given circuit cannot always be shortened; 2,152,192 such pairs at m = 4);
+  - level 5, where counterexamples need dim(g) ≤ 7;
   - the general lemma.

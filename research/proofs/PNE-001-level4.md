@@ -314,6 +314,23 @@ For level 5, Corollary 31 reduces counterexamples to $\dim g\le7$, i.e. to $\dim
 - **Codimension 2 ($m=4$, $\dim K=6$).** In all 19,644 non-degenerate pairs the *last* gate is triangularly redundant on $C_1$: $z_4|_{C_1}\in\mathrm{span}(\text{affine},z_1,z_2,z_3)|_{C_1}$ (`redundancy.py`). That is the codimension-2 analogue of Lemma 28. The strong form "the last gate is redundant on $C_1$ for every pair" is false: 34,736 degenerate pairs violate it (`lastgate.py`). Those pairs are harmless only because another gate is degenerate.
 - **Codimension 3 ($\dim K=5$) refutes the natural conjecture** "some gate of the given circuit is triangularly redundant on $C_1$". There are 9,588,720 non-degenerate pairs. 7,436,528 have such a gate (6,852,464 of them the last gate). 2,152,192 have none (`formal4_k5red.c`). For those pairs $\mathrm{MC}(\Phi|_{C_1})\le3$ holds only through *different* circuits (SAT).
 - **Lesson.** Codimensions 1 and 2 are settled by shortening the given circuit (Lemmas 28 and 30). From codimension 3 on, a general proof cannot shorten the given circuit on $C_1$. It must construct a new circuit, as the SAT witnesses do.
+- **The hard core of codimension 3 ($m=4$, `formal4_k5case.c`).** Split the 9,588,720 non-degenerate pairs as in Lemma 30. Let $H=K^\perp$ ($\dim 3$) and $\pi$ the projection onto the last gate's private coordinates.
+
+  | case | pairs | last gate redundant | other gate redundant only | no redundant gate |
+  |---|---|---|---|---|
+  | $\dim\pi(H)=0$ | 0 | — | — | — |
+  | $\dim\pi(H)=1$, $C_0,C_1$ in the same $H_0$-class | 67,392 | 67,392 | 0 | 0 |
+  | $\dim\pi(H)=1$, different $H_0$-classes | 584,064 | 0 | 584,064 | 0 |
+  | $\dim\pi(H)=2$, same $H_0$-class | 4,034,936 | 4,034,936 | 0 | 0 |
+  | $\dim\pi(H)=2$, different $H_0$-classes | 4,902,328 | 2,750,136 | 0 | **2,152,192** |
+
+  The same-class row for $\dim\pi(H)=2$ is explained by Lemma 30's Case II argument restricted to $E_0=\{\langle h_0,w''\rangle=c\}$. All the difficulty sits in the last row.
+  - There the last gate's private inputs are affine functions of $w''$ on $K$.
+  - $C_0$ and $C_1$ project to the two complementary hyperplanes $E_0,E_0'$ of $w''$-space.
+  - The question becomes Lemma 26's statement, for the function $(P+c_1)(Q+c_2)+\Gamma$ on $\mathbb F_2^{2m-2}$, with $P,Q\in\mathrm{span}(\text{affine},z_1,\dots,z_{m-1})$.
+
+  A human proof of this sub-case, for $m=4$, would make level 4 entirely human-proved. For general $m$ it would give codimension 3.
+
 
 ## Limits and what remains
 - Theorem 25 is computer-assisted. Its correctness rests on the reformulation (Lemma 23) and on the enumeration code. The two independent routes (EXP-014 and EXP-015) reduce, but do not remove, the risk of a coding error.
