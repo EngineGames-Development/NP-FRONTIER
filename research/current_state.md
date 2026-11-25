@@ -25,7 +25,8 @@ New or unconfirmed-novel results, with independent audit pending:
 - **Theorem 8:** a cap for restriction-robust measures.
 - **Lemma 11:** structure of a minimal counterexample to PNE-001. Also: admissible first-gate directions for y·g come in pairs.
 - **Proposition 10:** MC(y·g*) = 4 for g* = 0xfff3d212. Proved three ways: by Corollary 13, by an exhaustive SAT-free first-gate certificate, and by SAT with a DRAT proof checked by drat-trim.
-- **Corollary 13:** PNE-001 holds at level MC(g) = 3 whenever g has a single cheap direction. **Lemma 14:** the structure of the remaining plane-type case.
+- **Corollary 13:** PNE-001 holds at level MC(g) = 3 whenever g has a single cheap direction.
+- **Lemmas 14(b′), 15 and Theorem 16:** PNE-001 for all g with MC(g) ≤ 3 is equivalent to MC(y·G') = 4 for the MC-3 members of an explicit 5-variable family G' = x1ℓ1 + x2ℓ2 + x1x2ℓ3 + λ(u), which has 33 symmetry orbits. Status of the finite check (EXP-006): see the cycle report.
 
 Known or folklore, included for completeness:
 - Lemma 1 (D ≤ MC; essentially Chistopolskaya–Podolskii).
