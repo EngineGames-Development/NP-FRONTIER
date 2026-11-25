@@ -307,6 +307,13 @@ The proof of Lemma 30 splits on $\dim\pi(H)$.
 
 There are no exceptions.
 
+The same check at $m=5$ (EXP-017, `codim2.c`, a random sample of 4,000 of the 2,350,080 swap-reduced wirings, seed 2026) covers 258,841 ordered pairs and 133,333 non-affine cosets:
+- case 2: 63,368 cosets, the last gate redundant in every one;
+- case 1: 69,965 cosets, the predicted gate degenerate in every one;
+- case 0: never occurs.
+
+Again there are 0 violations. The program is an independent C reimplementation; it reproduces the $m=4$ counts above (509,220 ordered pairs). This is a sample, so it is evidence for Lemma 30 at $m=5$, not part of its proof.
+
 For level 5, Corollary 31 reduces counterexamples to $\dim g\le7$, i.e. to $\dim K\le7$ in $\mathbb F_2^{10}$ (codimension $\ge3$).
 
 ## Observations toward a general proof (EXP-014 data; no claims)

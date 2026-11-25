@@ -100,3 +100,4 @@
   - `Circuit.lean`: gate elimination, affine substitution, MCle and its corollaries.
   - `lake build --wfail` passes; 26 new `#print axioms` lines, standard axioms only.
   - Verified by the chief researcher with a rebuild from scratch.
+- 20:30 UTC. EXP-017 finished: Lemma 30's case analysis tested at m = 5 on a random sample of 4,000 of the 2,350,080 swap-reduced wirings (seed 2026). It covered 258,841 ordered pairs and 133,333 cosets: case 2: 63,368, last gate redundant; case 1: 69,965, predicted gate degenerate; case 0: none. **0 violations.**

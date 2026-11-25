@@ -45,6 +45,7 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 | EXP-013 | SAT with the first gate fixed | about 700 s per plane, infeasible; 2 planes UNSAT |
 | EXP-014 | Formal 4-gate circuits, $\dim K\in\{5,6,7\}$ | 840 / 509,220 / 66,989,104 coset pairs. Every pair is degenerate or one of 0 / 72 / 2,142 distinct functions, each with an explicit 3-gate circuit. No counterexample. |
 | EXP-016 | Read-once case ($\dim K=2m-1$) at $m=4,5$ | $m=4$: 840 pairs, all degenerate. $m=5$: 64,800 pairs, all degenerate. Agrees with Lemma 28. |
+| EXP-017 | Lemma 30's case analysis at $m=5$ (sample: 4,000 of 2,350,080 wirings) | 133,333 codimension-2 cosets: case 2: 63,368, last gate always redundant; case 1: 69,965, predicted gate always degenerate; case 0: none. 0 violations. Reproduces the $m=4$ counts. |
 | EXP-015 | NIST data | 48/48 class agreement. Levels 3 and 4 confirmed on 5 variables. Class-list route: levels 3 and 4, no counterexample for any $n$ (27 and 186 hyperplane cases). |
 
 Limitations:

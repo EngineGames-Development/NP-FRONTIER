@@ -1,1 +1,6 @@
 m=5 codim-2 subspaces=174251
+m=5 wirings_run=4000 (of 2350080) ordered(C0,C1)=258841 pairs(C1)=133333 | case0=0 | case2 last-gate-redundant=63368 violations=0 | case1 predicted-degenerate=69965 violations=0
+
+real	28m29.793s
+user	33m24.132s
+sys	0m0.620s

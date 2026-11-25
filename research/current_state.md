@@ -52,7 +52,7 @@ Computational facts:
   - Lemma 28: a formal circuit that is affine on a coset of a subspace of codimension 1 has a degenerate last gate.
   - Lemma 30: for codimension 2, the last gate is redundant or some gate is degenerate.
   - Corollary 31: **PNE-001 holds for every g with dim(g) ≥ 2·MC(g) − 2.** So level 4 reduces by hand to 5 variables.
-  - Checks: EXP-016 (m = 5, codimension 1) and lemma30_check.py (m = 4, all 1,663,872 codimension-2 pairs).
+  - Checks: EXP-016 (m = 5, codimension 1), lemma30_check.py (m = 4, all 1,663,872 codimension-2 pairs) and EXP-017 (m = 5, a random 4,000-wiring sample: 133,333 codimension-2 cosets, 0 violations of the proof's case predictions).
 - **Lemma 22:** dim(y·g) ≥ dim(g)+1. Consequences: PNE-001 for every quadratic g; level-m counterexamples have dim ≤ 2m−1. Part (a), MC ≥ ⌈dim/2⌉, is known (Çalık–Sönmez Turan–Peralta 2020).
 - Lemmas 9′, 18–21: MC-2 structure and the cheap-plane structure of level-4 counterexamples. **Theorem 27:** all g on ≤ 5 variables, three independent confirmations.
 - Exact MC of all 2^32 five-variable functions. It agrees with NIST's classification on all 48 classes.
