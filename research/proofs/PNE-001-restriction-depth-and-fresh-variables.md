@@ -70,6 +70,47 @@ Data: (MC, D) counts are (0,0): 32, (1,1): 1120, (2,2): 31616, (3,3): 32768; MC 
 
 **Corollary 7 (where the question is open).** $\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$ can fail only if $\mathrm{MC}(g)>D(g)$. By Lemma 2(c) this includes every $g$ on $n$ variables with $\mathrm{MC}(g)\ge n$, for example the 6-variable functions with MC 6 reported by Çalık–Sönmez Turan–Peralta (bibliographic data retrieved via WebSearch; the functions themselves were not seen). For such a base function, product constructions $g\,y_1\cdots y_t$ are certified by Corollary 5 only to have $\mathrm{MC}\ge D(g)+t\le N-1$, where $N=6+t$ is the number of variables.
 
+## 5b. Beyond restriction depth: first-gate certificates
+
+**Lemma 9 (first-gate criterion).** Let $\mathrm{MC}(F)\ge m\ge1$, and suppose $F$ has a circuit with exactly $m$ AND gates. Then there are affine forms $a=\langle v,x\rangle+e$, $b=\langle w,x\rangle+e'$ with $v\ne w$, both nonzero, such that $a\cdot b$ is the first gate of such a circuit, and all four restrictions $F|_{a=c}$, $F|_{b=c}$ ($c\in\mathbb{F}_2$) have $\mathrm{MC}\le m-1$. Call a direction $u$ *admissible* if both $F|_{\langle u,x\rangle=0}$ and $F|_{\langle u,x\rangle=1}$ have $\mathrm{MC}\le m-1$. Then $v,w$ are distinct admissible directions.
+*Proof.* The circuit is optimal since $\mathrm{MC}(F)\ge m$. Its first gate has inputs affine in $x$. If either input is constant, or if $w=v$ (then $b\in\{a,a+1\}$ and $ab\in\{a,0\}$), the gate computes an affine function and can be removed, contradicting optimality. Restricting $a$ or $b$ to a constant makes the gate affine. By (F2) this gives an $(m-1)$-gate circuit for each of the four restrictions. $\square$
+
+**Proposition 10 (computer-assisted; first verified case of PNE-001 with MC > D).** Let $g^*$ be the 5-variable function with truth table `0xfff3d212` (ANF in `research/hypotheses/PNE-001-fresh-variable-lemma.md`). Then $D(g^*)=2$, $\mathrm{MC}(g^*)=3$ and $\mathrm{MC}(y\,g^*)=4$.
+*Proof.*
+- $D(g^*)=2$: computed (EXP-002). The witness is the query $x_2$, whose restrictions both have $D=1$; $D\ge2$ because $\deg g^*=3$ (Lemma 3).
+- $\mathrm{MC}(g^*)\le3$: an explicit circuit, independently re-evaluated.
+- $\mathrm{MC}(g^*)\ge3$: exhaustive search over all spans $W_1$ (155 classes) and all second products shows no 2-AND circuit (`verify_s2_5.py`, no SAT solver).
+- $\mathrm{MC}(y g^*)\ge4$: $\deg(yg^*)=4$ gives $\mathrm{MC}\ge3$, so Lemma 9 applies with $m=3$. The exhaustive test of $\mathrm{MC}\le2$ on all 126 hyperplane restrictions gives exactly two admissible directions, $x_2$ and $x_2+y$ (`pair_test.py`). So the first gate is $(x_2+e)(x_2+y+e')$ for one of 4 choices of $(e,e')$. For each choice, an exhaustive search over all 2,345 distinct second-gate spans and all third products finds no circuit computing $y g^*$ (`first_gate_extension.py`, `first_gate_general.py`; no SAT solver). A positive control, $x_1x_2x_3\cdot y$, correctly finds an extension.
+- Independently, a SAT solver (CaDiCaL 1.5.3) reports no 3-AND circuit, and its DRAT proof was submitted to drat-trim (status in the cycle report).
+- The upper bound $\mathrm{MC}(y g^*)\le4$ is trivial. $\square$
+
+So PNE-001 holds beyond the reach of Theorem 4. Structure: $g^*=(1+x_2)P+x_2Q$ with $P,Q$ rank-2 quadratics, and the admissible directions for $y g^*$ are the selector $s=x_2$ and $s+y$. In every case examined, admissible directions come in pairs $\{v,v+y\}$, which suggests a general multiplexer argument (open).
+
+**Lemma 11 (structure of a minimal counterexample).** Let $m\ge1$. Suppose PNE-001 holds for every non-constant $h$ with $\mathrm{MC}(h)<m$, on any number of variables. Suppose $g$ is non-constant with $\mathrm{MC}(g)=m$ and $\mathrm{MC}(y\,g)=m$. Then $g$ has a direction $v\ne0$ such that each restriction $g|_{\langle v,x\rangle=c}$ is constant or has $\mathrm{MC}\le m-2$. Moreover, for $F=y\,g$ the admissible directions (Lemma 9, with $m$) come in pairs: $(v,0)$ is admissible iff $(v,1)$ is, and $(0,1)$ (the direction $y$) is never admissible.
+*Proof.* Note $\mathrm{MC}(F)\ge\mathrm{MC}(g)=m$, because setting $y=1$ in a circuit for $F$ gives a circuit for $g$. So an $m$-gate circuit for $F$ is optimal, and Lemma 9 gives two distinct admissible directions $u=(v,s)$.
+- If $v=0$, then $u=e_y$ and $F|_{y=1}=g$ has MC $m>m-1$; not admissible.
+- If $s=0$, then $F|_{\langle v,x\rangle=c}\cong y\,g|_{\langle v,x\rangle=c}$.
+- If $s=1$, then by the identity in Case C of Theorem 4, $F|_{y=\langle v,x\rangle+c}\cong t\cdot g|_{\langle v,x\rangle=1+c}$ for a fresh variable $t$.
+So both $(v,0)$ and $(v,1)$ are admissible iff, for both $c$, $\mathrm{MC}(t\cdot g|_{\langle v,x\rangle=c})\le m-1$. If $g|_{\langle v,x\rangle=c}$ is non-constant, it has $\mathrm{MC}\le m-1<m$, so the hypothesis gives $\mathrm{MC}(t\cdot g|_{\langle v,x\rangle=c})=\mathrm{MC}(g|_{\langle v,x\rangle=c})+1$. Hence $\mathrm{MC}(g|_{\langle v,x\rangle=c})\le m-2$. $\square$
+
+*Remarks.*
+1. For $m\le2$ the condition forces $\mathrm{MC}(g)\le1$: if both halves are affine, $g=\tilde g_0+s(\tilde g_0+\tilde g_1)$ needs one AND gate. So it reproves PNE-001 for $\mathrm{MC}(g)\le2$. This was already implied by Theorem 4, since $\mathrm{MC}\le2$ forces $\mathrm{MC}=D$.
+2. For $m=3$ the condition says $g$ is a multiplexer of two halves with MC $\le1$. That is equivalent to $D(g)\le2<\mathrm{MC}(g)$, so it adds nothing beyond Theorem 4 at this level.
+3. For $m\ge4$ the condition is strictly stronger than $\mathrm{MC}(g)>D(g)$: both halves must have MC $\le m-2$, not merely $D\le m-2$. EXP-004 tests the $m=3$ multiplexers exhaustively on the 5-variable sample.
+
+**Lemma 12 (two distinct cheap directions).** Under the hypotheses of Lemma 11, $g$ has two **distinct** directions $v_1\ne v_2$ with the property of Lemma 11: each restriction $g|_{\langle v_i,x\rangle=c}$ is constant or has $\mathrm{MC}\le m-2$.
+*Proof.* Let $a\cdot b$ be the first gate of an optimal $m$-gate circuit for $F=y\,g$, with distinct admissible directions $u_1=(v_1,s_1)$ and $u_2=(v_2,s_2)$ (Lemma 9). By the proof of Lemma 11, $v_1,v_2\ne0$ and both have the property. Suppose $v_1=v_2=v$. Then $s_1\ne s_2$. Substitute $y=1$: the inputs become $\langle v,x\rangle+s_1+e$ and $\langle v,x\rangle+s_2+e'$, which have the same linear part, so their product is affine ($a$ or $0$). By (F2) the circuit restricted to $y=1$ computes $F|_{y=1}=g$ with an affine first gate, hence with $m-1$ AND gates. That contradicts $\mathrm{MC}(g)=m$. $\square$
+
+**Corollary 13.** Let $\mathrm{MC}(g)=3$. If $g$ has at most one direction $v$ for which both restrictions $g|_{\langle v,x\rangle=c}$ have $\mathrm{MC}\le1$, then $\mathrm{MC}(y\,g)=4$.
+*Proof.* PNE-001 holds for all non-constant $h$ with $\mathrm{MC}(h)\le2$: Remark 1 after Lemma 11, via Theorem 4. Apply Lemma 12 with $m=3$. $\square$
+
+*Second proof of Proposition 10.* Using the exact MC table for 4-variable functions, $g^*$ has exactly one such direction, $x_2$ (EXP-005). Corollary 13 applies.
+
+*Scope (EXP-005).*
+- Of the 38 certified 5-variable functions with $\mathrm{MC}=3>D=2$, 31 have exactly one such direction, so PNE-001 is proved for them by Corollary 13.
+- 7 have three such directions; in each case these directions together with $0$ form a 2-dimensional subspace.
+- A random search finds many such functions with $\mathrm{MC}\ge3$. So "MC $=3$ ⇒ at most one cheap direction" is **false**, and Corollary 13 alone does not settle PNE-001 at level 3. Those cases are settled by the exhaustive first-gate certificates of EXP-004.
+
 ## 6. Theorem 8 (barrier for one-restriction-per-gate arguments)
 
 **Theorem 8.** Let $\mu$ be restriction-robust. Then $\mu(f)\le D(f)\le n-1$ for every $f$ on $n\ge1$ variables. Hence no lower bound of the form "$\mathrm{MC}(f)\ge\mu(f)$ by induction on gates, killing one AND gate per hyperplane restriction" can certify $\mathrm{MC}(f)\ge n$, for any $f$, explicit or not. (Lemma 2.)
@@ -78,7 +119,7 @@ Interpretation. The classical degree bound is of this form (Lemma 3). To prove $
 
 ## 7. What is not proved here
 
-- The fresh-variable lemma for $g$ with $\mathrm{MC}(g)>D(g)$ (open; PNE-001).
+- The fresh-variable lemma for $g$ with $\mathrm{MC}(g)>D(g)$ in general (open; PNE-001). Verified for $g^*$ (Proposition 10) and for the 5-variable sample in EXP-004.
 - The AND-direct-sum $\mathrm{MC}(g(x)h(y))=\mathrm{MC}(g)+\mathrm{MC}(h)+1$ (PNE-002). It would imply explicit functions with $\mathrm{MC}\ge cn$, hence circuit size $\ge cn$ over the full binary basis, for every constant $c$ (take a brute-force-hardest function on a constant number of variables and AND together $n/k$ copies). The best refereed explicit bound for circuit size is about $3.1n$, so this statement is at least as hard as a major open problem.
 - The multiplexer lemma MC((1+s)P + sQ) = MC(P) + MC(Q) + 1, for P, Q on disjoint variables and a fresh selector s, would imply PNE-001 (take P = 0). It would also imply explicit MC ≥ cn for every c, via a decision list over brute-force-hard constant-size blocks, so in general it is as strong as PNE-002. The first function with MC > D on 5 variables (g* in EXP-002) is a multiplexer, so this is where restriction depth and MC separate.
 - Novelty: **Lemma 1 is essentially known.** Chistopolskaya–Podolskii (arXiv 1810.08668 / ECCC TR18-174) prove $D_\oplus(f)\le c_\wedge(f)+1$ by the same induction on AND gates (per search-result summaries; full text not read). Lemma 1 is marginally stronger, since $D\ge D_\oplus-1$, but uses the same argument. Lemma 3 is folklore. Theorem 4 (fresh variable for restriction depth) and Theorem 8 (the cap) were not found in the literature checked (`research/literature/index-multiplicative-complexity.md`). Treat their novelty as unconfirmed.

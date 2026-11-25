@@ -1,0 +1,2 @@
+g=0xfff3d212: directions v (bit j = x_(j+1), bit 5 = y) with both restrictions in S_2: [(2, 'S2', 'S2'), (34, 'S2', 'S2')] (13s)
+CONCLUSION: criterion inconclusive

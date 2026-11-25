@@ -1,0 +1,5 @@
+z1=(x2+0)(x2+y+0): distinct W2 spaces checked: 2345; extension found: False (9s)
+z1=(x2+0)(x2+y+1): distinct W2 spaces checked: 2345; extension found: False (18s)
+z1=(x2+1)(x2+y+0): distinct W2 spaces checked: 2345; extension found: False (26s)
+z1=(x2+1)(x2+y+1): distinct W2 spaces checked: 2345; extension found: False (35s)
+CONCLUSION: MC(y*g) >= 4 (no first gate extends to a 3-AND circuit)

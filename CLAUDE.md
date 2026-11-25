@@ -13,14 +13,14 @@ The research charter below (from "NP-FRONTIER" through "FINAL OBJECTIVE") govern
 ## Subagents and citations (Principles 3 and 5, Sections 3 and 12)
 
 - Run every adversarial review in a fresh agent (for example `general-purpose`) that receives only the written claim and proof document. Never use `subagent_type: "fork"` for a review: a fork inherits the whole conversation, including the author's reasoning, so it is not independent.
-- A subagent's report is returned only to the session that launched it and is lost with the container. Write each review verdict to `reports/proof_audits/` before acting on it.
+- A subagent's report is returned only to the session that launched it and is lost with the container. Write each review verdict to `research/proofs/audits/` before acting on it.
 - The charter's "Opus 5.5, highest reasoning effort" maps to the Agent tool parameters `model: "opus"` and `effort: "max"`. Use them for proof development and audits, not for file maintenance.
-- In `research/literature_review.md`, mark a reference verified only if its details were retrieved during a session, and state what was checked (for example, title and arXiv ID from search results). Mark references recalled from memory as unverified. Do not attribute a theorem statement to a paper whose text was not read.
+- In the source records under `research/literature/`, mark a reference verified only if its details were retrieved during a session, and state what was checked (for example, title and arXiv ID from search results). Mark references recalled from memory as unverified. Do not attribute a theorem statement to a paper whose text was not read.
 
 ## Environment (verified 2026-11-25 in the cloud container; re-check if something fails)
 
 - Containers are ephemeral and start from a fresh clone. Only committed and pushed work survives, so commit research-state files at each checkpoint, not only at session end.
-- Installed: Python 3.13 (numpy and pandas; no scipy, sympy, networkx, PySAT or z3), gcc/g++ 13, clang 18, Rust 1.97. No SAT or SMT solver binaries. 4 cores, 15 GB RAM. PyPI and apt are reachable. "UltraCode / Dynamic Workflows" (Section 0) are not available; parallel research uses the Agent tool.
+- Installed: Python 3.13 (numpy and pandas; no scipy, sympy, networkx or z3), gcc/g++ 13, clang 18, Rust 1.97. `scripts/setup_env.sh` installs PySAT (CaDiCaL bindings, with DRAT proof logging) and builds the `drat-trim` proof checker. Certify every UNSAT claim used in a proof with drat-trim or an independent exhaustive check. 4 cores, 15 GB RAM. PyPI and apt are reachable. "UltraCode / Dynamic Workflows" (Section 0) are not available; parallel research uses the Agent tool.
 - Blocked by the network policy: arxiv.org (also for WebFetch), export.arxiv.org, eccc.weizmann.ac.il, cache.mathlib.org and release.lean-lang.org. WebSearch works and returns arXiv results, but paper texts cannot be fetched.
 - Lean is not preinstalled, and `elan toolchain install` fails here (it contacts release.lean-lang.org, plus GitHub's API and release pages, which return 403). `scripts/setup_env.sh` works around this by downloading the release asset pinned in `research/proofs/lean/lean-toolchain` directly; it is idempotent and also installs the Python experiment dependencies. Then `export PATH="$HOME/.elan/bin:$PATH"` and build with `cd research/proofs/lean && lake build --wfail`.
 

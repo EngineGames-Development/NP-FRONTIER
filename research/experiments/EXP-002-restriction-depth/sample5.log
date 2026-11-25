@@ -14,3 +14,6 @@
 350/450 done; unknown so far: 173
 375/450 done; unknown so far: 186
 400/450 done; unknown so far: 209
+425/450 done; unknown so far: 223
+450/450 done; unknown so far: 237
+Counter({('deg<=4', 4, 3, 'UNKNOWN'): 93, ('deg<=3', 3, 3, 'UNKNOWN'): 92, ('uniform', 5, 4, 'SAT'): 72, ('deg<=4', 4, 3, 'SAT'): 55, ('uniform', 4, 3, 'UNKNOWN'): 50, ('deg<=3', 3, 2, 'UNSAT'): 37, ('uniform', 4, 3, 'SAT'): 27, ('deg<=3', 3, 3, 'SAT'): 18, ('deg<=3', 3, 2, 'SAT'): 3, ('deg<=4', 3, 3, 'UNKNOWN'): 2, ('uniform', 3, 2, 'UNSAT'): 1})

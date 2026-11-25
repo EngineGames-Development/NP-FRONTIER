@@ -29,7 +29,16 @@ if [ -f "$REQ" ]; then
   if python3 -m pip install -q -r "$REQ" 2>/dev/null || python3 -m pip install -q --break-system-packages -r "$REQ"; then say "python requirements satisfied"; fi
 fi
 
-# 4. Report state (does not modify anything).
+# 4. drat-trim (independent DRAT proof checker for SAT-solver UNSAT claims).
+DRAT_BIN="$HOME/.local/bin/drat-trim"
+if [ -x "$DRAT_BIN" ]; then say "drat-trim present"
+else
+  say "building drat-trim"; mkdir -p "$HOME/.local/bin"
+  curl -sSfL https://raw.githubusercontent.com/marijnheule/drat-trim/master/drat-trim.c -o "$HOME/.local/bin/drat-trim.c"
+  gcc -O2 -o "$DRAT_BIN" "$HOME/.local/bin/drat-trim.c"
+fi
+
+# 5. Report state (does not modify anything).
 say "lean: $(lean --version 2>/dev/null || echo MISSING)"
 [ -f "$ROOT/research/current_state.md" ] && say "research state exists: continue from research/current_state.md (CLAUDE.md Section 13)" \
                                         || say "no research state yet: first session (CLAUDE.md Section 15)"
