@@ -28,7 +28,7 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 7. **Lemma 30 (human proof, every $m$)**: the same holds for subspaces of *codimension 2*. If both private inputs of the last gate are determined on $K$, the last gate is explicitly redundant on every other coset; otherwise Lemma 28 applied to a sub-circuit forces some gate to be degenerate. **Corollary 31:** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-2$. Level-$m$ counterexamples need $\dim g\le2m-3$. In particular **level 4 reduces by hand to 5 variables**, where three independent computations settle it.
 
 ## Proof attempts and exact status
-- Lemmas 9′, 18–24, 26 and fact (F4): full proofs in `research/proofs/PNE-001-level4.md`. They await AUDIT-003.
+- Lemmas 9′, 18–24, 26 and fact (F4): full proofs in `research/proofs/PNE-001-level4.md`. AUDIT-003 found them correct.
 - **Theorem 25 (level 4, all $n$):** $\mathrm{MC}(g)=4\Rightarrow\mathrm{MC}(y\,g)=5$. Consequently **PNE-001 holds for every $g$ with $\mathrm{MC}(g)\le4$.**
   - Structured proof: Corollary 31 (human) reduces to 5 variables, and Theorem 27 handles 5 variables (computed three independent ways).
   - Independent full-computation proofs: the EXP-014 enumeration, and Lemma 26 with NIST's complete MC-4 class list (EXP-015).
@@ -50,7 +50,7 @@ PNE-001 is the one-variable case of the AND-direct-sum question PNE-002. If PNE-
 
 Limitations:
 - Theorem 25 rests on code, though on two code bases that share only the SAT encoding (DRAT-validated in cycle 001) and the published NIST list.
-- The 5-variable MC-3 count disagrees with a constant on a NIST slide ($s_5$), though our table agrees with NIST's class data. The cause is unresolved.
+- The 5-variable MC-3 count differs from a constant on a NIST slide ($s_5$) by the exact factor $63/31$ (AUDIT-003 I-7), which indicates a normalization difference. Our table agrees with NIST's class data.
 
 ## Counterexamples
 None found to PNE-001.
@@ -60,14 +60,41 @@ None found to PNE-001.
 - The approach "SAT with the first gate fixed" as a verification method: too slow.
 
 ## Proof audit
-AUDIT-003 (fresh adversarial reviewer; Lemmas 9′–26, Theorems 25 and 27, all code): **pending**. The verdict will be recorded in `research/proofs/audits/AUDIT-003-PNE-001-level4.md` and summarized here.
+AUDIT-003 (`research/proofs/audits/AUDIT-003-PNE-001-level4.md`) was done by a fresh adversarial reviewer, which received only the written claims, the proof document and the code. **Verdict: no fatal or serious finding.**
+- **What survives.**
+  - Lemmas 9′, 18–24, 26, 28, 30 and (IF′); Corollaries 21, 29, 31; fact (F4); Theorem 25; EXP-015 and EXP-016; `Circuit.lean`.
+  - Theorem 27 and the structured proof of Theorem 25 survive after minor corrections.
+- **Independent re-proof of Theorem 25.** The auditor wrote its own enumeration: all 32,768 wirings, subspaces by closure, a derivative-based affinity test, no swap reduction, no table, no SAT, no degeneracy shortcut.
+  - It reproduced every reported count exactly.
+  - It gave an explicit circuit with ≤ 3 gates, checked by evaluation, for every one of the 2,688 + 1,663,872 + 229,201,152 coset pairs at dim K = 7, 6, 5.
+  - With Lemma 23, this proves Theorem 25 independently of EXP-014.
+- **Further checks.**
+  - It re-ran our programs, re-verified all 2,542 stored SAT circuits, and redid the NIST route with its own code.
+  - It tested Lemmas 28 and 30 on random wirings at m = 5, 6.
+  - A planted test showed that the pipeline detects MC-4 restrictions when the C₀ filter is removed.
+- **Issues (all minor or cosmetic), now corrected in `PNE-001-level4.md`.**
+  - I-1: the "mutually independent" confirmations of Theorem 27 share EXP-007, except the table-free form.
+  - I-2: "MC ≤ 4 on 5 variables" is not established by EXP-007. It now cites the literature, and AUDIT-003's verified circuits for NIST's 48 classes.
+  - I-3: the structured proof cited Theorem 27, which is circular. It now cites the 5-variable computation directly, and also gives the form "Lemma 28 excludes dim K = 7, Lemma 30 excludes dim K = 6, EXP-014 excludes dim K = 5".
+  - I-4: the EXP-015 fingerprint is not affine-invariant in general, but it is valid for the functions tested.
+  - I-5: the Limits section was stale.
+  - I-6: the direct-restriction variant was not committed.
+  - I-7: s₅ is exactly (63/31)× our count, a normalization difference.
+  - I-8, I-9: wording in Lemmas 24 and 18.
+  - I-10: m = 0 is trivial.
+  - I-11: a latent buffer overflow for D = 8, k = 4; the buffer is enlarged, and the rebuilt `formal4 7` output is unchanged.
+  - I-12: the Lean README's gap list.
+- **What the auditor could not check:**
+  - the completeness and labels of NIST's dimension-7 and dimension-8 MC-4 lists (only EXP-015 depends on them);
+  - EXP-008/010 internals;
+  - paper full texts.
 
 ## Formal verification
 Lean (core 4.37.0-rc1). `research/proofs/lean/NPFrontier/Circuit.lean` (new) formalizes XOR-AND circuits, `MCle`, gate elimination (constant input, or inputs differing by a constant, on a set $S$), affine substitution, and free affine output shifts. It also covers (F4) given an explicit affine section, plus sanity examples.
 - `lake build --wfail` passes. 26 new `#print axioms` lines, all with standard axioms only (propext, Classical.choice, Quot.sound).
 - The Lean agent cross-checked `Circuit.eval` against an independent Python evaluator on 300 random circuits.
 - **Not formalized:** Lemmas 18–23, 26, 28, 30; Theorems 25, 27; the enumerations; the linear algebra of cosets.
-- The faithfulness of the Lean statements has not yet been independently reviewed. It is in scope for AUDIT-003 if capacity allows.
+- AUDIT-003 (V-11) reviewed the Lean statements. They are faithful: generic gate elimination and affine substitution, not Lemma 23 or Theorem 25. No sorry, admit, axiom or native_decide.
 
 ## Results (what was actually established)
 0. **Corollary 31 (human proof, every level):** PNE-001 holds for every $g$ with $\dim g\ge2\,\mathrm{MC}(g)-2$. It rests on Lemmas 22, 23, 28 and 30. The case analysis was checked against all 1,663,872 codimension-2 pairs at $m=4$ with no exception.
@@ -94,4 +121,4 @@ Novelty:
    - Needed: prune non-degenerate $(\Phi,K)$ pairs gate by gate, since Lemma 24's conditions are linear in $K$, and exploit the circuit automorphisms.
    - A partial result is available now: Lemma 26 on NIST's dimension-10 MC-5 list (`EXP-015/nist_level5_dim10.log`).
 3. **A human-readable proof of level 4.** Explain why non-degenerate coset pairs are so rare (0, 72 and 2,142 distinct functions), and try to prove "non-degenerate and affine on $C_0$ implies MC $\le m-1$ on $C_1$" by induction on $m$.
-4. Resolve the $s_5$ discrepancy once the paper text is accessible.
+4. Confirm the normalization of $s_5$ (the factor $63/31$) once the paper text is accessible.

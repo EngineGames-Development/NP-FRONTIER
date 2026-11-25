@@ -101,3 +101,11 @@
   - `lake build --wfail` passes; 26 new `#print axioms` lines, standard axioms only.
   - Verified by the chief researcher with a rebuild from scratch.
 - 20:30 UTC. EXP-017 finished: Lemma 30's case analysis tested at m = 5 on a random sample of 4,000 of the 2,350,080 swap-reduced wirings (seed 2026). It covered 258,841 ordered pairs and 133,333 cosets: case 2: 63,368, last gate redundant; case 1: 69,965, predicted gate degenerate; case 0: none. **0 violations.**
+- 20:30 UTC. **AUDIT-003 finished. No fatal or serious finding;** Theorem 25 survives.
+  - The auditor re-proved the computational step with its own code: all 32,768 wirings, and an explicit, evaluated ≤ 3-gate circuit for each of 231 million coset pairs.
+  - 12 minor or cosmetic issues were raised. All are corrected in `PNE-001-level4.md`, including:
+    - I-3: a circular citation of Theorem 27 in the structured proof;
+    - I-2: "MC ≤ 4 on 5 variables" attributed to EXP-007;
+    - I-7: s5 = (63/31) × our count, a normalization factor.
+  - The subspace buffers were enlarged (I-11), and `formal4 7` was re-verified to give identical output.
+- EXP-018 started: a sampler of codimension-3 hard-core instances (`hc_dump.c`, 1,084 samples) for cycle-003 priority 1.

@@ -7,6 +7,10 @@ all 32 linear forms l on 5 variables.  F is a 6-variable function (y = x6).  Cla
 not affine-equivalent to any class of MC <= m.  Test: an affine-invariant fingerprint of F (degree, multiset of
 |Walsh|, multiset of |autocorrelation|, multiset of degrees of the 63 derivatives) differs from the fingerprint
 of every NIST class representative of MC <= m and dimension <= 6.  A collision is reported, not resolved.
+Caveat (AUDIT-003 I-4): the derivative-degree component is not affine-invariant for functions with a constant
+derivative (adding a linear function can turn a derivative 0 into 1, e.g. x1x2 vs x1x2+x3).  The test is still
+sound here: every constant derivative of y*g is 0, and no listed representative of MC <= 4 and dimension <= 6
+has a derivative equal to 1 (checked by AUDIT-003), so a fingerprint mismatch still proves non-equivalence.
 """
 import sys, os, re, random, itertools
 import numpy as np

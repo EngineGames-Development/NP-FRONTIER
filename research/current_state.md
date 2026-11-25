@@ -1,13 +1,14 @@
 # Current state of NP-FRONTIER
 
-Last updated: 2026-11-25, cycle 002 (AUDIT-003 and the Lean task pending at time of writing). **Single source of truth**: start every session here (CLAUDE.md §13).
+Last updated: 2026-11-25, end of cycle 002 (AUDIT-003 done; corrections applied). **Single source of truth**: start every session here (CLAUDE.md §13).
 
 ## Honest summary
 P versus NP is unresolved, and nothing in this program changes that.
 
-Cycle 002 extended the fresh-variable lemma (PNE-001) from MC(g) ≤ 3 to **MC(g) ≤ 4, for every number of variables**. The result is computer-assisted. Two independent routes support it:
-- formal-circuit enumeration (Lemma 23, EXP-014);
-- NIST's published MC-4 class list (Lemma 26, EXP-015).
+Cycle 002 extended the fresh-variable lemma (PNE-001) from MC(g) ≤ 3 to **MC(g) ≤ 4, for every number of variables** (Theorem 25).
+- The human-proved part (Lemmas 23, 24, 28, 30) reduces it to one 5-variable (codimension-3) computation.
+- That computation is done by our formal-circuit enumeration (EXP-014), by NIST's published classification (EXP-015), and by an independent re-implementation in AUDIT-003.
+- AUDIT-003 found no fatal or serious issue.
 
 It is still a statement about a restricted measure at constant complexity levels.
 
@@ -20,7 +21,7 @@ Cycle 001 produced:
 
 | ID | Direction | Status | One line |
 |---|---|---|---|
-| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT (level ≤ 3 REVIEWED; level 4 proved, AUDIT-003 pending) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 4, all n.** Level ≤ 3 is Theorem 17. Level 4 is Theorem 25 (cycle 002, computer-assisted, two independent routes). Also proved for all quadratic g, all g on ≤ 5 variables, and whenever MC(g) = D(g). Open from level 5. Novelty unconfirmed (2016 NIST email). |
+| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT for the general statement; levels ≤ 3 and 4 REVIEWED (AUDIT-002, AUDIT-003) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 4, all n.** Level ≤ 3 is Theorem 17. Level 4 is Theorem 25 (cycle 002): a human reduction to codimension 3, plus a computation re-done independently by AUDIT-003. Human proof for every level whenever dim g ≥ 2·MC(g) − 2 (Corollary 31). Also proved for all quadratic g, all g on ≤ 5 variables, and whenever MC(g) = D(g). Open from level 5. Novelty unconfirmed (2016 NIST email). |
 | PNE-002 | P≠NP (restricted measure) | FORMULATED | AND-direct sum for MC. It would imply explicit c·n circuit lower bounds for every c, so it is believed hard. |
 | OTH-001 | barrier | REVIEWED: elementary, framing corrected | Restriction-robust (P1) measures are ≤ D = D⊕−1 ≤ n−1. General one-kill-per-restriction arguments are capped at n−1 only by the folklore dimension count. |
 | PEQ-001 | P=NP | DISPROVED (known theorems) | Bounded-width propagation / k-consistency fails (Ben-Sasson–Wigderson). |
@@ -46,7 +47,9 @@ Computational facts:
 - Lean: core-Lean ANF/degree library (no sorry; standard axioms only). Theorem 4 itself is **not** formalized.
 
 ## Established in cycle 002 (see `research/proofs/PNE-001-level4.md`, `research/cycles/cycle-002.md`)
-- **Theorem 25:** PNE-001 at level 4 for every n. Computer-assisted: EXP-014 (formal circuits; all non-degenerate cases have explicit 3-gate circuits) and EXP-015 (NIST class list, 186 hyperplane cases).
+- **Theorem 25:** PNE-001 at level 4 for every n.
+  - Lemmas 28 and 30 exclude dim K = 7 and dim K = 6.
+  - dim K = 5 is computed: EXP-014, where all non-degenerate cases have explicit 3-gate circuits; EXP-015, the NIST class list with 186 hyperplane cases; and AUDIT-003 V-3, the auditor's own code with an evaluated circuit for every pair.
 - **Lemma 23:** for each level m, PNE-001 is equivalent to a finite, n-independent statement about formal m-gate circuits and coset pairs in F_2^{2m}. **Lemma 26:** the same in terms of the MC-m class list.
 - **Lemmas 28 and 30, Corollary 31 (human proofs, every level).**
   - Lemma 28: a formal circuit that is affine on a coset of a subspace of codimension 1 has a degenerate last gate.
@@ -56,7 +59,12 @@ Computational facts:
 - **Lemma 22:** dim(y·g) ≥ dim(g)+1. Consequences: PNE-001 for every quadratic g; level-m counterexamples have dim ≤ 2m−1. Part (a), MC ≥ ⌈dim/2⌉, is known (Çalık–Sönmez Turan–Peralta 2020).
 - Lemmas 9′, 18–21: MC-2 structure and the cheap-plane structure of level-4 counterexamples. **Theorem 27:** all g on ≤ 5 variables, three independent confirmations.
 - Exact MC of all 2^32 five-variable functions. It agrees with NIST's classification on all 48 classes.
-- Audit: AUDIT-003 is running.
+- **Audit: AUDIT-003 done.** No fatal or serious finding. Corrections I-1 to I-12 are applied:
+  - the circular citation in the structured proof;
+  - the sources for MC ≤ 4 on 5 variables;
+  - the fingerprint caveat;
+  - s₅ is (63/31) × our count, a normalization difference;
+  - wording fixes.
 - Lean: `Circuit.lean` covers gate elimination, affine substitution and free affine output shifts. It builds under `--wfail` with standard axioms only.
 
 ## Priorities for cycle 003
@@ -66,7 +74,7 @@ Computational facts:
    - Design pruning: Lemma 24's conditions are linear in K and can be imposed gate by gate, combined with circuit automorphisms and early affinity filtering.
    - Partial data: the NIST dimension-10 MC-5 list (EXP-015).
 3. **A human-readable proof of level 4.** Explain the rarity of non-degenerate coset pairs. Try an induction on m for the statement "Φ affine on C_0 with K non-degenerate ⇒ MC(Φ|C_1) ≤ m−1".
-4. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Resolve the s5 discrepancy with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
+4. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Confirm the s5 normalization (exact factor 63/31, AUDIT-003 I-7) with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
 5. Carried over from cycle 001: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), and the PEQ track.
 
 ## Environment notes

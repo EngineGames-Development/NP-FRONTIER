@@ -30,7 +30,7 @@ static T256 txor(T256 a, T256 b) { T256 r; for (int i = 0; i < 4; i++) r.w[i] = 
 /* subspaces of F_2^8 of dim k in RREF (pivot = lowest set bit of each basis vector) */
 static int nsub; static unsigned char (*bases)[8]; static unsigned char *pivmask;
 static void gen_subspaces(int k) {
-  int cap = 200000; bases = malloc(cap * 8); pivmask = malloc(cap); nsub = 0;
+  int cap = 262144; /* >= [8 choose 4]_2 = 200,787 (AUDIT-003 I-11) */ bases = malloc(cap * 8); pivmask = malloc(cap); nsub = 0;
   for (int P = 0; P < 256; P++) {
     if (__builtin_popcount(P) != k) continue;
     int piv[8], r = 0; for (int q = 0; q < 8; q++) if ((P >> q) & 1) piv[r++] = q;

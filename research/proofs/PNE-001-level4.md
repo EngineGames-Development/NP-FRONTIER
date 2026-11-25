@@ -1,8 +1,8 @@
 # PNE-001 at level 4: structure of counterexamples, and the 5-variable case
 
 Cycle 002, 2026-11-25. Builds on `PNE-001-restriction-depth-and-fresh-variables.md` (cycle 001), whose numbering continues here.
-Status: proofs written by the chief researcher; independent audit AUDIT-003 pending (`audits/`).
-**Main results of this document: Theorem 25 — PNE-001 holds at level 4 for every n. With Theorem 17: MC(y·g) = MC(g)+1 for every non-constant g with MC(g) ≤ 4.** The proof is a human reduction to 5 variables (Lemmas 23, 28, 30) plus a 5-variable computation done three ways. **Corollary 31 (human proof, every level): PNE-001 holds whenever dim g ≥ 2·MC(g) − 2.** Sections 22–27 below; sections 9′–21 are the earlier structural route, which now serves as an independent check of the case n ≤ 5.
+Status: proofs written by the chief researcher. Independent audit **AUDIT-003** (`audits/AUDIT-003-PNE-001-level4.md`) found no fatal or serious issue. Every claimed lemma and theorem survives, Theorem 27 and the structured proof of Theorem 25 after minor corrections. Corrections I-1 to I-12 are applied in this version.
+**Main results of this document: Theorem 25 — PNE-001 holds at level 4 for every n. With Theorem 17: MC(y·g) = MC(g)+1 for every non-constant g with MC(g) ≤ 4.** The proof is a human reduction to 5 variables (Lemmas 23, 28, 30) plus a 5-variable computation. We did that computation three ways, and AUDIT-003 re-did it with its own code. **Corollary 31 (human proof, every level): PNE-001 holds whenever dim g ≥ 2·MC(g) − 2.** Sections 22–27 below; sections 9′–21 are the earlier structural route, which now serves as an independent check of the case n ≤ 5.
 
 **Question.** For non-constant $g$ with $\mathrm{MC}(g)=4$, is $\mathrm{MC}(y\,g)=5$? Since $\mathrm{MC}(g)\le\mathrm{MC}(y\,g)\le\mathrm{MC}(g)+1$, a *level-4 counterexample* is a $g$ with $\mathrm{MC}(g)=4=\mathrm{MC}(y\,g)$.
 
@@ -34,7 +34,7 @@ $\mathrm{MC}(f)\le2$ iff $f$ is of one of two types:
 
 Remarks.
 - Up to affine equivalence and adding affine functions, the nonzero cases are $x_1x_2$ (MC 1), $x_1x_2+x_3x_4$, $x_1x_2x_3$ and $x_3(x_1x_2+x_4)$ (MC 2). This is consistent with the "three representative forms" for MC 2 attributed to Find–Smith-Tone–Sönmez Turan (ePrint 2015/1041). That attribution comes from a search summary only; the representatives were not seen.
-- Any type-(C) function of degree 3 has top-degree part $\ell_{\rm lin}a_{\rm lin}b_{\rm lin}$, a product of three linear forms.
+- Any type-(C) function of degree 3 has as its degree-3 part the degree-3 component of $\ell_{\rm lin}a_{\rm lin}b_{\rm lin}$, a product of three linear forms. Over $\mathbb F_2$ that product also has lower-degree terms (AUDIT-003 I-9).
 
 ## Lemma 19 (derivatives of MC ≤ 2 functions)
 
@@ -164,6 +164,7 @@ Then $\mathrm{MC}(\Phi|_C)\le m-1$ for **every** coset $C$ of $K$.
 
 *Proof.* On $C$, every $w_t$ is an affine function.
 - In case (a), $A_i$ is constant on $C$, so $z_i=A_iB_i\in\{0,B_i\}$.
+- In case (b), symmetrically, $B_i$ is constant on $C$, so $z_i\in\{0,A_i\}$.
 - In case (c), $B_i=A_i+\epsilon$ for a constant $\epsilon$, so $z_i=A_i(A_i+\epsilon)=(1+\epsilon)A_i$.
 
 Either way $z_i$ is an affine combination of $1$, the restricted $w$'s and $z_j$ with $j<i$. Substituting it into the later gates and the output gives an $(m-1)$-gate circuit on $C$. $\square$
@@ -189,7 +190,7 @@ For $\dim K=5$:
 - `formal4.c`:
   - The affinity test passed 1.4 million unit tests (`test_affine.c`).
   - The coset/coordinate indexing self-test is built in.
-  - The optimized and the direct restriction code produce identical $\dim K=7$ output.
+  - The optimized and a direct restriction variant produced identical $\dim K=7$ output (`out_k7.txt`, `out_k7b.txt`, equal after sorting). The direct variant itself was not kept, so this check cannot be re-run from the repository (AUDIT-003 I-6). AUDIT-003's independent enumeration (V-2) supersedes it.
 - Without the swap reduction (`formal4_full`, all 32,768 wirings):
   - $\dim K=7$: 3,072 affine cosets / 2,688 pairs.
   - $\dim K=6$: 908,800 / 1,663,872; the 72,576 non-degenerate pairs give 160 distinct functions modulo affine, and all 160 have 3-gate circuits.
@@ -218,12 +219,20 @@ This route shares no code with EXP-014 except the SAT encoding `mc.py`, which is
 
 ## Theorem 27 (all functions on at most 5 variables)
 
-**$\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$ for every non-constant $g$ on $\le5$ variables.** Every 5-variable function has MC $\le4$: by EXP-007, and by Sönmez Turan–Peralta 2014. So this is a special case of Theorems 17 and 25. It also has three further, mutually independent confirmations:
+**$\mathrm{MC}(y\,g)=\mathrm{MC}(g)+1$ for every non-constant $g$ on $\le5$ variables.** Every 5-variable function has MC $\le4$. That is the published result of Sönmez Turan–Peralta 2014 (recalled; seen in search summaries only). It is also confirmed against NIST's classification of the 48 affine classes of 5-variable functions: AUDIT-003 (V-6) found and verified a circuit with $\le4$ gates for each class. EXP-007 does **not** establish this bound; it computes $S_3$ only, and `build_mc5.c` assigns 4 to every function outside $S_3$ by default (AUDIT-003 I-2). So the theorem is a special case of Theorems 17 and 25. It also has three further confirmations. Confirmation 1 and the table form of confirmation 2 both use EXP-007's $S_3$. So confirmation 2 is independent of confirmation 1 only in its table-free form (`formal4_k5nd` plus SAT), which is the form meant here (AUDIT-003 I-1):
 1. The structural route (Lemma 20, Corollary 21, EXP-008 orbits, EXP-010 `cert4b`): all 297 orbit representatives give MC$(y\,g)\ge5$, and all 74 positive controls are correctly accepted.
-2. The $\dim K=5$ case of EXP-014.
-3. NIST's 6-variable classification (EXP-015 `nist_level_check.py`). Each 5-variable $g$ of MC $m\in\{3,4\}$ is affine-equivalent to a listed representative $g_0$ plus a linear form, and $\mathrm{MC}(y(g_0\circ T+\ell))=\mathrm{MC}(y(g_0+\ell\circ T^{-1}))$. So it suffices to test $y(g_0+\ell)$ for the 32 linear $\ell$. The 544 (level 3) and 832 (level 4) such functions all have affine-invariant fingerprints that differ from every listed class of MC $\le m$, so MC$(y(g_0+\ell))=m+1$.
+2. The $\dim K=5$ case of EXP-014, in table-free form: Lemma 24 for degenerate pairs, plus an explicit, re-evaluated 3-gate circuit for each of the 2,142 non-degenerate functions modulo affine.
+3. NIST's 6-variable classification (EXP-015 `nist_level_check.py`). Each 5-variable $g$ of MC $m\in\{3,4\}$ is affine-equivalent to a listed representative $g_0$ plus a linear form, and $\mathrm{MC}(y(g_0\circ T+\ell))=\mathrm{MC}(y(g_0+\ell\circ T^{-1}))$. So it suffices to test $y(g_0+\ell)$ for the 32 linear $\ell$. The 544 (level 3) and 832 (level 4) such functions all have fingerprints that differ from every listed class of MC $\le m$, so MC$(y(g_0+\ell))=m+1$.
+   - Caveat (AUDIT-003 I-4): the fingerprint is not affine-invariant in general. Its derivative-degree component distinguishes a derivative equal to 0 from one equal to 1; for example, $x_1x_2$ and $x_1x_2+x_3$ differ in direction $e_3$.
+   - The test is still valid here. Every constant derivative of $y\cdot g$ is 0 (proof of Lemma 22(b)). No NIST representative of MC $\le4$ and dimension $\le6$ has a derivative equal to 1 (checked by AUDIT-003). So a fingerprint mismatch still proves non-equivalence for every function tested.
 
-Our exact 5-variable MC table agrees with NIST's MC for every one of the 48 affine classes of 5-variable functions, and it passed 200,000 random affine-invariance tests (`EXP-015/check_mc5_vs_nist.py`). Open discrepancy: the constant $s_5=1{,}576{,}479{,}744$ in the counting formula for MC-3 functions on NIST's 2019 slide does not match our count of dimension-5 MC-3 functions, 775,728,128. The MC-2 formula on the same slide matches our count exactly (1,801,472 for $n=5$, 31,616 for $n=4$), and our MC-3 total is supported by the class-by-class agreement. The paper text, which would settle the slide's normalization, could not be retrieved (Cloudflare challenge).
+Our exact 5-variable MC table agrees with NIST's MC for every one of the 48 affine classes of 5-variable functions, and it passed 200,000 random affine-invariance tests (`EXP-015/check_mc5_vs_nist.py`). The constant $s_5=1{,}576{,}479{,}744$ in the counting formula for MC-3 functions on NIST's 2019 slide is not our count of dimension-5 MC-3 functions, 775,728,128.
+- The ratio is exactly $63/31=(2^6-1)/(2^5-1)$: $s_5=63\cdot25{,}023{,}488$ and $775{,}728{,}128=31\cdot25{,}023{,}488$ (found by AUDIT-003, I-7; re-checked).
+- $s_5$ also exceeds $|S_3|=779{,}571{,}200$, so it cannot count 5-variable functions of MC 3.
+- The exact Gaussian-binomial factor points to a different normalization in the slide's formula, not to an error in our table.
+- The MC-2 formula on the same slide matches our counts exactly: 1,801,472 for $n=5$ and 31,616 for $n=4$.
+- Our MC-3 total is supported by the class-by-class agreement with NIST.
+- The paper text, which would fix the slide's normalization, could not be retrieved (Cloudflare challenge). This is no longer treated as an open discrepancy.
 
 ## Lemma 28 (the read-once case: hyperplanes force a degenerate last gate) — human proof, every $m$
 
@@ -247,7 +256,7 @@ Let $\Phi$ be a formal $m$-gate circuit, and let $H=\{w:\langle h,w\rangle=c\}$ 
 
 The final claim is Lemma 24. $\square$
 
-**Corollary 29 (every level).** PNE-001 holds for every non-constant $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$. Equivalently, a level-$m$ counterexample has $\dim g\le 2m-2$.
+**Corollary 29 (every level).** PNE-001 holds for every non-constant $g$ with $\dim g\ge2\,\mathrm{MC}(g)-1$. Equivalently, a level-$m$ counterexample has $\dim g\le 2m-2$. (Lemma 23 needs $m\ge1$. For $\mathrm{MC}(g)=0$, i.e. non-constant affine $g$, $\mathrm{MC}(y\,g)=1$ holds trivially; AUDIT-003 I-10. The same applies to Corollary 31.)
 
 *Proof.* Let $g$ be a level-$m$ counterexample, and take $\Phi,K,C_0,C_1$ from Lemma 23.
 - $g$ equals $\Phi|_{C_1}$ composed with an affine surjection, plus an affine function. Hence $\dim g\le\dim K\le 2m-1$.
@@ -300,7 +309,18 @@ The proof of Lemma 30 splits on $\dim\pi(H)$.
 
 *Proof.* As in Corollary 29: $\dim g\le\dim K$. If $\dim g\ge 2m-2$, then $\dim K\in\{2m-2,2m-1\}$, and Lemma 30 or Lemma 28 gives $\mathrm{MC}(g)\le m-1$. $\square$
 
-**Structured proof of Theorem 25.** A level-4 counterexample has $\dim g\le5$ (Corollary 31). Choose coordinates in which $g=h(x_1,\dots,x_5)+\epsilon x_6+c$. Restricting to $x_6=0$ gives a 5-variable function $g'$ with $\mathrm{MC}(g')=\mathrm{MC}(g)=4$ and $\mathrm{MC}(y\,g')\le\mathrm{MC}(y\,g)=4$. That is a level-4 counterexample on 5 variables, which Theorem 27 excludes. Hence **Theorem 25 follows from the human-proved Lemmas 23, 28 and 30 together with the 5-variable computation.** The 5-variable computation is done three independent ways: EXP-010, EXP-014 with $\dim K=5$, and EXP-015. The full enumeration (EXP-014 for $\dim K=6,7$) and the class-list route (EXP-015, Lemma 26) are further independent confirmations. Data check (`EXP-014/lemma30_check.py`, all 1,663,872 codimension-2 pairs at $m=4$, all wirings):
+**Structured proof of Theorem 25.** There are two equivalent forms. Neither uses Theorem 27, whose proof goes through Theorem 25; the earlier wording cited it, which was circular (AUDIT-003 I-3).
+- *Form (i), directly in Lemma 23.* A level-4 counterexample gives $(\Phi,K,C_0,C_1)$ with $\dim K\in\{5,6,7\}$.
+  - Lemma 28 (with Lemma 24) excludes $\dim K=7$.
+  - Lemma 30 excludes $\dim K=6$.
+  - $\dim K=5$ is excluded by the table-free part of EXP-014: Lemma 24 handles the degenerate pairs, and each of the 2,142 non-degenerate functions modulo affine has an explicit, re-evaluated 3-gate circuit.
+  - AUDIT-003 (V-3) re-proved the $\dim K=5$ step with its own code, which shares nothing with EXP-014.
+- *Form (ii), via 5-variable functions.* Corollary 31 gives $\dim g\le5$. Choose coordinates in which $g=h(x_1,\dots,x_5)+\epsilon x_6+c$. Restricting $x_6$ and any further variables to 0 gives a 5-variable $g'$ with $\mathrm{MC}(g')=\mathrm{MC}(g)=4$ and $\mathrm{MC}(y\,g')\le\mathrm{MC}(y\,g)=4$, a level-4 counterexample on 5 variables. Any one of the following 5-variable computations excludes it:
+  - EXP-014 with $\dim K=5$, table-free. For a 5-variable $g'$, Lemma 23 forces $\dim K=5$.
+  - EXP-015 `nist_level_check.py`, conditional on NIST's 6-variable classification.
+  - EXP-010, given EXP-007's $S_3$.
+
+Hence **Theorem 25 follows from the human-proved Lemmas 23, 24, 28 and 30 together with one 5-variable computation.** The full enumeration (EXP-014 for $\dim K=6,7$) and the class-list route (EXP-015, Lemma 26) are further independent confirmations. Data check (`EXP-014/lemma30_check.py`, all 1,663,872 codimension-2 pairs at $m=4$, all wirings):
 - case $\dim\pi(H)=2$: 760,704 pairs, and the last gate is redundant on $C_1$ in every one;
 - case $\dim\pi(H)=1$: 903,168 pairs, and the gate named by the proof is degenerate in every one (gate 1: 101,376; gate 2: 50,688; gate 3: 25,344; gate 4: 725,760);
 - case 0: never occurs.
@@ -340,9 +360,16 @@ For level 5, Corollary 31 reduces counterexamples to $\dim g\le7$, i.e. to $\dim
 
 
 ## Limits and what remains
-- Theorem 25 is computer-assisted. Its correctness rests on the reformulation (Lemma 23) and on the enumeration code. The two independent routes (EXP-014 and EXP-015) reduce, but do not remove, the risk of a coding error.
-- No human-readable proof of level 4 is known. The structural lemmas (9′, 18–21) explain the 5-variable case only partly.
-- **Level 5** is open. In Lemma 23 it needs $\dim K\in\{6,\dots,9\}$ inside $\mathbb F_2^{10}$. That means $\binom{10}{4}_2\approx5.4\cdot10^7$ subspaces of dimension 6 alone, about $2.3\cdot10^6$ wirings, and MC tests on up to 9 variables. Degeneracy pruning (Lemma 24) and symmetry must cut this down. Lemma 26 would need the full list of MC-5 classes, which NIST reported as incomplete in 2019 (their repository contains dimension 6 and 10 lists only).
+(Updated after AUDIT-003, I-5.)
+- **What is human-proved and what is computed.**
+  - Lemmas 23, 24, 28 and 30 are human proofs, at every level, and AUDIT-003 found them correct.
+  - Theorem 25 is computer-assisted only in its codimension-3 step ($\dim K=5$ at $m=4$, equivalently 5-variable $g$). That step rests on code. It is done three ways here: EXP-014 table-free; EXP-015, conditional on NIST's classification; and EXP-010 with EXP-007.
+  - AUDIT-003 (V-3) re-proved the step with its own code, using an explicit, evaluated circuit for every coset pair. Two unrelated implementations agree on every count. This reduces, but does not remove, the risk of a coding error; neither implementation is formally verified.
+- **No human-readable proof of level 4 is known,** because the codimension-3 step is computational. Its hard core is located exactly (Observations): $\dim\pi(H)=2$, with $C_0$ and $C_1$ in different $H_0$-classes.
+- **Level 5 is open.**
+  - By Corollary 31, a level-5 counterexample needs $\dim K\in\{6,7\}$ inside $\mathbb F_2^{10}$, i.e. codimension 3 or 4. That is $\binom{10}{3}_2=6{,}347{,}715$ subspaces of dimension 7 and $\binom{10}{4}_2=53{,}743{,}987$ of dimension 6, against about $2.35\cdot10^6$ wirings, with MC tests on 6 or 7 variables.
+  - Degeneracy pruning (Lemma 24) and symmetry must cut this down. A human proof of codimension 3 for every $m$ would leave only $\dim K=6$.
+  - Lemma 26 would need MC-5 class lists that NIST reported as incomplete in 2019; their repository has lists for dimensions 6 and 10 only.
 - PNE-001 in general, and its AND-direct-sum strengthening PNE-002, remain open. Nothing here bears on P vs NP beyond this restricted measure.
 
 

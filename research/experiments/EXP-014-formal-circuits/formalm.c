@@ -18,7 +18,7 @@ static T txor(T a, T b) { T r; for (int i = 0; i < 4; i++) r.w[i] = a.w[i] ^ b.w
 static int bit(const T *t, int p) { return (t->w[p >> 6] >> (p & 63)) & 1; }
 static int nsub; static unsigned char (*bases)[8]; static unsigned char *pivmask;
 static void gen_subspaces(int k) {
-  bases = malloc(200000 * 8); pivmask = malloc(200000); nsub = 0;
+  bases = malloc(262144 * 8); pivmask = malloc(262144); /* >= [8 choose 4]_2 = 200,787 (AUDIT-003 I-11) */ nsub = 0;
   for (int P = 0; P < (1 << D); P++) {
     if (__builtin_popcount(P) != k) continue;
     int piv[8], r = 0; for (int q = 0; q < D; q++) if ((P >> q) & 1) piv[r++] = q;

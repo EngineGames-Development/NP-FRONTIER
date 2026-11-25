@@ -52,7 +52,8 @@
 **Checked against our data** (EXP-007, EXP-015):
 - The slide's MC-1 formula 2·C(2^n,3) and MC-2 formula reproduce our counts exactly: 9,920 and 1,801,472 at n = 5; 1,120 and 31,616 at n = 4.
 - The slide's MC-3 formula, with s4 = 32768, s5 = 1576479744 and s6 = 183894007808, does **not** reproduce our count at n = 5. Ours: 777,759,744 MC-3 functions, of which 775,728,128 have dimension 5.
-- Our table nevertheless agrees with the class data on all 48 five-variable classes. The discrepancy is unresolved; possibly the normalization of s_d differs from what we assume.
+- Our table nevertheless agrees with the class data on all 48 five-variable classes.
+- AUDIT-003 (I-7) observed that s5 = (63/31) · 775,728,128 exactly, and we re-checked it: 63 · 25,023,488 = 1,576,479,744. So the difference is a normalization factor (2^6 − 1)/(2^5 − 1), not a disagreement in the count. At n = 4, s4 = 32,768 equals our count of 4-variable MC-3 functions. The slide's exact convention for s_d is unknown, because the slide text defining it was not retained.
 
 **Used in cycle 002:**
 - Lemma 22(a) is their bound.

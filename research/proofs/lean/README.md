@@ -214,7 +214,7 @@ coefficient vectors in the sanity examples.
   formalized.
 - **The following results are not formalized:**
   - from `PNE-001-level4.md`: the reformulation Lemma 23 itself, the formal-circuit and coset setting of Lemma 24
-    (only its gate-elimination step is formalized), Lemmas 18, 19, 20, 22, 26 and 28, Corollaries 21 and 29, and
+    (only its gate-elimination step is formalized), Lemmas 18, 19, 20, 22, 26, 28 and 30 (with (IF′)), Corollaries 21, 29 and 31, and
     Theorems 25 and 27;
   - the enumerations behind Theorem 25 (EXP-014, EXP-015), which remain computer-assisted and outside Lean;
   - from cycle 001: Lemma 1 (`D ≤ MC`), Theorem 4 and the restriction depth `D`.
