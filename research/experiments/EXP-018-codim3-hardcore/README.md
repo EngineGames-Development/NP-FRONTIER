@@ -30,7 +30,11 @@
   - 2b1: merge identity holds in 1,690,160 cases.
   - 2b2: gate m−1 unused in 1,012,800 cases, last gate redundant in 62,124.
   - **0 violations.**
-- **`codim3 5 300 2026`**: a random sample of 300 of the 2,350,080 swap-reduced wirings, against all 6,347,715 codimension-3 subspaces of F₂¹⁰. See `codim3_m5.log`.
+- **`codim3 5 300 2026`** (a random sample of 300 of the 2,350,080 swap-reduced wirings, against all 6,347,715 codimension-3 subspaces of F₂¹⁰; `codim3_m5.log`, 32 min on 4 cores):
+  - 1,839,901 non-affine cosets with an affine C₀; 1,762,553 degenerate.
+  - dim π = 1: gate j* redundant in 5,279 cases.
+  - 2a: 34,026. 2b1, merge: 21,530. 2b2: 15,649 unused, 864 last gate redundant.
+  - **0 violations.**
 
 **Interpretation.** The cycle-002 hard core is explained exactly:
 - either a gate is unused;

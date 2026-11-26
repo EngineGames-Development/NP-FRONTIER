@@ -191,7 +191,7 @@ So the fresh-variable lemma at level 5 is equivalent to the following finite sta
 | $m$ | wirings | subspaces | non-affine $C$ with affine $C_0$ | (X1) | $\dim\pi=1$: $j^*$ redundant | 2a: last redundant | 2b1: merge | 2b2: unused / last redundant | violations |
 |---|---|---|---|---|---|---|---|---|---|
 | 4 | all 8,640 | 97,155 | 24,282,232 | 18,787,840 | 561,600 | 2,167,708 | 1,690,160 | 1,012,800 / 62,124 | **0** |
-| 5 | sample (see `codim3_m5.log`) | 6,347,715 | see log | | | | | | see log |
+| 5 | random 300 of 2,350,080 (seed 2026) | 6,347,715 | 1,839,901 | 1,762,553 | 5,279 | 34,026 | 21,530 | 15,649 / 864 | **0** |
 
 Earlier data agrees with this picture:
 - The "hard core" of cycle 002 (2,152,192 pairs with no redundant gate in the given circuit) lies exactly in cases 2b1 and (X2).

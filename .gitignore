@@ -33,3 +33,4 @@ research/experiments/*/codim2
 research/experiments/*/codim3
 research/experiments/*/hc_dump
 research/experiments/*/__pycache__/
+research/experiments/*/codim4

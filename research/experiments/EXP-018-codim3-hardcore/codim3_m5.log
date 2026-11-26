@@ -1,0 +1,11 @@
+m=5 codim-3 subspaces=6347715
+m=5 wirings_run=300 (of 2350080) subspaces=6347715 | non-affine C with an affine C0: 1839901 | Lemma-24 degenerate: 1762553
+  dim pi=1: gate j* redundant: 5279
+  dim pi=2 same class: last gate redundant: 34026
+  dim pi=2 different class, k=m-1: merge V0+s*V0 holds: 21530
+  dim pi=2 different class, k<m-1: gate m-1 unused: 15649, last gate redundant: 864
+  VIOLATIONS: 0  (by kind: pi0 0, psi0 0, dimH*<2 0, dimpi*<2 0, j*-not-red 0, same-not-red 0, merge-fails 0, low-not-red 0)
+
+real	32m18.868s
+user	127m8.476s
+sys	0m0.524s
