@@ -177,6 +177,26 @@ Otherwise $I\ge1$, and gate $I$'s private variables are free and occur nowhere a
 
 They involve only functions of gates $<k$. On $E$ these coordinates are free, so the constraints hold on the full domain of gates $<k$, and Lemma 39 classifies each of them. Because $\tilde A$ is non-constant, each $\tilde A\cdot W$ relation leaves: $W$ constant, $\tilde A+W$ constant, or $\tilde A,W$ both functions of one gate's inputs. The codimension-4 proof would finish by checking, case by case, that the saving $N_0'+N_1'\in\mathrm{span}(1)$ (or another saving) follows. This is finite and mechanical, but not yet done.
 
+**Test of the plan (`dmerge_check.py`, the 200 sampled double-merge instances with $k=m-2$).** On $C$ write
+$$\Phi|_C=M_0+N_0s_k+M_1s'+N_1s_ks'$$
+with $M_i,N_i$ functions of the gates below $k$. These are computed as derivatives along directions that move only gate $k$'s, respectively gate $m-1$'s, free coordinate, and the decomposition is consistent in all 200 cases.
+
+Any one of the following gives a 2-gate completion on top of the lower gates, hence MC $\le m-1$:
+- $N_1$ constant;
+- $M_1$ constant;
+- $N_0$ constant;
+- $N_0+N_1$ constant (the shared product).
+
+Observed:
+- $M_1$ constant: 49 instances;
+- $N_0+N_1$ constant: 25;
+- both of these: 11;
+- $N_0$ constant: 10;
+- $M_1$ and $N_0$ constant: 6;
+- **none of the four: 99.**
+
+All 200 nonetheless have MC $\le4$ by SAT. So about half the double merges need circuits that also restructure the gates below $k$. **Keeping the lower gates and merging above them is not enough, and the plan above is incomplete as it stands.** A full treatment of NEW-2 needs a further idea. One candidate is applying Lemma 39 to the lower gates themselves, which may let them be rewired as well.
+
 **What a codimension-4 proof needs.** Lemmas 28, 30, 32 and 37 cover every configuration seen except NEW-2:
 - $\dim\pi(H)=2$ and $\dim H_0=2$;
 - $t_2$ eliminates a private variable of gate $m-1$;
