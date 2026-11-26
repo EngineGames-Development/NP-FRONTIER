@@ -36,3 +36,5 @@ research/experiments/*/__pycache__/
 research/experiments/*/codim4
 research/experiments/*/cheapplane6
 research/experiments/EXP-019-codim4-m5/codim4_s40.txt
+research/experiments/EXP-019-codim4-m5/hard_s40.log
+research/experiments/EXP-019-codim4-m5/hard_s40.jsonl
