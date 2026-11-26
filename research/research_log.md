@@ -109,3 +109,22 @@
     - I-7: s5 = (63/31) × our count, a normalization factor.
   - The subspace buffers were enlarged (I-11), and `formal4 7` was re-verified to give identical output.
 - EXP-018 started: a sampler of codimension-3 hard-core instances (`hc_dump.c`, 1,084 samples) for cycle-003 priority 1.
+
+## 2026-11-25/26 — cycle 003
+- Started cycle 003 with current_state priority 1, codimension 3.
+- EXP-018 (`hc_dump.c`) sampled 1,084 hard-core pairs:
+  - 770 have an unused gate, which is trivial;
+  - the other 314 all have top(h0) = m−1.
+- This led to Lemma 32 (codimension 3, every m). The proof combines a merge of the top two gates (case b1), a top-gate multilinear analysis (case b2), recursion through Ψ when dim π = 1, and the same-class argument of Lemma 30.
+- `codim3.c`: 0 violations, exhaustive at m = 4 and on a 300-wiring sample at m = 5. The algebraic identities were brute-force checked.
+- Corollaries 33–35: PNE-001 whenever dim g ≥ 2MC(g) − 3; level 4 is essentially computation-free; level 5 reduces to dim g = 6.
+- AUDIT-004 was launched, interrupted by the API rate limit, and resumed after the reset.
+  - **Verdict: Lemma 32 survives for every m; no fatal or serious issue.**
+  - Corrections I-1 to I-8 are applied: the 4-variable citation; the reading of f_y; Lemma 30′; the X^τ notation; the codim3.c description; the README wording.
+- EXP-019: codimension-4 sampler at m = 5.
+  - 2.3% of cosets are HARD, all with dim π = 2 and dim H0 = 2.
+  - NEW-1 is settled by the new Lemma 37 (top-two perturbation).
+  - NEW-2 is open. One instance was decoded: Φ|C = s + w3 + (B1+z1)·A2·(1+s), which has MC exactly 4.
+  - All 131 distinct HARD functions have verified 4-gate circuits.
+- Lemma 36 (cheap plane at level 5) on NIST's 6-variable MC-5 list leaves 35,861 of 148,483 classes. The degree filter removes none.
+- The user asked whether P vs NP will be solved. Answer given: almost certainly not; this program produces small, verified results about a restricted measure.

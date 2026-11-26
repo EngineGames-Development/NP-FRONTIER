@@ -1,6 +1,6 @@
 # Current state of NP-FRONTIER
 
-Last updated: 2026-11-25, end of cycle 002 (AUDIT-003 done; corrections applied). **Single source of truth**: start every session here (CLAUDE.md §13).
+Last updated: 2026-11-26, cycle 003 (AUDIT-004 done; corrections applied; level 5 open). **Single source of truth**: start every session here (CLAUDE.md §13).
 
 ## Honest summary
 P versus NP is unresolved, and nothing in this program changes that.
@@ -21,7 +21,7 @@ Cycle 001 produced:
 
 | ID | Direction | Status | One line |
 |---|---|---|---|
-| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT for the general statement; levels ≤ 3 and 4 REVIEWED (AUDIT-002, AUDIT-003) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 4, all n.** Level ≤ 3 is Theorem 17. Level 4 is Theorem 25 (cycle 002): a human reduction to codimension 3, plus a computation re-done independently by AUDIT-003. Human proof for every level whenever dim g ≥ 2·MC(g) − 2 (Corollary 31). Also proved for all quadratic g, all g on ≤ 5 variables, and whenever MC(g) = D(g). Open from level 5. Novelty unconfirmed (2016 NIST email). |
+| PNE-001 | P≠NP (restricted measure) | PROOF ATTEMPT for the general statement; levels ≤ 4 and codimension ≤ 3 REVIEWED (AUDIT-002/003/004) | MC(y·g) = MC(g)+1. **Proved for all g with MC(g) ≤ 4, all n.** Level ≤ 3 is Theorem 17. Level 4 is Theorem 25 (cycle 002): a human reduction to codimension 3, plus a computation re-done independently by AUDIT-003. Human proof for every level whenever dim g ≥ 2·MC(g) − 3 (Corollary 33, cycle 003). Level 5 reduces to 6-variable g and is open. Also proved for all quadratic g, all g on ≤ 5 variables, and whenever MC(g) = D(g). Open from level 5. Novelty unconfirmed (2016 NIST email). |
 | PNE-002 | P≠NP (restricted measure) | FORMULATED | AND-direct sum for MC. It would imply explicit c·n circuit lower bounds for every c, so it is believed hard. |
 | OTH-001 | barrier | REVIEWED: elementary, framing corrected | Restriction-robust (P1) measures are ≤ D = D⊕−1 ≤ n−1. General one-kill-per-restriction arguments are capped at n−1 only by the folklore dimension count. |
 | PEQ-001 | P=NP | DISPROVED (known theorems) | Bounded-width propagation / k-consistency fails (Ben-Sasson–Wigderson). |
@@ -67,15 +67,34 @@ Computational facts:
   - wording fixes.
 - Lean: `Circuit.lean` covers gate elimination, affine substitution and free affine output shifts. It builds under `--wfail` with standard axioms only.
 
-## Priorities for cycle 003
-1. **Codimension 3:** prove PNE-001 for dim(g) = 2·MC(g) − 3, every level. Note that the given circuit cannot always be shortened (refuted at m = 4: 2,152,192 pairs). Start by analysing the 2,142 codimension-3 functions and their SAT witnesses.
-2. **Level 5 of PNE-001 via Lemma 23.**
-   - Brute force is about 10^15 coset tests: 2.35M wirings × subspaces of F_2^10 of dimension 6–9.
-   - Design pruning: Lemma 24's conditions are linear in K and can be imposed gate by gate, combined with circuit automorphisms and early affinity filtering.
-   - Partial data: the NIST dimension-10 MC-5 list (EXP-015).
-3. **A human-readable proof of level 4.** Explain the rarity of non-degenerate coset pairs. Try an induction on m for the statement "Φ affine on C_0 with K non-degenerate ⇒ MC(Φ|C_1) ≤ m−1".
-4. **Novelty.** Find the 2016 NIST attachment (MultComp3) or a later publication of the fresh-variable claim. Confirm the s5 normalization (exact factor 63/31, AUDIT-003 I-7) with the paper text; ePrint is behind Cloudflare, so try the Springer page or the authors' pages.
-5. Carried over from cycle 001: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), and the PEQ track.
+## Established in cycle 003 (see `research/proofs/PNE-001-codim3.md`, `research/proofs/PNE-001-level5.md`, `research/cycles/cycle-003.md`)
+- **Lemma 32 (codimension 3, every m; human proof; AUDIT-004: survives).** A formal m-gate circuit that is affine on one coset of a codimension-3 subspace has MC ≤ m−1 on every coset.
+  - The proof's key new step is the merge: when top(h0) = m−1, gates m−1 and m collapse into one gate on the other coset.
+  - Lemma 30′ states the structural form of Lemma 30.
+- **Corollary 33:** PNE-001 whenever dim g ≥ 2·MC(g) − 3.
+- **Corollary 34:** level 4 needs no enumeration beyond the classical "MC ≤ 3 on 4 variables".
+- **Corollary 35:** a level-5 counterexample has dim g = 6, i.e. codimension 4 at m = 5.
+- **Lemma 37 (top-two perturbation; unaudited):** for any circuit affine on S, perturbing the input constants of the top two gates gives MC ≤ m−1. This gives a one-line proof of the merge.
+- **Lemma 36 (unaudited):** a level-5 counterexample has a cheap plane. On NIST's 148,483 six-variable MC-5 classes, 35,861 survive.
+- **EXP-018:** 0 violations of the Lemma 32 case analysis (m = 4 exhaustive; m = 5 sample). AUDIT-004's own harness: 0 violations at m = 4, 5, 6.
+- **EXP-019 (codimension 4, m = 5):**
+  - The residue NEW-2 is isolated: dim π(H) = 2, dim H0 = 2, the non-separating t2 hits gate m−1, and the separating t1 is lower.
+  - Every sampled hard function has a verified 4-gate circuit.
+
+## Priorities for cycle 004
+1. **Codimension 4, every m (settles level 5).**
+   - Prove the NEW-2 sub-case and write the dim π(H) = 1 branch.
+   - Target: explain why, in Φ|C = R0' + R1'·s, the two slice functions share one product.
+   - General frame: statement (G). Perturbing the gate-input constants of an m-gate circuit that is affine on S leaves MC ≤ m−1. (G) is equivalent to PNE-001 at level m; Lemma 37 proves it for the top two gates.
+2. **AUDIT-005 of Lemmas 36 and 37** before using them further.
+3. **Computational level 5 as a fallback.**
+   - Sharpen Lemma 36 with second-gate conditions on the halves, to cut the 35,861 NIST candidates.
+   - Or reduce formal 5-gate circuits by their full symmetry group (GL(2) per gate, z_i ↦ z_i + A_i) and enumerate NEW-2 only.
+   - Finish the 40-wiring EXP-019 sample and SAT-check its distinct HARD functions.
+4. **Novelty:**
+   - the 2016 NIST attachment (MultComp3);
+   - the paper text of Çalık–Sönmez Turan–Peralta 2020, for the s5 normalization (factor 63/31).
+5. Carried over: a measure that charges both branches (open question 2), the explicit MC ≥ n seed (open question 3), the PEQ track, and Lean for Lemmas 23–32.
 
 ## Environment notes
 Lean 4.37.0-rc1 (core only). PySAT/CaDiCaL with DRAT logging. drat-trim is built by `scripts/setup_env.sh`.

@@ -3,7 +3,12 @@
 **Status:** PROOF ATTEMPT for the general statement. **Proved, computer-assisted, for every g with MC(g) ≤ 4 on any number of variables.** Level ≤ 3 is Theorem 17 (REVIEWED, AUDIT-002). Level 4 is Theorem 25 (cycle 002), REVIEWED: AUDIT-003 found no fatal or serious issue and re-proved the computational step with independent code. Also proved:
 - for all g on ≤ 5 variables (Theorem 27);
 - for all g with MC(g) = D(g);
-- **at every level, for all g with dim(g) ≥ 2·MC(g) − 2 (Corollary 31, human proof via Lemmas 23, 28, 30)**, which includes all quadratic g. Open from level 5. Novelty is unconfirmed: a 2016 NIST email states the special case h = v·f (see `research/literature/mc-peralta-2016-nist-email-fresh-variable.md`).
+- **at every level, for all g with dim(g) ≥ 2·MC(g) − 3 (Corollary 33, cycle 003, human proof via Lemmas 23, 28, 30, 32; REVIEWED, AUDIT-004)**, which includes all quadratic g.
+- Level 4 now has a proof that is human except for the classical fact that every 4-variable function has MC ≤ 3 (Corollary 34).
+- **Level 5 is open.** Corollary 35 reduces it to 6-variable g, i.e. codimension 4 at m = 5.
+  - Lemma 36 gives a cheap-plane condition, which leaves 35,861 of NIST's 148,483 MC-5 classes.
+  - Lemma 37 (top-two perturbation) settles one of the two codimension-4 sub-cases.
+  - The residue NEW-2 is open; every sampled instance has MC ≤ 4 (`research/proofs/PNE-001-level5.md`). Novelty is unconfirmed: a 2016 NIST email states the special case h = v·f (see `research/literature/mc-peralta-2016-nist-email-fresh-variable.md`).
 
 ## Formulation
 MC(f) is the least number of AND gates in a circuit over {AND, XOR, 1}. Claim: for every non-constant g: F₂ⁿ → F₂ and a fresh variable y, **MC(y·g) = MC(g) + 1**.

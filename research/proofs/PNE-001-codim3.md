@@ -1,7 +1,7 @@
 # PNE-001: the codimension-3 case, every level (Lemma 32)
 
 Cycle 003, 2026-11-25. Continues the numbering of `PNE-001-level4.md` (Lemmas 22–30, Corollaries 29, 31), whose notation is used throughout.
-Status: proof written by the chief researcher; independent audit AUDIT-004 pending (`audits/`). Exhaustive check at $m=4$ and sampled check at $m=5$ in EXP-018.
+Status: proof written by the chief researcher. Independent audit **AUDIT-004** (`audits/AUDIT-004-PNE-001-codim3.md`) found no fatal or serious issue: Lemma 32 survives for every $m$, Corollaries 33 and 35 survive, and Corollary 34 survives after a citation fix. Corrections I-1 to I-8 are applied in this version. Checks: EXP-018 (exhaustive at $m=4$, sampled at $m=5$), plus the auditor's own harness (all 32,768 wirings at $m=4$; samples at $m=5,6$; 0 violations).
 
 **Results.**
 - **Lemma 32 (human proof, every $m$).** A formal $m$-gate circuit that is affine on one coset of a subspace of codimension 3 has $\mathrm{MC}\le m-1$ on every coset.
@@ -64,6 +64,19 @@ So $c=0$. Finally, a linear form is constant on the affine hyperplane $E$ iff it
 
 In each case gate $k$ is degenerate for $K$, by Lemma 24(a), (b) or (c). These equivalences follow from the independence fact of Lemma 28 for the formal circuit on $w_1,\dots,w_{2k-2}$.
 
+**Lemma 30′ (structural form of Lemma 30; stated for citation, AUDIT-004 I-3).** Let $\Psi$ be a formal $j$-gate circuit, let $K\subseteq\mathbb F_2^{2j}$ have codimension 2 with $H=K^\perp$, and suppose $\Psi$ is affine on some coset of $K$. Then at least one of the following holds:
+- (i) some gate $i\le j$ is degenerate for $K$ in the sense of Lemma 24, i.e. its degeneracy vector ($e_{2i-1}$ with $\alpha_i=0$, $e_{2i}$ with $\beta_i=0$, or $e_{2i-1}+e_{2i}$ with $\alpha_i=\beta_i$) lies in $H$;
+- (ii) on every coset $C$ of $K$, $\Psi|_C\in\mathrm{span}(\text{affine},z_1|_C,\dots,z_{j-1}|_C)$.
+
+*Proof.* This is exactly what the written proof of Lemma 30 establishes.
+- $\dim\pi(H)=0$ is impossible.
+- $\dim\pi(H)=2$ is Case II, which gives (ii).
+- In $\dim\pi(H)=1$, every sub-case ends in a condition of Lemma 24 whose degeneracy vector lies in $H$: $e_u$, $e_v$, $e_u+e_v$, or, via (IF′), the normal $h_0\in H$. That is (i).
+
+AUDIT-003 §1 and AUDIT-004 §1 checked this. $\square$
+
+Lemma 28 and (IF′) already name their degeneracy vectors in their statements.
+
 ## Lemma 32 (codimension 3) — every $m$
 
 **Lemma 32.** Let $\Phi$ be a formal $m$-gate circuit, $K\subseteq\mathbb F_2^{2m}$ a linear subspace of codimension 3, and $C_0$ a coset of $K$ with $\Phi|_{C_0}$ affine. Then $\mathrm{MC}(\Phi|_C)\le m-1$ for every coset $C$ of $K$.
@@ -87,15 +100,14 @@ Then $\dim H_0=2$ and $H=H_0\oplus\mathrm{span}(h_1)$, with $\pi(h_1)=(p,q)\ne0$
   Now split on $\dim H^*$:
   - $\dim H^*=0$: $\Psi$ is affine on $\mathbb F_2^{2j^*}$, which contradicts the independence fact.
   - $\dim H^*=1$: Lemma 28 makes gate $j^*$ degenerate for $\ker h^*$, where $H^*=\{0,h^*\}$. Since $(h^*,0,0)\in H$, gate $j^*$ is degenerate for $K$: (X1).
-  - $\dim H^*=2$: apply the proof of Lemma 30 to $\Psi$ and $K^*$. Let $\pi^*$ be the projection of $H^*$ onto gate $j^*$'s private coordinates.
-    - $\dim\pi^*=0$ is impossible.
-    - $\dim\pi^*=1$ makes some gate degenerate for $K^*$ with its degeneracy vector in $H^*\subseteq H$: (X1).
-    - $\dim\pi^*=2$ (Case II of Lemma 30) gives $\Psi|_{C^*}\in\mathrm{span}(\text{affine},z_1,\dots,z_{j^*-1})|_{C^*}$, hence $z_{j^*}|_{C^*}\in\mathrm{span}(\text{affine},z_{<j^*})|_{C^*}$, on **every** coset $C^*$ of $K^*$. Pull this back along the affine projection $C\to C^*$, where $C^*$ is the coset containing the image of $C$. Then gate $j^*$ is redundant on $C$: (X3).
+  - $\dim H^*=2$: apply Lemma 30′ to $\Psi$ and $K^*$.
+    - Alternative (i) gives a gate degenerate for $K^*$ whose degeneracy vector lies in $H^*$. Hence that vector, padded with zeros, lies in $H$, and the gate is degenerate for $K$: (X1).
+    - Alternative (ii) gives $\Psi|_{C^*}\in\mathrm{span}(\text{affine},z_1,\dots,z_{j^*-1})|_{C^*}$, hence $z_{j^*}|_{C^*}\in\mathrm{span}(\text{affine},z_{<j^*})|_{C^*}$, on **every** coset $C^*$ of $K^*$. Pull this back along the affine projection $C\to C^*$, where $C^*$ is the coset containing the image of $C$. Then gate $j^*$ is redundant on $C$: (X3).
 
 *Sub-case $(p,q)=(0,1)$* is symmetric, with $\beta_m$ and Lemma 24(b).
 
 *Sub-case $(p,q)=(1,1)$.* On $C_0$, $v=u+e$ with $e=d_0(h_1)+\langle h_1'',w''\rangle$, and $u$ is free. Using $u^2=u$, $D_u\Phi|_{C_0}=1+a+b+e$, which is constant on $E_{d_0}$.
-- If $\alpha_m=\beta_m$, then $e_u+e_v\in H$: (X1) by Lemma 24(c).
+- If $\alpha_m=\beta_m$, then $e=D_u\Phi|_{C_0}+1$ is constant on $E_{d_0}$. As in sub-case $(1,0)$, $h_1''=h''$ for some $h\in H_0$, so $e_u+e_v=h_1+h\in H$: (X1) by Lemma 24(c).
 - Otherwise run the same argument with $\Psi=(\alpha_m+\beta_m)\cdot z$.
 
 ### Case $\dim\pi(H)=2$
@@ -112,13 +124,16 @@ So the last gate is redundant on $C$: (X3). This is Case II of Lemma 30.
 
 Translating by $\tau$ identifies $E'$ with $E$. Every linear form $\ell$ becomes $\ell+\ell(\tau)$: the same form plus a constant. Hence, as functions on $E$,
 $$\Phi|_C(w''+\tau)=(P^\tau+d_1)(Q^\tau+d_2)+\Gamma^\tau.$$
-Here $X^\tau$ means: replace every $z_j$ by $z_j^\tau:=z_j(\cdot+\tau)$, and add the constant $\ell(\tau)$ to every linear form. By (P1), $z_j^\tau=z_j$ for $j<k$ and $z_k^\tau=(\tilde A+1)s$. Put $F=(P+c_1)(Q+c_2)+\Gamma$, which is affine on $E$.
+Here $X^\tau$ is computed on expressions (AUDIT-004 I-4). Each of $P$, $Q$, $\Gamma$ is read as a function on all of $\mathbb F_2^{2m-2}$, with linear forms taken on the whole $w''$-space, and is translated pointwise: $X^\tau(w''):=X(w''+\tau)$. So $z_j^\tau=z_j(\cdot+\tau)$, and each linear form $\ell$ becomes $\ell+\ell(\tau)$. Two expressions that agree on $E$ can have translates that differ, for example $\ell$ and $\ell+\langle t,\cdot\rangle+c$. That is why the translation is applied to the expressions. By (P1), $z_j^\tau=z_j$ for $j<k$ and $z_k^\tau=(\tilde A+1)s$. Put $F=(P+c_1)(Q+c_2)+\Gamma$, which is affine on $E$.
 
 **(b1) $k=m-1$: the last two gates merge.**
 - Let $y$ be the coordinate of $E$ inside $s$, and let $L_0=\mathrm{span}(1,\ \text{coordinates of }E\text{ other than }y,\ z_1,\dots,z_{m-2})$. Its elements do not involve $y$.
 - With $s=y+B_0$, $B_0\in L_0$, and $\tilde A\in L_0$, the elements $P+c_1$, $Q+c_2$, $\Gamma$ take the forms
 $$P+c_1=p+\mathsf u\,s,\quad Q+c_2=q+\mathsf v\,s,\quad\Gamma=\Gamma_0+\gamma_{m-1}\tilde A\,s,$$
-with $p,q,\Gamma_0\in L_0$, $\mathsf u=f_y+\alpha_{m,m-1}\tilde A$, and $\mathsf v=g_y+\beta_{m,m-1}\tilde A$, where $f_y,g_y$ are the $y$-coefficients of $f,g$.
+with $p,q,\Gamma_0\in L_0$, $\mathsf u=f_y+\alpha_{m,m-1}\tilde A$, and $\mathsf v=g_y+\beta_{m,m-1}\tilde A$, where $f_y,g_y$ are the coefficients of $y$ in $f|_E$ and $g|_E$, written in the coordinates of $E$ after substituting for $w_e$ (AUDIT-004 I-2).
+  - In types 1 and 2 this is the coefficient of $y$ in $f$.
+  - In type 3 ($e=2m-2$, $y=w_{2m-3}$) it is $f_y=(h_1'')_{2m-3}+(h_1'')_{2m-2}$, and $g_y$ likewise with $h_2''$.
+  - With the plain coefficient of $w_{2m-3}$ in $f$ instead, $p\notin L_0$ in general.
 - Using $s^2=s$:
 $$F=(pq+\Gamma_0)+\big(p\mathsf v+q\mathsf u+\mathsf u\mathsf v+\gamma_{m-1}\tilde A\big)\,s .$$
   $F$ is affine, say $F=\lambda_0+\lambda_y y$ with $\lambda_0$ affine and free of $y$, and $D_yF$ is constant. So $p\mathsf v+q\mathsf u+\mathsf u\mathsf v+\gamma_{m-1}\tilde A=\lambda_y$ is a constant. Substituting $s=y+B_0$ gives $pq+\Gamma_0=\lambda_0+\lambda_yB_0\in L_0$.
@@ -134,7 +149,7 @@ $$R_1=(p+\delta_1)\mathsf v'+(q+\delta_2)\mathsf u'+\mathsf u'\mathsf v'+\gamma_
 - Let $L_1=\mathrm{span}(1,\ \text{coordinates of }E\text{ other than }x,y,\ z_1,\dots,z_{m-2})$. For fixed values of the other coordinates, $(x,y)\mapsto(X,Y)$ is a bijection of $\mathbb F_2^2$. So every function on $E$ has a unique expansion $\sum_{S}F_SX^S$ over $S\subseteq\{X,Y\}$, with coefficients that are functions of the other coordinates.
 - Write
 $$P+c_1=p+\pi_xX+\pi_yY+\pi_zXY,\quad Q+c_2=q+\rho_xX+\rho_yY+\rho_zXY,\quad\Gamma=\Gamma_1+\gamma_{m-1}XY,$$
-  with $p,q,\Gamma_1\in L_1$, $\pi_x=f_x$, $\pi_y=f_y$, $\pi_z=\alpha_{m,m-1}$ (and likewise for $\rho$). Concretely, $p=f_{\rm rest}+c_1+(\alpha_m|_{\le m-2}+f_x\alpha_{m-1}+f_y\beta_{m-1})\cdot z$, where $f_{\rm rest}$ is $f$ without its $x,y$ terms; likewise $q$.
+  with $p,q,\Gamma_1\in L_1$, $\pi_x=f_x$, $\pi_y=f_y$, $\pi_z=\alpha_{m,m-1}$ (and likewise for $\rho$). Concretely, $p=f_{\rm rest}+c_1+(\alpha_m|_{\le m-2}+f_x\alpha_{m-1}+f_y\beta_{m-1})\cdot z$, where $f_{\rm rest}$ is the linear form $f$ on $\mathbb F_2^{2m-2}$ with its $x,y$ terms removed. It is taken on the whole $w''$-space, not as its restriction to $E$, because it is translated later (AUDIT-004 I-4). $q$ is formed likewise.
 - $F$ is affine. Writing the affine function as $\lambda_1+\lambda_xx+\lambda_yy$ and substituting $x=X+\alpha_{m-1}\cdot z$, $y=Y+\beta_{m-1}\cdot z$ shows: $F_{XY}=0$, and $F_X$, $F_Y$ are constants. From the product rule for multilinear expansions,
 $$F_{XY}=\pi_z(\rho_z+\rho_x+\rho_y+q)+\pi_x(\rho_z+\rho_y)+\pi_y(\rho_z+\rho_x)+p\rho_z+\gamma_{m-1},$$
 $$F_X=\pi_x\rho_x+\pi_xq+\rho_xp,\qquad F_Y=\pi_y\rho_y+\pi_yq+\rho_yp .$$
@@ -166,7 +181,13 @@ This exhausts all cases. $\square$
 
 **Corollary 34 (level 4).** Theorem 25 holds with the following proof.
 - By Lemma 23, a level-4 counterexample gives $(\Phi,K,C_0,C_1)$ with $\dim K\le7$.
-- If $\dim K\le4$, then $\Phi|_{C_1}$ is a function of at most 4 variables, so its MC is $\le3$. This is the classical fact that every 4-variable function has MC $\le3$ (Sönmez Turan–Peralta; computed exactly in cycle 001, EXP-001, and independently checked in AUDIT-002 V-2).
+- If $\dim K\le4$, then $\Phi|_{C_1}$ is a function of at most 4 variables, so its MC is $\le3$. This is the classical fact that every 4-variable function has MC $\le3$. Its sources:
+  - Sönmez Turan–Peralta (literature, recalled);
+  - EXP-001 (`bfs4.py`, cycle 001), which computes the exact MC of all 65,536 functions;
+  - AUDIT-003 V-6, a verified circuit with at most 3 gates for each NIST class of dimension $\le4$;
+  - AUDIT-004 V-9, an independent exhaustive span search.
+
+  An earlier version cited AUDIT-002 V-2, which does not check this bound (AUDIT-004 I-1).
 - If $\dim K\in\{5,6,7\}$, then $K$ has codimension 3, 2 or 1, and Lemmas 32, 30 and 28 exclude it.
 
 Hence Theorem 25 needs no enumeration beyond the 4-variable fact. The earlier computations (EXP-014, EXP-015, AUDIT-003 V-3) are now independent confirmations of the codimension-3 step. $\square$
@@ -180,7 +201,12 @@ So the fresh-variable lemma at level 5 is equivalent to the following finite sta
 
 ## Verification (EXP-018)
 
-`EXP-018-codim3-hardcore/codim3.c` implements every case prediction of the proof and counts violations. For each formal circuit, each codimension-3 $K$ and each non-affine coset $C$, where some coset $C_0$ is affine, it checks:
+`EXP-018-codim3-hardcore/codim3.c` checks the *conclusion* of every case of the proof and counts violations (AUDIT-004 I-5).
+- It uses the first affine coset as $C_0$.
+- Its merge space contains $y$.
+- It does not test (P1), (P2), the (b2) exits, the constancy of $p$ and $q$, or the exact $R_0$/$R_1$ formulas.
+
+AUDIT-004's independent harness tests all of these on every pair $(C_0,C)$, with 0 violations. It ran over all 32,768 wirings and all subspaces at $m=4$, on about 52.6 million pairs at $m=5$, and on about 13.3 million at $m=6$. For each formal circuit, each codimension-3 $K$ and each non-affine coset $C$, where some coset $C_0$ is affine, it checks:
 - (X1) via Lemma 24;
 - the impossibility claims;
 - gate $j^*$ redundant (case $\dim\pi=1$);

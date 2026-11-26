@@ -8,7 +8,7 @@
 - `hc_dump.c` is `formal4_k5case.c` plus a sampler. It prints a pseudo-random 1/2000 of the hard-core pairs (dim π(H) = 2, C₀ and C₁ in different H₀-classes, no redundant gate) as wiring, basis of K, coset representatives and the truth table of Φ|C₁. Output: `hc_sample.txt`, 1,084 lines.
 - `hc_lib.py` holds the helpers: circuits, cosets, duals, ANF.
 - `merge_check.py` tests the merge identity Φ|C₁ ∈ V₀ + s·V₀ on the samples with top(h₀) = m−1.
-- `codim3.c` is the falsification test of every case prediction of the Lemma 32 proof:
+- `codim3.c` is the falsification test of the conclusion of every case of the Lemma 32 proof (AUDIT-004 I-5 notes what it does not test; the auditor's harness covers that):
   - impossibility claims;
   - j* redundant when dim π = 1;
   - last gate redundant in case 2a;
@@ -22,7 +22,7 @@
   - 770 of 1,084 have an unused gate (gate 3: 553, gate 2: 160, gate 1: 57). For these, MC ≤ 3 is trivial.
   - The other 314 have every gate used, and all of them have top(h₀) = m−1.
   - Every sample with top(h₀) = m−2 has gate m−1 unused.
-  - All 531 samples with top(h₀) = m−1 satisfy the merge identity with the predicted input s. For types 1 and 2 the other input fails, as the proof predicts.
+  - All 531 samples with top(h₀) = m−1 satisfy the merge identity with the predicted input s. For types 1 and 2 the other input fails. The proof only predicts that the named input works and says nothing about the other one (AUDIT-004 I-7).
 - **`codim3 4 0`** (exhaustive: 8,640 wirings, 97,155 subspaces; `codim3_m4.log`, 5.3 min on 4 cores):
   - 24,282,232 non-affine cosets C with an affine coset C₀; 18,787,840 of them are Lemma-24-degenerate.
   - dim π = 1: gate j* redundant in 561,600 cases.
