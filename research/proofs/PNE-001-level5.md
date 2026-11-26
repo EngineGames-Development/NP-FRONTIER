@@ -151,6 +151,32 @@ Those constraints are quadratic: they involve products such as $\tilde A\cdot(\c
 
 So the next step is a **product-closure lemma on the full domain**. For a formal circuit, find all pairs $X,Y\in L$ with $XY\in L$. Expected answer: only trivial ones. Either $X$ or $Y$ is constant, or $X+Y$ is constant, or $X,Y\in\mathrm{span}(1,A_I,B_I)$ for some gate $I$ (a duplicate), applied recursively. The top-gate analysis of Lemma 32 (b2) with no hyperplane should prove it. The case $k<m-2$ must also account for gates $k+1,\dots,m-2$.
 
+## Lemma 39 (product closure on the full domain)
+
+Let $\Psi$ be a formal $j$-gate circuit on $\mathbb F_2^{2j}$, and let $L=\mathrm{span}(1,w_1,\dots,w_{2j},z_1,\dots,z_j)$. If $X,Y\in L$ and $XY\in L$ as functions on $\mathbb F_2^{2j}$, then:
+- (a) $X$ or $Y$ is constant; or
+- (b) $X+Y$ is constant; or
+- (c) $X,Y\in\mathrm{span}(1,A_I,B_I,z_I)$, i.e. both are functions of gate $I$'s inputs, where $I$ is the largest gate index such that $z_I$, $w_{2I-1}$ or $w_{2I}$ occurs in $X$, $Y$ or in a representation $XY=\Lambda+\sum c_iz_i$.
+
+*Proof.* If no gate and no private variable of any gate occurs, then $X$ and $Y$ are affine. Linearly independent affine forms have a non-affine product, so (a) or (b) holds.
+
+Otherwise $I\ge1$, and gate $I$'s private variables are free and occur nowhere above. Expand in $(A_I,B_I)$ exactly as in Lemma 32 (b2), with $\Gamma=\sum c_iz_i$ and no hyperplane, so that independence holds on the whole space:
+- $\pi_z=\rho_z=c_I=0$.
+  - If $(\pi_x,\pi_y)=0$, then $F_X$ or $F_Y$ makes $p$ constant: (a).
+  - If $(\pi_x,\pi_y)=(\rho_x,\rho_y)\ne0$, then $p+q$ is constant, so $X+Y$ is constant: (b).
+- $\pi_z=\rho_z=0$, $c_I=1$: $p$ and $q$ are constant, which gives (c), the duplicate.
+- (ii)/(iii): one input is constant (a), or $p,q$ are constant (c).
+- (iv): $X+Y$ is constant (b), or $p,q$ are constant (c).
+
+"Constant" here means identically constant on $\mathbb F_2^{2I}$, so it is a formal identity by the independence fact. $\square$
+
+**Use.** In the double merge, the four constraints coming from $C_0$ are:
+- $p_0q_0\in L_{<k}$;
+- $\tilde Y_0X_{1,0}\in L_{<k}$;
+- the two conditions on $N_0$ and $N_1$, which are of the form $\tilde A\cdot W\in L_{<k}$.
+
+They involve only functions of gates $<k$. On $E$ these coordinates are free, so the constraints hold on the full domain of gates $<k$, and Lemma 39 classifies each of them. Because $\tilde A$ is non-constant, each $\tilde A\cdot W$ relation leaves: $W$ constant, $\tilde A+W$ constant, or $\tilde A,W$ both functions of one gate's inputs. The codimension-4 proof would finish by checking, case by case, that the saving $N_0'+N_1'\in\mathrm{span}(1)$ (or another saving) follows. This is finite and mechanical, but not yet done.
+
 **What a codimension-4 proof needs.** Lemmas 28, 30, 32 and 37 cover every configuration seen except NEW-2:
 - $\dim\pi(H)=2$ and $\dim H_0=2$;
 - $t_2$ eliminates a private variable of gate $m-1$;
