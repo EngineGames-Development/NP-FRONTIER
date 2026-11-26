@@ -1,0 +1,7 @@
+codim-4 subspaces of F_2^10: 53743987
+wirings_run=40 (of 2350080) subspaces=53743987 | (wiring,K) with an affine coset and a non-affine one: 419130
+non-affine C with affine C0: 5144715 | DEG 3748614 | UNUSED 1055360 | RED gate0..4: 0 89952 47292 8937 69072 | MERGE 80208 | HARD 45280
+
+real	14m55.327s
+user	58m30.660s
+sys	0m0.930s
