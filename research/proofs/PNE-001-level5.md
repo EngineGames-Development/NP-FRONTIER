@@ -85,6 +85,54 @@ Structure of 600 sampled HARD instances (`hard_struct*.py`):
   - Gates $z_0$ and $z_1$ are kept, and a shared product $\Pi=(B_1+z_1)A_2$ replaces gates 2–4: 4 gates. SAT confirms that MC is exactly 4.
 - **No counterexample.** The 131 distinct HARD functions (modulo affine) of this sample all have verified 4-gate circuits (`hard_check.py`, SAT via `mc.py`, re-evaluated; at most 126 s per function).
 
+## Lemma 38 (redundant products persist away from the separating gate)
+
+Setting:
+- (P1) and (P2) of `PNE-001-codim3.md` hold for a formal circuit with gates $1,\dots,j$.
+- $t\ne0$, $k=\mathrm{top}(t)\le j$, $E=\{\langle t,\cdot\rangle=c\}$, and the translation $\tau$ of (P1). Gate $k$ is non-degenerate, i.e. $\tilde A$ is not constant on $E$.
+- $L=\mathrm{span}(1,\text{linear forms},z_1,\dots,z_j)$.
+
+Let $X,Y\in L$ with $XY\in L$ on $E$, and let $J$ be the largest gate index occurring in $X$ or $Y$ ($J=0$ if both are affine). **If $J\ne k$, then $(X^\tau+\delta_1)(Y^\tau+\delta_2)\in L^\tau$ on $E$ for all constants $\delta_1,\delta_2$.** Here $L^\tau=\mathrm{span}(1,\text{linear forms},z_i^\tau)$, with translates taken on expressions as in Lemma 32.
+
+*Proof.* Write $XY=\Lambda+\sum_ic_iz_i$ on $E$, with $\Lambda$ affine.
+- **The support of $c$ lies in $[1,J]$.** Let $i^*=\max\mathrm{supp}\,c$ and suppose $i^*>J$.
+  - If $i^*\ne k$, the private variables of gate $i^*$ are coordinates of $E$ and occur in $XY$ only linearly. But $z_{i^*}$ contains their product with coefficient 1, a contradiction.
+  - If $i^*=k$ (possible only when $J<k$), the derivative in the free coordinate of $s_k$ is $\tilde A$ plus a constant, which is not constant: again a contradiction.
+- **$J<k$.** $X$ and $Y$ involve only gates $<k$, which $\tau$ leaves unchanged, plus linear forms, which shift by constants. By the support bound, $c$ is supported below $k$ as well. Hence $X^\tau Y^\tau=(X+\epsilon_X)(Y+\epsilon_Y)\in L^\tau$ on $E$.
+- **$J>k$.** Gate $J$ has both private variables free on $E$, and gates above $J$ do not occur. Run the top-gate analysis of Lemma 32 (b2) with gate $J$ in the role of gate $m-1$, with $X,Y$ in the role of $P+c_1,Q+c_2$, and with $\sum_ic_iz_i$ in the role of $\Gamma$.
+  - Case (i) cannot occur, because gate $J$ occurs in $X$ or $Y$.
+  - In cases (ii)–(iv), either $X$ or $Y$ is constant on $E$, or $X+Y$ is constant on $E$, or the $s$-free parts $p,q$ are constant.
+  - By (P2) each of these is a formal identity: zero gate coefficients, and linear part in $\{0,t\}$. So it survives the translation.
+  - Then $(X^\tau+\delta_1)(Y^\tau+\delta_2)$ is a function of $(X_J^\tau,Y_J^\tau)$ alone, or a multiple of an element of $L^\tau$. Either way it lies in $\mathrm{span}(1,X_J^\tau,Y_J^\tau,z_J^\tau)+L^\tau=L^\tau$. $\square$
+
+**Corollary 38a (NEW-2 reduces to a double merge).** Take the NEW-2 configuration at codimension 4:
+- $t_2$ is non-separating with $\mathrm{top}(t_2)=m-1$;
+- $t_1$ is separating with $k=\mathrm{top}(t_1)<m-1$.
+
+On $E$, let $s$ be gate $m-1$'s free input, $\tilde Y$ its other input, and write $P+c_1=p+\mathsf u s$, $Q+c_2=q+\mathsf v s$, $X_1=bp+aq$, where $a,b$ are the coefficients of $z_{m-1}$ in the last gate's inputs. As in Lemma 32 (b1),
+$$F=R_0+R_1s,\qquad R_0=pq+\Gamma_0,\qquad R_1=(\text{affine combination of }p,q,\tilde Y,1)+\tilde Y X_1 .$$
+Affinity of $F$ forces $pq\in L_0$ and $\tilde YX_1\in L_0$ on $E$.
+
+Lemma 38 applies to the sub-circuit of gates $1..m-2$. Restricted to its coordinates, $E$ and $E'$ are the two sides of the hyperplane $\{\langle t_1,\cdot\rangle=\text{const}\}$, and the translation acts as $e_{e_1}$. So, **if neither product has top gate $k$**:
+- on the other coset $\Phi|_C\cong R_0'+R_1's'$ with $R_0',R_1'\in L_0^\tau$, where $s'$ is the translated free input of gate $m-1$;
+- hence $\mathrm{MC}(\Phi|_C)\le(m-2)+1=m-1$.
+
+The open sub-case is therefore the **merge at $k$**: at least one of $pq$, $\tilde YX_1$ has top gate exactly $k$. By the argument of Lemma 32 (b1), each such product lies in $L_{<k}+s_k\cdot L_{<k}$ on the other side, where $s_k$ is gate $k$'s free input.
+
+**Data (`new2_check.py`).** In all 400 NEW-2 HARD instances of the 4-wiring sample, **both** products have top gate exactly $k$:
+- $k=1$ (0-indexed), i.e. $k=m-3$: 200 instances;
+- $k=2$ (0-indexed), i.e. $k=m-2$: 200 instances.
+
+This matches Corollary 38a: no instance escapes it.
+
+**The remaining question (double merge).** For $k=m-2$, write the two merged products with $s_k$-coefficients $N_0$ and $N_1$ in $L_{<k}$. Then
+$$\Phi|_C=M_0+N_0s_k+(M_1+N_1s_k)\,s',\qquad M_i,N_i\in L_{<k}.$$
+- In general this costs $k+2=m$ gates.
+- If $N_0+N_1$ is constant, a single product $\Pi=N_1s_k$ serves both, and the cost is $k+1=m-1$. This is what happens in the decoded example: $N_0=N_1=B_1+z_1$.
+- For $k=m-3$ the gates $k+1,\dots,m-2$ must also be accounted for.
+
+A proof of codimension 4 must show that the constraints from $C_0$ force such sharing, or find another saving.
+
 **What a codimension-4 proof needs.** Lemmas 28, 30, 32 and 37 cover every configuration seen except NEW-2:
 - $\dim\pi(H)=2$ and $\dim H_0=2$;
 - $t_2$ eliminates a private variable of gate $m-1$;
@@ -94,6 +142,10 @@ In the decoded example, the two "slice" functions $R_0',R_1'$ in $\Phi|_C=R_0'+R
 
 ## Status
 - Level 5 of PNE-001 is **open**. No counterexample has been found.
-- Proved here: Lemma 36; Lemma 37; Lemma 32 (b1) as a corollary of Lemma 37; the NEW-1 sub-case of codimension 4.
+- Proved here:
+  - Lemmas 36, 37 and 38;
+  - Lemma 32 (b1) as a corollary of Lemma 37;
+  - the NEW-1 sub-case of codimension 4;
+  - the reduction of NEW-2 to the double-merge sub-case (Corollary 38a).
 - Computed, conditional on NIST: 35,861 candidate classes remain. Sampled: the codimension-4 residue NEW-2, with every sampled case of MC $\le4$.
 - Nothing here bears on P vs NP.
