@@ -75,6 +75,9 @@ Computational facts:
 - **Corollary 34:** level 4 needs no enumeration beyond the classical "MC ≤ 3 on 4 variables".
 - **Corollary 35:** a level-5 counterexample has dim g = 6, i.e. codimension 4 at m = 5.
 - **Lemma 37 (top-two perturbation; unaudited):** for any circuit affine on S, perturbing the input constants of the top two gates gives MC ≤ m−1. This gives a one-line proof of the merge.
+- **Lemma 38 (unaudited):** a redundant product persists unless its top gate is the separating gate. So the codimension-4 residue NEW-2 is a "double merge"; all 400 sampled NEW-2 instances are.
+- **Lemma 39 (unaudited; exhaustively checked for small circuits):** product closure on the full domain. If XY ∈ L, then a factor is constant, or X+Y is constant, or both are functions of one gate's inputs.
+- **Double merge, open.** Simple bilinear savings explain 101 of the 200 sampled k = m−2 double merges. The other 99 need the lower gates rewired; all have MC ≤ 4 by SAT.
 - **Lemma 36 (unaudited):** a level-5 counterexample has a cheap plane. On NIST's 148,483 six-variable MC-5 classes, 35,861 survive.
 - **EXP-018:** 0 violations of the Lemma 32 case analysis (m = 4 exhaustive; m = 5 sample). AUDIT-004's own harness: 0 violations at m = 4, 5, 6.
 - **EXP-019 (codimension 4, m = 5):**
@@ -86,7 +89,7 @@ Computational facts:
    - Prove the NEW-2 sub-case and write the dim π(H) = 1 branch.
    - Target: explain why, in Φ|C = R0' + R1'·s, the two slice functions share one product.
    - General frame: statement (G). Perturbing the gate-input constants of an m-gate circuit that is affine on S leaves MC ≤ m−1. (G) is equivalent to PNE-001 at level m; Lemma 37 proves it for the top two gates.
-2. **AUDIT-005 of Lemmas 36 and 37** before using them further.
+2. **AUDIT-005 of Lemmas 36–39** before using them further.
 3. **Computational level 5 as a fallback.**
    - Sharpen Lemma 36 with second-gate conditions on the halves, to cut the 35,861 NIST candidates.
    - Or reduce formal 5-gate circuits by their full symmetry group (GL(2) per gate, z_i ↦ z_i + A_i) and enumerate NEW-2 only.

@@ -24,6 +24,8 @@ Cycle 002 (`research/proofs/PNE-001-level4.md`, AUDIT-003):
 4. **Top-gate analysis (case b2).** Gate $m-1$ has two free private variables. A multilinear expansion forces $P,Q\in\mathrm{span}(1,X,Y,XY)$ or an exit.
 5. **Recursion for $\dim\pi(H)=1$.** The sub-circuit $\Psi$ is affine on a codimension-$\le2$ coset, so Lemmas 28 and 30′ apply to it.
 6. **Lemma 37 (top-two perturbation, any circuit, any domain).** Perturbing the input constants of the top two gates of a circuit that is affine on $S$ costs at most $m-1$ gates. A ternary quadratic form has rank $\le2$, so one AND gate suffices. This re-proves case b1 and settles one codimension-4 sub-case.
+8. **Lemma 38 (redundant products persist).** A product $XY$ that is redundant on $E$ stays redundant after the translation, unless its top gate is the separating gate $k$. Corollary 38a reduces NEW-2 to a "double merge": both slice products have top gate $k$. All 400 sampled NEW-2 instances are double merges.
+9. **Lemma 39 (product closure on the full domain).** If $X,Y\in L$ and $XY\in L$, then a factor is constant, or $X+Y$ is constant, or both are functions of one gate's inputs. Proved by a single top-gate analysis, and checked exhaustively for circuits with $\le2$ gates.
 7. **Lemma 36 (a necessary condition at level 5).** A counterexample has a cheap plane: all six halves have MC $\le3$. This follows from Lemma 9′, Lemma 11, and PNE-001 at level $\le4$. It can be tested on NIST's class list.
 
 ## Proof attempts and exact status
@@ -32,6 +34,8 @@ Cycle 002 (`research/proofs/PNE-001-level4.md`, AUDIT-003):
 - **Corollary 34:** level 4 follows from Lemmas 23, 24, 28, 30 and 32, plus the classical fact that every 4-variable function has MC $\le3$. The cycle-002 enumerations become independent confirmations.
 - **Corollary 35:** a level-5 counterexample has $\dim g=6$ exactly. In Lemma 23 it lives in codimension 4 of $\mathbb F_2^{10}$.
 - **Lemma 36 and Lemma 37: proved** (`research/proofs/PNE-001-level5.md`). They are not yet audited. The identities behind Lemma 37 were brute-force checked.
+- **Lemmas 38 and 39: proved** (unaudited; Lemma 39 checked exhaustively for small circuits).
+  - The first draft of Lemma 38's proof wrongly claimed that the representation of $XY$ uses only gates up to the top gate of $X,Y$; a product can duplicate a higher gate. The proof was corrected to analyse the top gate of the whole relation.
 - **Codimension 4 / level 5: open.** The written arguments cover every sampled configuration except NEW-2:
   - $\dim\pi(H)=2$ and $\dim H_0=2$;
   - the non-separating $t_2$ eliminates a private variable of gate $m-1$;
@@ -47,6 +51,7 @@ Cycle 002 (`research/proofs/PNE-001-level4.md`, AUDIT-003):
 | EXP-018 `codim3` $m=5$ | Same, 300 random wirings × 6,347,715 subspaces | 77,348 non-degenerate cases, **0 violations** |
 | AUDIT-004 harness | Every prediction and formula of the proof, with certificates | $m=4$ all 32,768 wirings (229,201,152 pairs); $m=5$ about 52.6M pairs; $m=6$ about 13.3M pairs. **0 violations.** Mutation tests detect planted errors. |
 | EXP-019 `codim4` | Codimension 4 at $m=5$: mechanisms, 4 wirings × 53,743,987 subspaces | 934,015 cosets: 91% degenerate. 2.3% HARD, all NEW-1 or NEW-2. **All 131 distinct HARD functions have verified 4-gate circuits.** |
+| EXP-019 `new2_check`, `dmerge_check` | Structure of the 400 sampled NEW-2 instances | All are double merges ($J_0=J_1=k$). For the 200 with $k=m-2$, the bilinear savings explain 101 and **99 need rewiring of the lower gates**; all have MC $\le4$. |
 | EXP-019 `cheapplane6` | Lemma 36 on NIST's 148,483 MC-5 classes on 6 variables | 35,861 survive (24%) |
 | EXP-019 `codim4` (40 wirings) | Larger falsification sample | Running at the time of writing; see `EXP-019/codim4_s40.log` |
 
@@ -89,7 +94,7 @@ Novelty: unconfirmed. No prior statement was found in searches by us or by AUDIT
 - **NEW-2 resists the codimension-3 arguments.** Gate $m-1$ has only one free variable there, so the (b2) top-gate analysis fails, and the perturbation touches a lower gate, so Lemma 37 does not apply. In the decoded example, the cheap circuit rewires gates 2–4 around a shared product $\Pi$.
 
 ## Next research direction
-1. **Prove NEW-2,** and write the $\dim\pi(H)=1$ branch, for codimension 4 at every $m$. This would settle level 5 and give PNE-001 whenever $\dim g\ge2\,\mathrm{MC}(g)-4$.
+1. **Prove NEW-2,** and write the $\dim\pi(H)=1$ branch, for codimension 4 at every $m$. NEW-2 is now reduced to the double merge (Lemma 38). The four constraints are product-closure relations on the full domain of the lower gates, which Lemma 39 classifies. Half the sampled double merges need the lower gates rewired, so the argument must allow that, for example by applying Lemma 39 recursively. This would settle level 5 and give PNE-001 whenever $\dim g\ge2\,\mathrm{MC}(g)-4$.
    - Concretely: in $\Phi|_C=R_0'+R_1's$, explain why $R_0'$ and $R_1'$ share one product. This probably needs a statement about products $XY$, with $X,Y\in L$, that lie in $L$ on a coset ("product-closure"), proved by induction on the gates.
    - A natural general target is statement (G): an $m$-gate circuit that computes an affine function on $S$ still has MC $\le m-1$ after any perturbation of its gate-input constants. By Lemma 23 and (F4), (G) is equivalent to PNE-001 at level $m$. Lemma 37 is (G) for perturbations of the top two gates.
 2. **Computational level 5.**
