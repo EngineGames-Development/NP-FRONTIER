@@ -133,6 +133,24 @@ $$\Phi|_C=M_0+N_0s_k+(M_1+N_1s_k)\,s',\qquad M_i,N_i\in L_{<k}.$$
 
 A proof of codimension 4 must show that the constraints from $C_0$ force such sharing, or find another saving.
 
+**Plan for the double merge (cycle 004; analysis so far, not yet a proof).** Take $k=m-2$. Every $X\in L_0$ decomposes as $X=X_0+(\xi+\eta_X\tilde A)s_k$ with $X_0\in L_{<k}$, where $\eta_X$ is the coefficient of $z_k$.
+
+On the other side, the translation replaces $\tilde A$ by $\tilde A+1$ inside these coefficients and adds constants. Let $N_0,N_1$ be the $s_k$-coefficients of $R_0,R_1$, and $N_0',N_1'$ those of $R_0',R_1'$. The constraints from $C_0$ are:
+- $R_1$ is constant on $E$, so $N_1=0$;
+- $R_0\in L_0$, so $N_0\in\mathrm{span}(1,\tilde A)$.
+
+A direct expansion then gives
+$$N_0'\in\mathrm{span}(1,\tilde A,p_0,q_0),\qquad N_1'\in\mathrm{span}(1,\tilde A,\tilde Y_0,X_{1,0}).$$
+Both are *linear* in elements of $L_{<k}$, which is why each product merges.
+
+The saving needed is $N_0'+N_1'\in\mathrm{span}(1)$. That is a linear identity among $p_0,q_0,\tilde Y_0,\tilde A$, namely
+$$p_0(\eta_q+b\eta_{\tilde Y})+q_0(\eta_p+a\eta_{\tilde Y})+\tilde Y_0(b\eta_p+a\eta_q)+c\,\tilde A\in\mathrm{span}(1).$$
+It must follow from the constraints $N_1=0$ and $N_0\in\mathrm{span}(1,\tilde A)$.
+
+Those constraints are quadratic: they involve products such as $\tilde A\cdot(\chi_1\tilde Y_0+\upsilon_1X_{1,0})$. They hold on the whole domain of gates $<k$, because $E$ does not constrain those coordinates.
+
+So the next step is a **product-closure lemma on the full domain**. For a formal circuit, find all pairs $X,Y\in L$ with $XY\in L$. Expected answer: only trivial ones. Either $X$ or $Y$ is constant, or $X+Y$ is constant, or $X,Y\in\mathrm{span}(1,A_I,B_I)$ for some gate $I$ (a duplicate), applied recursively. The top-gate analysis of Lemma 32 (b2) with no hyperplane should prove it. The case $k<m-2$ must also account for gates $k+1,\dots,m-2$.
+
 **What a codimension-4 proof needs.** Lemmas 28, 30, 32 and 37 cover every configuration seen except NEW-2:
 - $\dim\pi(H)=2$ and $\dim H_0=2$;
 - $t_2$ eliminates a private variable of gate $m-1$;
