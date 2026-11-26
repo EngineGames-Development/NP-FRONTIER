@@ -94,16 +94,16 @@ Setting:
 
 Let $X,Y\in L$ with $XY\in L$ on $E$, and let $J$ be the largest gate index occurring in $X$ or $Y$ ($J=0$ if both are affine). **If $J\ne k$, then $(X^\tau+\delta_1)(Y^\tau+\delta_2)\in L^\tau$ on $E$ for all constants $\delta_1,\delta_2$.** Here $L^\tau=\mathrm{span}(1,\text{linear forms},z_i^\tau)$, with translates taken on expressions as in Lemma 32.
 
-*Proof.* Write $XY=\Lambda+\sum_ic_iz_i$ on $E$, with $\Lambda$ affine.
-- **The support of $c$ lies in $[1,J]$.** Let $i^*=\max\mathrm{supp}\,c$ and suppose $i^*>J$.
-  - If $i^*\ne k$, the private variables of gate $i^*$ are coordinates of $E$ and occur in $XY$ only linearly. But $z_{i^*}$ contains their product with coefficient 1, a contradiction.
-  - If $i^*=k$ (possible only when $J<k$), the derivative in the free coordinate of $s_k$ is $\tilde A$ plus a constant, which is not constant: again a contradiction.
-- **$J<k$.** $X$ and $Y$ involve only gates $<k$, which $\tau$ leaves unchanged, plus linear forms, which shift by constants. By the support bound, $c$ is supported below $k$ as well. Hence $X^\tau Y^\tau=(X+\epsilon_X)(Y+\epsilon_Y)\in L^\tau$ on $E$.
-- **$J>k$.** Gate $J$ has both private variables free on $E$, and gates above $J$ do not occur. Run the top-gate analysis of Lemma 32 (b2) with gate $J$ in the role of gate $m-1$, with $X,Y$ in the role of $P+c_1,Q+c_2$, and with $\sum_ic_iz_i$ in the role of $\Gamma$.
-  - Case (i) cannot occur, because gate $J$ occurs in $X$ or $Y$.
-  - In cases (ii)–(iv), either $X$ or $Y$ is constant on $E$, or $X+Y$ is constant on $E$, or the $s$-free parts $p,q$ are constant.
-  - By (P2) each of these is a formal identity: zero gate coefficients, and linear part in $\{0,t\}$. So it survives the translation.
-  - Then $(X^\tau+\delta_1)(Y^\tau+\delta_2)$ is a function of $(X_J^\tau,Y_J^\tau)$ alone, or a multiple of an element of $L^\tau$. Either way it lies in $\mathrm{span}(1,X_J^\tau,Y_J^\tau,z_J^\tau)+L^\tau=L^\tau$. $\square$
+*Proof.* Write $XY=\Lambda+\sum_ic_iz_i$ on $E$, with $\Lambda$ affine, and let $I=\max(\{J\}\cup\mathrm{supp}\,c)$ be the top gate occurring anywhere in this relation.
+
+(An earlier draft claimed $\mathrm{supp}\,c\subseteq[1,J]$. That is false. A product can duplicate a higher gate: if $X,Y$ are the two inputs of gate $i$, then $XY=z_i$ with $i>J$. The case analysis below uses $I$ instead.)
+- **$I<k$.** Every gate in the relation is below $k$, so it is unchanged by $\tau$, and linear forms shift by constants. Hence, pointwise on $E$, $X^\tau Y^\tau=XY+\epsilon_YX+\epsilon_XY+\epsilon_X\epsilon_Y\in\mathrm{span}(\text{affine},z_i:i<k)\subseteq L^\tau$.
+- **$I=k$.** Since $J\ne k$, this means $J<k$ and $c_k=1$. Again $X^\tau Y^\tau=XY+(\text{affine in }X,Y)$ pointwise on $E$. On $E$, $z_k=\tilde As_k=z_k^\tau+s_k$, and $s_k\in L^\tau$. So $X^\tau Y^\tau\in L^\tau$.
+- **$I>k$.** Gate $I$ has both private variables free on $E$, and no gate above $I$ occurs. Run the top-gate analysis of Lemma 32 (b2) with gate $I$ in the role of gate $m-1$, with $X,Y$ in the role of $P+c_1,Q+c_2$, and with $\sum_ic_iz_i$ in the role of $\Gamma$.
+  - Case (i) ($z_I$ occurs in neither $X$ nor $Y$, so $c_I=1$) forces the $s$-free parts $p,q$ to be constant. Then $X,Y\in\mathrm{span}(1,X_I,Y_I)$: the product duplicates gate $I$.
+  - In cases (ii)–(iv), either $X$ or $Y$ is constant on $E$, or $X+Y$ is, or $p$ and $q$ are constant.
+  - By (P2), applied to expressions in gates $<I$ with gate $k$ non-degenerate, each of these is a formal identity: zero gate coefficients, and linear part in $\{0,t\}$. So it survives the translation.
+  - Hence $(X^\tau+\delta_1)(Y^\tau+\delta_2)$ is a function of $(X_I^\tau,Y_I^\tau)$ alone, or a multiple of an element of $L^\tau$, and lies in $\mathrm{span}(1,X_I^\tau,Y_I^\tau,z_I^\tau)+L^\tau=L^\tau$. $\square$
 
 **Corollary 38a (NEW-2 reduces to a double merge).** Take the NEW-2 configuration at codimension 4:
 - $t_2$ is non-separating with $\mathrm{top}(t_2)=m-1$;
